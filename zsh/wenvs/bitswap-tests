@@ -9,28 +9,29 @@ wenv_setup() {
         sudo systemctl start docker
     }
     wenv_shutdown() {
-        iptb stop
         clean
+        iptb stop
         sudo systemctl stop docker
     }
 }
 
-export IPTB_ROOT="$HOME/.iptb"
+# init() {
+#     num="$1"
+#     [[ -z "$num" ]] && num=3
+#     yes | iptb init -n $num --type docker
+# }
 
-init() {
-    num="$1"
-    [[ -z "$num" ]] && num=3
-    yes | iptb init -n $num --type docker
-}
-
-reinit() {
-    iptb kill
-    init "$1"
-}
+# reinit() {
+#     iptb kill
+#     init "$1"
+# }
 
 c() {
     dest="$1"
     case "$dest" in
+        ipfs)
+            cd "$GOPATH/src/github.com/ipfs/go-ipfs"
+            ;;
         iptb)
             cd "$GOPATH/src/github.com/ipfs/iptb"
             ;;

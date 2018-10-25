@@ -12,7 +12,7 @@ evaluate-commands %sh{
     base3="rgb:fdf6e3"
 
     white="rgb:cacaff"
-    default_text="rgb:a9a9a9"
+    default_text="rgb:bdbdbd"
     black="rgb:111111"
     yellow="rgb:cccc00"
     yellow_pale="rgb:c1fc83"

@@ -1,28 +1,34 @@
 #!/bin/zsh
 
 wenv_setup() {
-    WENV_DIR="/home/grish/.go/src/github.com/ipfs/iptb"
-    WENV_DEPS=()
+    WENV_DIR="$HOME/.go/src/github.com/ipfs/iptb"
+    WENV_ALIASES=()
     WENV_PROJECT='iptb'
     WENV_BRANCH='personal'
-    WENV_TASK=86
     wenv_init() {
         # sudo systemctl start docker
     }
     wenv_shutdown() {
-        # iptb kill
+        # iptb stop
         # sudo systemctl stop docker
     }
 }
+
+export IPTB_ROOT="$HOME/.iptb"
 
 clean() {
     docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
 }
 
-export IPTB_ROOT="$HOME/.iptb"
+restart() {
+    clean 2>&1 >/dev/null
+    n="$1"
+    [[ -z "$n" ]] && n=2
+    yes | iptb init -n "$n" --type docker 2>&1 >/dev/null && iptb start
+}
 
-# alias reset='go build -o iptb main.go && yes | { cp -f iptb $GOPATH/bin && iptb init -n 2 --type docker } && iptb start'
-# alias update='go build -o iptb main.go && yes | cp -f iptb $GOPATH/bin'
+alias reset='clean 2>&1 >/dev/null && make && yes | { cp -f iptb $GOPATH/bin && iptb init -n 2 --type docker 2>&1 >/dev/null } && iptb start'
+alias update='make && yes | cp -f iptb $GOPATH/bin'
 
 c() {
     dest="$1"

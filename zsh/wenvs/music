@@ -1,1 +1,0 @@
-alias banger='mpv --vid=no --\{ --length=39.9 $MUSIC/library/carly_rae_jepsen/2015_06-e•mo•tion/1_03-i_really_like_you.mp3 --\} --\{ --start=2:02.6 --length=9.7 $MUSIC/library/strapping_young_lad/2007_00-city/1_03-oh_my_fucking_god.mp3 --\} --\{ --start=0:44 --end=47.7 $MUSIC/library/carly_rae_jepsen/2015_06-e•mo•tion/1_03-i_really_like_you.mp3 --\}'
