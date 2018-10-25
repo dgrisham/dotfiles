@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="/home/grish/downloads/torrents"
+    WENV_DEPS=()
+    WENV_PROJECT=''
+    unset WENV_BRANCH
+    WENV_TASK=''
+    WENV_GITDIR=""
+
+    wenv_init() {
+        tmux send-keys 'rtorrent' Enter
+        wenv_tmux_split h
+        tmux send-keys 'magnet '
+    }
+    wenv_shutdown() { }
+}

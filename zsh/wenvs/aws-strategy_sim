@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+wenv_setup() {
+    typeset -Ag WENV_CONSTS
+    WENV_DIR="$WORK/research/strategy_sim"
+    WENV_DEPS=('aws')
+    WENV_NAME='strategy-sim'
+    WENV_BRANCH=''
+    WENV_TASK=''
+    wenv_init() { }
+    wenv_shutdown() { }
+}
+
+update() {
+    aws rsync aws:~/src/strategy_sim/src/strategy_sim/plots-new $WENV_DIR --delete
+    cd $WENV_DIR/plots-new
+}
+
+show() {
+    update
+    pdf *.pdf
+}

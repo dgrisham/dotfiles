@@ -1,0 +1,50 @@
+# Default options
+# ===============
+
+# colors
+# ------
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+
+# list
+# ----
+alias ll="ls -lh"
+alias lr="ls -lrh"
+alias la="ls -lah"
+alias lt="ls -lrth"
+alias lta="ls -lrtah"
+alias lat="ls -lrtah"
+
+# tmux
+# ----
+alias tm="tmux -2 attach"
+
+# convenient cd
+# -------------
+chpwd() { ll }                    # cd and ls
+mc() { mv $@ && ${(P)#} } # mv and cd
+cc() { cp $@ && ${(P)#} } # cp and cd
+
+# tail/head
+# ---------
+alias tail='tail -n30'
+alias head='head -n30'
+
+# compression
+# -----------
+alias tarx='tar -xvf'
+tarc() { tar -cvf $1.tar $1 }
+zipd() { zip -rv $1.zip $1 }
+
+# mail
+# ----
+alias imap="imapfilter -c $DOTFILES/mail/imapfilter && offlineimap -c $DOTFILES/mail/offlineimaprc" # sync
+
+
+# Hardware
+# ========
+
+# system stats
+# ------------
+
+alias temp='ls -d /sys/class/thermal/thermal_zone* | xargs -I f cat f/temp'

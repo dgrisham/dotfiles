@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+wenv_setup() {
+    typeset -Ag WENV_CONSTS
+    WENV_DIR="/home/grish/scratch/codility"
+    WENV_DEPS=('python')
+    WENV_NAME='codility'
+    WENV_BRANCH='master'
+    WENV_TASK=''
+    wenv_init() {
+        wenv_tmux_layout split-tasks 'start_venv pytest'
+    }
+    wenv_shutdown() { }
+}
+
+newtest() {
+    name="$1"
+    [[ -z "$name" ]] && return 1
+    cd $WENV_DIR >/dev/null
+    cp template.py "$name".py
+    kak "$name".py
+}

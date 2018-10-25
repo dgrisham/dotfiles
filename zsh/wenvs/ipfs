@@ -1,0 +1,42 @@
+#!/bin/zsh
+
+wenv_setup() {
+    WENV_DIR="$GOPATH/src/github.com/ipfs/go-ipfs"
+    WENV_DEPS=()
+    WENV_PROJECT=''
+    WENV_BRANCH=''
+    wenv_init() { }
+}
+
+ipfs() {
+    case "$1" in
+        'public')      config='--config ~/.ipfs'
+                       shift
+                       ;;
+        'p'|'private') config='--config ~/.ipfs-private'
+                       shift
+                       ;;
+        *)             config=''
+                       ;;
+    esac
+
+    eval $GOPATH/bin/ipfs "$config" $@
+}
+
+c() {
+    case "$1" in
+        'bs'|'bitswap')
+            dir="$WENV_DIR/vendor/github.com/ipfs/go-bitswap"
+            ;;
+        'gx')
+            dir="$GOPATH/src/github.com/whyrusleeping/gx"
+            ;;
+        'gx-go')
+            dir="$GOPATH/src/github.com/whyrusleeping/gx-go"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+    cd "$dir"
+}

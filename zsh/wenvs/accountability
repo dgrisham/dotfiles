@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+wenv_setup() {
+    typeset -Ag WENV_CONSTS
+    WENV_DIR="/home/grish/work/research/accountability"
+    WENV_DEPS=()
+    WENV_NAME='accountability'
+    WENV_BRANCH=''
+    WENV_TASK=''
+    wenv_init() {
+        edit_week
+    }
+    wenv_shutdown() { }
+}
