@@ -14,7 +14,7 @@
 [merge]
 	tool = kak
 [commit]
-	template = ~/dotfiles/git/gitmessage
+	template = ~/dotfiles/git/message
 [color]
 	ui = true
 [color "diff-highlight"]
