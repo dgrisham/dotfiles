@@ -11,14 +11,14 @@ export TEXMFHOME="$DOTFILES/texmf"
 # command completion
 autoload bashcompinit
 bashcompinit
-## IPFS
-source $HOME/.ipfs/completion.bash
-## WENV
-source $DOTFILES/zsh/completion/wenv.bash
+for completion_file in $DOTFILES/zsh/completion/*; do
+    source "$completion_file"
+done
+#source $HOME/.ipfs/completion.bash
 ## aws-cli
-source aws_zsh_completer.sh
+#source aws_zsh_completer.sh
 ## keybase command completion
-source $SRC/keybase-completion/keybase
+#source $SRC/keybase-completion/keybase
 
 # Go path
 export GOPATH="$HOME/.go"

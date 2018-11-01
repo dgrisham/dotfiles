@@ -60,21 +60,6 @@ conky.config = {
 
 conky.text = [[
 [
-# MPD
-${if_mpd_playing}
-    {"full_text":"♫", "color":"\#ffffff",
-     "separator":false, "separator_block_width":6},
-    {"full_text":"${mpd_artist 27}", "color" : "\#888888",
-     "separator" : false, "separator_block_width":3 },
-    {"full_text":" - ", "color" : "\#888888",
-     "separator" : false, "separator_block_width":3 },
-    {"full_text":"${mpd_title 30}", "color" : "\#888888",
-     "separator" : false, "separator_block_width":6 },
-    {"full_text":"|", "color":"\#545454",
-     "separator":false, "separator_block_width":6},
-${endif}
-#{"full_text":"${exec mpc -f %artist% status | head -n1 | sed 's/\(\w\)\w*\( \|$\)/\1/g'}", "color" : "\#5c5dad",
-
 # Network
 ${if_existing /sys/class/net/eth0/operstate up}
     {"full_text":"eth0 up", "color":"\#dddddd",
@@ -82,20 +67,6 @@ ${if_existing /sys/class/net/eth0/operstate up}
     {"full_text":"|", "color":"\#545454",
      "separator":false, "separator_block_width":6},
 ${endif}
-${if_existing /sys/class/net/wlan0/operstate up}
-    {"full_text":"wlan0 up", "color":"\#ffffff",
-     "separator":false, "separator_block_width":6},
-    {"full_text":"|", "color":"\#545454",
-     "separator":false, "separator_block_width":6},
-${endif}
-
-# Battery
-{"full_text":"${exec cat /sys/class/power_supply/BAT0/status | cut -c1-3 | tr '/a-z/' '/A-Z/'}", "color":"\#aaaaaa",
- "separator":false, "separator_block_width":6 },
-{"full_text":"${battery_percent BAT0}%", "color":"\#aaaaaa",
- "separator":false, "separator_block_width":6 },
-{"full_text":"|", "color":"\#545454",
- "separator":false, "separator_block_width":6},
 
 # Time:
     {"full_text":"${time %m-%d}", "color":"\#bfbfbf",
