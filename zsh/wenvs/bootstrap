@@ -1,13 +1,15 @@
 #!/bin/zsh
 
 wenv_setup() {
-    WENV_DIR="/home/grish/scratch/bootstrap"
+    WENV_DIR="/home/grish/src/bootstrap"
     WENV_DEPS=()
-    WENV_PROJECT=''
+    WENV_PROJECT='bootstrap'
     WENV_BRANCH=''
     WENV_TASK=''
     WENV_GITDIR=""
 
-    wenv_init() {}
+    wenv_init() {
+        kak 0-root.sh 1-env.sh 2-user.sh
+    }
     wenv_shutdown() {}
 }
