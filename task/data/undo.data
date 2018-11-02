@@ -1,0 +1,14 @@
+time 1541162697
+new [description:"test new task data dir" entry:"1541162697" modified:"1541162697" project:"bootstrap" status:"pending" tags:"bootstrap" uuid:"9775470d-7f56-45d0-a79c-75b4ea51de96"]
+---
+time 1541162713
+old [description:"test new task data dir" entry:"1541162697" modified:"1541162697" project:"bootstrap" status:"pending" tags:"bootstrap" uuid:"9775470d-7f56-45d0-a79c-75b4ea51de96"]
+new [description:"test new task data dir" end:"1541162713" entry:"1541162697" modified:"1541162713" project:"bootstrap" status:"completed" tags:"bootstrap" uuid:"9775470d-7f56-45d0-a79c-75b4ea51de96"]
+---
+time 1541162775
+new [description:"test" entry:"1541162775" modified:"1541162775" project:"bootstrap" status:"pending" tags:"bootstrap" uuid:"746af439-e1db-4fa3-9b26-4761ba1a932f"]
+---
+time 1541162787
+old [description:"test" entry:"1541162775" modified:"1541162775" project:"bootstrap" status:"pending" tags:"bootstrap" uuid:"746af439-e1db-4fa3-9b26-4761ba1a932f"]
+new [description:"test" end:"1541162786" entry:"1541162775" modified:"1541162787" project:"bootstrap" status:"deleted" tags:"bootstrap" uuid:"746af439-e1db-4fa3-9b26-4761ba1a932f"]
+---

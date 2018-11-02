@@ -11,7 +11,7 @@
 # Use the command 'task show' to see all defaults and overrides
 
 # Files
-data.location=~/.task
+data.location=~/dotfiles/task/data
 
 # don't show 'TASKRC has been overriden' message
 verbose=blank,footnote,label,new-id,affected,edit,special,project,sync,unwait
