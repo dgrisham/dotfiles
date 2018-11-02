@@ -1,4 +1,0 @@
-{"description":"test new task data dir","entry":"20181102T124457Z","modified":"20181102T124457Z","project":"bootstrap","status":"pending","tags":["bootstrap"],"uuid":"9775470d-7f56-45d0-a79c-75b4ea51de96"}
-{"description":"test new task data dir","end":"20181102T124513Z","entry":"20181102T124457Z","modified":"20181102T124513Z","project":"bootstrap","status":"completed","tags":["bootstrap"],"uuid":"9775470d-7f56-45d0-a79c-75b4ea51de96"}
-{"description":"test","entry":"20181102T124615Z","modified":"20181102T124615Z","project":"bootstrap","status":"pending","tags":["bootstrap"],"uuid":"746af439-e1db-4fa3-9b26-4761ba1a932f"}
-{"description":"test","end":"20181102T124626Z","entry":"20181102T124615Z","modified":"20181102T124627Z","project":"bootstrap","status":"deleted","tags":["bootstrap"],"uuid":"746af439-e1db-4fa3-9b26-4761ba1a932f"}
