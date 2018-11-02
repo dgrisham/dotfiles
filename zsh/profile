@@ -20,6 +20,9 @@ done
 ## keybase command completion
 #source $SRC/keybase-completion/keybase
 
+# taskwarrior
+export TASKRC="$DOTFILES/task/taskrc"
+
 # Go path
 export GOPATH="$HOME/.go"
 # add GOPATH/bin to PATH
