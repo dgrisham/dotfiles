@@ -249,6 +249,13 @@ alias gca='git commit -a'
 alias gcam='git commit -am'
 alias gs='git status'
 alias gl="git log --pretty=format:'%C(auto)%h %ad %C(green)%s%Creset %C(auto)%d [%an]' --graph --date=format:'%Y-%m-%d %H:%M' --all"
+gb() {
+    git blame $@ | while read hash user date time tz lineno line; do
+        gecho "\n$hash $user $date $time $tz $lineno"
+        echo "$line"
+        becho "$(git log -1 --pretty=%s $hash)"
+    done
+}
 
 alias gco='git checkout'
 
