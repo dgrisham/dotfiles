@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 wenv_setup() {
-    WENV_DIR="/home/grish/scratch/bootstrap"
+    WENV_DIR="/home/grish/src/bootstrap"
     WENV_DEPS=()
     WENV_PROJECT=''
     WENV_BRANCH=''

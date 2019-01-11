@@ -113,10 +113,10 @@ hook global InsertCompletionHide .* %{
 # ================
 
 def tmux-new %{
-    on-key %{ %sh{
+    on-key %{ evaluate-commands %sh{
         case "$kak_key" in
-            \\) echo tmux-new-horizontal ;;
-            "<minus>") echo tmux-new-vertical ;;
+            \\) echo tmux-terminal-horizontal kak -c %val{session} ;;
+            "<minus>") echo tmux-terminal-vertical kak -c %val{session} ;;
         esac
     } }
 }
@@ -372,6 +372,7 @@ hook global BufSetOption filetype=(go|python|sh) %{
     set global lsp_hover_anchor true
 }
 eval %sh{kak-lsp --kakoune -s $kak_session}
+lsp-enable
 # nop %sh{ (kak-lsp -s $kak_session -vvv ) > /tmp/kak-lsp.log 2>&1 < /dev/null & }
 
 # lineindent
