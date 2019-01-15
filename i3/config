@@ -47,6 +47,9 @@ focus_follows_mouse no
 # start a terminal
 bindsym $mod+Return exec urxvt
 
+# lock
+bindsym --release $mod+z exec lock
+
 # start browser
 bindsym $mod+b exec google-chrome-stable
 #bindsym $mod+b exec firefox
