@@ -117,6 +117,7 @@ def tmux-new %{
         case "$kak_key" in
             \\) echo tmux-terminal-horizontal kak -c %val{session} ;;
             "<minus>") echo tmux-terminal-vertical kak -c %val{session} ;;
+            'c') echo tmux-terminal-window kak -c %val{session} ;;
         esac
     } }
 }
