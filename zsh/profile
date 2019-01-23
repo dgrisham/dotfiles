@@ -15,10 +15,6 @@ bashcompinit
 source $HOME/.ipfs/completion.bash
 ## WENV
 source $DOTFILES/zsh/completion/wenv.bash
-## aws-cli
-source aws_zsh_completer.sh
-## keybase command completion
-source $SRC/keybase-completion/keybase
 
 # Go path
 export GOPATH="$HOME/.go"
