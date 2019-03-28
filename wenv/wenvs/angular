@@ -1,0 +1,19 @@
+#!/bin/zsh
+
+wenv_def() {
+    WENV_DIR="/home/grish/scratch/webdev/angular-tour-of-heroes/src/app"
+    WENV_DEPS=()
+    WENV_PROJECT='webdev'
+    WENV_BRANCH='master'
+    startup_wenv() {
+        wenv_tmux_layout 'devloop' 'yarn start'
+        edit_project
+    }
+}
+
+edit_project() {
+    [[ ! $(pwd) = "$WENV_DIR" ]] && wenv c
+    kak app.{component,module}.ts hero{,.service}.ts\
+        {hero-detail,heroes,dashboard}.component.ts\
+        hero-search.{component.{ts,html},service.ts}
+}

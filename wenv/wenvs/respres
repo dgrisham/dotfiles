@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+wenv_def() {
+    WENV_DIR="/home/grish/work/research/meetings/presentations/cur"
+    WENV_DEPS=('md')
+    WENV_PROJECT=''
+    WENV_BRANCH='master'
+    startup_wenv() {
+        mendeleydesktop &
+        slides_dev 'presentation.md'
+    }
+    shutdown_wenv() { }
+}

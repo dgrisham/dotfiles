@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+wenv_def() {
+    WENV_DIR="/home/grish/scratch/ad-hoc-infra/terraform"
+    WENV_DEPS=()
+    WENV_PROJECT='ad-hoc-infra'
+    WENV_BRANCH='master'
+    WENV_TASK=''
+    WENV_GITDIR=""
+
+    bootstrap_wenv() {}
+    startup_wenv() {}
+    shutdown_wenv() {}
+}

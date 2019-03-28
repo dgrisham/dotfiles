@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+wenv_def() {
+    WENV_DIR="/home/grish/work/research/thesis/repo/proposal/doc"
+    WENV_GIT_DIR="/home/grish/work/research/thesis/repo"
+    WENV_DEPS=('md')
+    WENV_PROJECT='proposal'
+    WENV_TASK=73
+    WENV_BRANCH='master'
+    startup_wenv() {
+        doc_dev proposal.md -H header.tex --number-sections
+    }
+    shutdown_wenv() { }
+}

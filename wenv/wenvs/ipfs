@@ -1,0 +1,72 @@
+#!/bin/zsh
+
+wenv_def() {
+    WENV_DIR="$GOPATH/src/github.com/ipfs/go-ipfs"
+    WENV_DEPS=()
+    WENV_PROJECT=''
+    WENV_BRANCH=''
+    bootstrap_wenv() {
+        go get -u github.com/whyrusleeping/gx
+        go get -u github.com/whyrusleeping/gx-go
+        go get -u -d github.com/ipfs/go-ipfs
+        go get -u -d github.com/ipfs/go-bitswap
+        go get -u -d github.com/ipfs/go-ipfs-config
+
+        cd "$GOPATH/src/github.com/ipfs/go-bitswap"
+        git remote add personal git@github.com:dgrisham/go-bitswap
+        git fetch personal impl/strategy-prq
+        git checkout impl/strategy-prq
+
+        cd "$GOPATH/src/github.com/ipfs/go-ipfs-config"
+        git remote add personal git@github.com:dgrisham/go-bitswap
+        git fetch personal experimental/bitswap-strategy-config
+        git checkout experimental/bitswap-strategy-config
+
+        cd "$GOPATH/src/github.com/ipfs/go-ipfs"
+        git remote add personal git@github.com:dgrisham/go-ipfs
+        git fetch personal impl/bitswap/strategy-prq
+        git checkout impl/bitswap/strategy-prq
+        make install
+        gx-go lock-gen > gx-lock.json
+        gx lock-install
+
+        for repo in 'go-bitswap' 'go-ipfs-config'; do
+            unlink "vendor/github.com/ipfs/$repo"
+            ln -s "../../../../$repo" "vendor/github.com/ipfs/$repo"
+        done
+        # TODO: getting a make build error at this point, gotta debug
+    }
+    startup_wenv() {}
+}
+
+ipfs() {
+    case "$1" in
+        'public')      config='--config ~/.ipfs'
+                       shift
+                       ;;
+        'p'|'private') config='--config ~/.ipfs-private'
+                       shift
+                       ;;
+        *)             config=''
+                       ;;
+    esac
+    eval $GOPATH/bin/ipfs "$config" $@
+}
+
+c() {
+    case "$1" in
+        'bs'|'bitswap')
+            dir="$WENV_DIR/vendor/github.com/ipfs/go-bitswap"
+            ;;
+        'gx')
+            dir="$GOPATH/src/github.com/whyrusleeping/gx"
+            ;;
+        'gx-go')
+            dir="$GOPATH/src/github.com/whyrusleeping/gx-go"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+    cd "$dir"
+}

@@ -52,6 +52,8 @@ bindsym --release $mod+z exec lock
 
 # start browser
 bindsym $mod+b exec google-chrome-stable
+# start spotify
+bindsym $mod+p exec spotify
 #bindsym $mod+b exec firefox
 
 # start email client

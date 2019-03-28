@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+wenv_def() {
+    WENV_DIR="$SCRATCH/webdev"
+    WENV_DEPS=()
+    WENV_PROJECT='webdev'
+    WENV_BRANCH='master'
+    startup_wenv() { }
+}

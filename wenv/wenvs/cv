@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+wenv_def() {
+    typeset -Ag WENV_CONSTS
+    WENV_DIR="/home/grish/scratch/resume"
+    WENV_DEPS=('md')
+    WENV_NAME='cv'
+    WENV_TASK=''
+    WENV_BRANCH='dgrisham'
+    startup_wenv() {
+        pdf cv.pdf &
+        wenv_tmux_layout devloop -w file cv.md make
+        kak cv.md
+    }
+    shutdown_wenv() { }
+}

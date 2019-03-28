@@ -1,0 +1,13 @@
+#!/bin/zsh
+
+wenv_def() {
+    typeset -Ag WENV_CONSTS
+    WENV_DIR="/home/grish/work/research/thesis/repo/proposal/presentation"
+    WENV_DEPS=('md')
+    WENV_NAME='proposal-presentation'
+    WENV_BRANCH='master'
+    startup_wenv() {
+        slides_dev 'presentation.md'
+    }
+    shutdown_wenv() { }
+}

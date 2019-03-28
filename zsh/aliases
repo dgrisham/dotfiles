@@ -222,7 +222,7 @@ source_alias() {
             alias_file="$LOCAL_ALIAS"
             ;;
         *)
-            alias_file="$WENVS/${input_arg}"
+            alias_file="$DOTFILES/wenv/wenvs/${input_arg}"
             ;;
     esac
     if [[ -f "$alias_file" ]]; then
@@ -258,6 +258,11 @@ gb() {
 }
 
 alias gco='git checkout'
+
+# Don't forget
+# ------------
+
+# cuesplit && cd split && for f in *.flac; do ffmpeg -i $f -ab 320k -map_metadata 0 -id3v2_version 3 "${f%.*}.mp3"; done && mkdir mp3 && mv *.mp3 mp3
 
 # Task Warrior
 # ============

@@ -1,0 +1,22 @@
+#!/bin/zsh
+
+wenv_def() {
+    typeset -Ag WENV_CONSTS
+    WENV_DIR="/home/grish/scratch/toptal"
+    WENV_DEPS=('python')
+    WENV_NAME='toptal'
+    WENV_BRANCH='master'
+    WENV_TASK=''
+    startup_wenv() {
+        wenv_tmux_layout split-tasks 'start_venv pytest'
+    }
+    shutdown_wenv() { }
+}
+
+newtest() {
+    name="$1"
+    [[ -z "$name" ]] && return 1
+    cd $WENV_DIR >/dev/null
+    cp template.py "$name".py
+    kak "$name".py
+}
