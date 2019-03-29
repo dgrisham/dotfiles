@@ -1,0 +1,10 @@
+[Unit]
+Description=IPFS daemon -- Public network
+After=network.target
+
+[Service]
+ExecStart=/home/grish/.go/bin/ipfs daemon
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
