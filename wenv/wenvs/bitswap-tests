@@ -37,12 +37,14 @@ reinit() {
 declare -Ag wenv_dirs=(
         ['legacy']="deprecated"
         ['iptb']="$GOPATH/src/github.com/ipfs/iptb"
+        ['iptb-plugins']="$GOPATH/src/github.com/ipfs/iptb-plugins"
         ['cnet']="$GOPATH/src/github.com/whyrusleeping/go-ctrlnet"
         ['ipfs']="$GOPATH/src/github.com/ipfs/go-ipfs"
         ['bitswap']="$GOPATH/src/github.com/ipfs/go-bitswap"
         ['bs']='${wenv_dirs[bitswap]}'
 )
 declare -Ag wenv_files=(
+    ['app']="src/bitswap_tests/app.py"
     ['legacy']="${wenv_dirs[legacy]}/test.sh"
 )
 
