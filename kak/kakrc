@@ -42,10 +42,10 @@ hook global BufSetOption filetype=haskell %{
 }
 hook global InsertChar \t %{ exec -draft -itersel h@ }
 
-## soft tabs (excluding makefiles and Go)
-#hook global BufSetOption filetype=.*?(go|makefile) %{
-    #hook buffer InsertChar \t %{ exec -draft -itersel h@ }
-#}
+# soft tabs (excluding makefiles and Go)
+hook global BufSetOption filetype=.*?(go|makefile) %{
+    hook buffer InsertChar \t %{ exec -draft -itersel h@ }
+}
 
 # hook global InsertKey <backspace> %{ try %{
   # exec -draft hGh<a-k>\A\h+\Z<ret>gihyp<lt>
@@ -112,25 +112,33 @@ hook global InsertCompletionHide .* %{
 # Tmux integration
 # ================
 
-def tmux-new %{
-    on-key %{ evaluate-commands %sh{
-        case "$kak_key" in
-            \\) echo tmux-terminal-horizontal kak -c %val{session} ;;
-            "<minus>") echo tmux-terminal-vertical kak -c %val{session} ;;
-        esac
-    } }
-}
-map global user t :tmux-new<ret> -docstring 'new tmux pane. \ or -'
+declare-user-mode tmux
+map global tmux '\' ':tmux-terminal-horizontal kak -c %val{session}<ret>' \
+    -docstring 'horizontal split'
+map global tmux '<minus>' ':tmux-terminal-vertical kak -c %val{session}<ret>' \
+    -docstring 'vertical split'
+map global tmux c ':tmux-terminal-window kak -c %val{session}<ret>' \
+    -docstring 'new window'
+map global tmux y ':nop %sh{tmux set-buffer "${kak_selection}"}<ret>' \
+    -docstring 'yank primary selection to tmux buffer'
+map global tmux p '!tmux show-buffer<ret>' \
+    -docstring 'paste tmux buffer contents'
+map global tmux r ':tmux-repl<ret>' -docstring 'prefix for tmux repl commands'
+def -hidden tmux %{ enter-user-mode tmux }
 
-def repl-send %{
-    on-key %{ evaluate-commands %sh{
-        case "$kak_key" in
-            's') echo 'send-text' ;;
-            'l') echo 'exec hxH:send-text<ret>;exec ";"<ret>' ;;
-        esac
-    } }
-}
-map global user r :repl-send<ret> -docstring 'send to repl. s: send, r: run'
+declare-user-mode tmux-repl
+map global tmux-repl '\' ':tmux-repl-horizontal<ret>' \
+    -docstring 'horizontal split'
+map global tmux-repl '<minus>' ':tmux-repl-vertical<ret>' \
+    -docstring 'vertical split'
+map global tmux-repl c ':tmux-repl-window<ret>' \
+    -docstring 'new window'
+map global tmux-repl s ':send-text<ret>' \
+    -docstring 'send selection to tmux repl'
+map global tmux-repl l 'hxH:send-text<ret>;exec ";"<ret>' \
+   -docstring 'send current line to tmux repl'
+def -hidden tmux-repl %{ enter-user-mode tmux-repl }
+map global user t :tmux<ret> -docstring 'prefix for tmux subcommands'
 
 # Git
 # ===
@@ -147,16 +155,11 @@ map global user y 'y<a-|>xclip -i<ret>; :echo -color Information "copied
 map global user p '!xclip -o <ret>' -docstring 'paste from X clipboard'
 
 # commenting
-def comment %{
-    on-key %{ evaluate-commands %sh{
-        case "$kak_key" in
-            'c') echo comment-line ;;
-            'b') echo 'exec <a-i>pH:comment-block<ret>' ;;
-            'g') echo 'set buffer filetype go;comment-line;set buffer filetype markdown' ;;
-        esac
-    } }
-}
-map global user c :comment<ret> -docstring 'comment. c: line, b: block'
+declare-user-mode commenting
+map global commenting c ':comment-line<ret>' -docstring 'line comment'
+map global commenting b '<a-i>pH:comment-block<ret>' -docstring 'block comment'
+def comment %{ enter-user-mode commenting }
+map global user c :comment<ret>
 
 # Python
 # =======
@@ -243,30 +246,16 @@ hook global BufSetOption filetype=(restructuredtext) %{
     }
     map global user h :header<ret> -docstring 'make header'
 
-    def -hidden role %{
-        info -title Roles %{
-d: default role
-i: literal
-m: math
-l: raw-latex
-t: todo
-b: blank todo
-c: cite todo
-r: blank role
-        }
-        on-key %{ evaluate-commands %sh{
-            case $kak_key in
-                d) echo 'exec -with-hooks i``<esc>hi' ;;
-                i) echo 'exec -with-hooks i````<esc>hhi' ;;
-                m) echo 'exec -with-hooks i:math:``<esc>hi' ;;
-                l) echo 'exec -with-hooks i:raw-latex:``<esc>hi' ;;
-                t) echo 'exec -with-hooks i:todo:``<esc>hi' ;;
-                b) echo 'exec -with-hooks i:hl-cyan:`TODO`<esc>' ;;
-                c) echo 'exec -with-hooks i:todo:`cite`<esc>' ;;
-                r) echo 'exec -with-hooks i::``<esc>hhhi' ;;
-            esac
-        } }
-    }
+    declare-user-mode roles
+    map global roles d 'i``<esc>hi' -docstring 'default'
+    map global roles i 'i````<esc>hhi' -docstring 'literal'
+    map global roles m 'i:math:``<esc>hi' -docstring 'math'
+    map global roles l 'i:raw-latex:``<esc>hi' -docstring 'raw latex'
+    map global roles t 'i:todo:``<esc>hi' -docstring 'todo'
+    map global roles b 'i:hl-cyan:`TODO`<esc>' -docstring 'cyan todo'
+    map global roles c 'i:todo:`cite`<esc>' -docstring 'todo cite'
+    map global roles r 'i::``<esc>hhhi' -docstring 'empty role'
+    def -hidden role %{ enter-user-mode roles }
     map global user r :role<ret> -docstring 'insert role'
 }
 
@@ -324,7 +313,7 @@ def delete-surround %!on-key %@exec %sh&
   open=${open/ /<space>}
   close=${close/ /<space>}
 
-  echo "<a-a>${kak_key}s${open}|${close}<ret>d<space>"
+  echo "\"eZ<a-a>${kak_key}s${open}|${close}<ret>d<space>\"ez"
 &@!
 
 def surround %{
@@ -361,17 +350,16 @@ hook global BufSetOption filetype=(python) %{
     set-option global lsp_server_configuration pyls.configurationSources=['flake8']
 }
 hook global WinSetOption filetype=(go|python) %{
-    hook -group lsp window InsertEnd .* lsp-formatting-sync
     hook -group lsp window BufWritePre .* lsp-formatting-sync
     map global user g :lsp-formatting<ret> -docstring 'lsp format'
 }
-hook global BufSetOption filetype=(go|python|sh) %{
+hook global BufSetOption filetype=(go|python|sh|javascript) %{
     map global user i :lsp-hover<ret> -docstring 'hover lsp message for current line'
     map global goto n "<esc>:lsp-find-error --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to next lsp error'
     map global goto p "<esc>:lsp-find-error --previous --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to previous lsp error'
-    set global lsp_hover_anchor true
 }
 eval %sh{kak-lsp --kakoune -s $kak_session}
+set global lsp_hover_anchor true
 lsp-enable
 # nop %sh{ (kak-lsp -s $kak_session -vvv ) > /tmp/kak-lsp.log 2>&1 < /dev/null & }
 
