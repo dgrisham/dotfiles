@@ -222,7 +222,7 @@ source_alias() {
             alias_file="$LOCAL_ALIAS"
             ;;
         *)
-            alias_file="$WENVS/${input_arg}"
+            alias_file="$DOTFILES/wenv/wenvs/${input_arg}"
             ;;
     esac
     if [[ -f "$alias_file" ]]; then
