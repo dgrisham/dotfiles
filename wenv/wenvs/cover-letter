@@ -7,9 +7,9 @@ wenv_def() {
     WENV_TASK=''
 
     startup_wenv() {
-        wenv_tmux_layout devloop -w file main.tex -- xelatex main.tex
-        pdf main.pdf&
-        $EDITOR main.tex
+        wenv_tmux_layout devloop -w file cover_letter.tex -- make pdf tidy
+        pdf cover_letter.pdf&
+        $EDITOR cover_letter.tex
     }
     shutdown_wenv() {}
     bootstrap_wenv() {}

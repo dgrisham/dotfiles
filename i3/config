@@ -50,10 +50,12 @@ bindsym $mod+Return exec urxvt
 # lock
 bindsym --release $mod+z exec lock
 
-# start browser
+# browser
 bindsym $mod+b exec google-chrome-stable
-# start spotify
+# spotify
 bindsym $mod+p exec spotify
+# discord
+bindsym $mod+i exec discord
 #bindsym $mod+b exec firefox
 
 # start email client

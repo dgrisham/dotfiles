@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 wenv_def() {
-    WENV_DIR="$SCRATCH/rust/04-ownership/src"
+    WENV_DIR="$SCRATCH/rust"
     #WENV_DIR="$WENV_DIR/variables"
     unset WENV_DEPS
     WENV_PROJECT="$WENV"
