@@ -316,17 +316,11 @@ def delete-surround %!on-key %@exec %sh&
   echo "\"eZ<a-a>${kak_key}s${open}|${close}<ret>d<space>\"ez"
 &@!
 
-def surround %{
-    on-key %{ %sh{
-        case "$kak_key" in
-            a) echo add-surround
-               ;;
-            d) echo delete-surround
-               ;;
-        esac
-    } }
-}
-map global user e ":surround<ret>" -docstring 'surround. a: add, d: delete.'
+declare-user-mode enclose
+map global enclose a :add-surround<ret> -docstring 'add enclosing pair'
+map global enclose d :delete-surround<ret> -docstring 'delete enclosing pair'
+def -hidden enclose %{ enter-user-mode enclose }
+map global user e :enclose<ret> -docstring 'surround pairs'
 
 # Plugins
 # =======
@@ -343,17 +337,24 @@ alias global bl buffer-last
 alias global bo buffer-only
 alias global bo! buffer-only-force
 
+# auto pairs
+# ----------
+
+# hook global WinCreate .* %{
+#     auto-pairs-enable
+# }
+
 # LSP
 # ---
 
 hook global BufSetOption filetype=(python) %{
     set-option global lsp_server_configuration pyls.configurationSources=['flake8']
 }
-hook global WinSetOption filetype=(go|python) %{
+hook global WinSetOption filetype=(go|python|rust) %{
     hook -group lsp window BufWritePre .* lsp-formatting-sync
     map global user g :lsp-formatting<ret> -docstring 'lsp format'
 }
-hook global BufSetOption filetype=(go|python|sh|javascript) %{
+hook global BufSetOption filetype=(go|python|sh|javascript|rust) %{
     map global user i :lsp-hover<ret> -docstring 'hover lsp message for current line'
     map global goto n "<esc>:lsp-find-error --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to next lsp error'
     map global goto p "<esc>:lsp-find-error --previous --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to previous lsp error'
@@ -366,5 +367,5 @@ lsp-enable
 # lineindent
 # ----------
 
-map global user l ":lineindent -1<ret>" -docstring "indent selection to preceding line's level"
+map global user l ':lineindent -1<ret>' -docstring "indent selection to preceding line's level"
 alias global li lineindent
