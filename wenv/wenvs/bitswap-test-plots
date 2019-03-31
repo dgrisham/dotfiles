@@ -1,19 +1,19 @@
 #!/bin/zsh
 
-wenv_setup() {
+wenv_def() {
     WENV_DIR="/home/grish/src/bitswap-tests/plot/"
     WENV_DEPS=('aws' 'iptb')
     WENV_NAME='bitswap-test-plots'
     WENV_BRANCH='plot-rewrite'
     # WENV_PROJECT='plot-rewrite'
-    wenv_init() {
+    startup_wenv() {
         wenv_tmux_layout tasks
         tmux rename-window 'src'
         wenv_tmux_split -n 'run' c
         tmux select-window -t1
         $EDITOR src/bitswap_test_plots/plot.py
     }
-    wenv_shutdown() {
+    shutdown_wenv() {
         # iptb kill
         # sudo systemctl stop docker
     }

@@ -7,11 +7,11 @@ wenv_def() {
     WENV_BRANCH='personal'
     WENV_TASK=86
     startup_wenv() {
-        sudo systemctl start docker
+        # sudo systemctl start docker
     }
     shutdown_wenv() {
-        iptb stop
-        sudo systemctl stop docker
+        # iptb kill
+        # sudo systemctl stop docker
     }
 }
 

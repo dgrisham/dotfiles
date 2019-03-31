@@ -1,12 +1,12 @@
 #!/bin/zsh
 
-wenv_setup() {
-    WENV_DIR="$SCRATCH/rust/04-ownership/src"
+wenv_def() {
+    WENV_DIR="$SCRATCH/rust"
     #WENV_DIR="$WENV_DIR/variables"
     unset WENV_DEPS
     WENV_PROJECT="$WENV"
 
-    wenv_init() {
+    startup_wenv() {
         wenv_tmux_layout 'devloop' 'make run'
         wenv_tmux_split h
         tmux send-keys 'w3m "file:///home/grish/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/doc/rust/html/book/index.html"' 'Enter'

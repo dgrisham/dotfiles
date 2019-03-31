@@ -1,12 +1,12 @@
 #!/bin/zsh
 
-wenv_setup() {
+wenv_def() {
     WENV_DIR="$HOME/scratch/ipfs/research-bitswap/strategy-impl"
     WENV_DEPS=()
     WENV_PROJECT='round-robin-prq'
     WENV_BRANCH='docs/strategy_impl'
     unset WENV_TASK
-    wenv_init() {
+    startup_wenv() {
         # wenv_tmux_layout 'dev-tasks' './tangle'
 
         # # open source in ipfs repo
@@ -20,7 +20,7 @@ wenv_setup() {
 
         edit_project
     }
-    wenv_shutdown() { }
+    shutdown_wenv() { }
 }
 
 edit_project() {

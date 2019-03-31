@@ -1,13 +1,13 @@
 #!/bin/zsh
 
-wenv_setup() {
+wenv_def() {
     WENV_DIR="$WORK/stanford-cs240h"
     WENV_DIR="$WENV_DIR/slides/02-concurrency"
 
     unset WENV_DEPS
     WENV_PROJECT='stanford-240h'
 
-    wenv_init() {
+    startup_wenv() {
         if [[ -n "$TMUX" ]]; then
             tmux send-keys 'kak presentation.md' 'Enter' '570g' 'Enter'
             wenv_tmux_split h

@@ -1,14 +1,14 @@
 #!/bin/zsh
 
-wenv_setup() {
+wenv_def() {
     typeset -Ag WENV_CONSTS
     WENV_DIR="/home/grish/personal/jobs/kleros/prescreen"
     WENV_DEPS=('md')
     WENV_NAME='kleros'
     WENV_BRANCH='master'
-    wenv_init() {
+    startup_wenv() {
         pdf ./questions.pdf &
         doc_dev 'write_up.md'
     }
-    wenv_shutdown() { }
+    shutdown_wenv() { }
 }

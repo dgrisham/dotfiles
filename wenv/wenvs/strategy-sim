@@ -1,20 +1,20 @@
 #!/bin/zsh
 
-wenv_setup() {
+wenv_def() {
     WENV_DIR="$SRC/strategy-sim"
     WENV_DEPS=('python')
     WENV_PROJECT='strategy_sim'
     WENV_BRANCH='feat/incremental-exchanges'
     unset WENV_TASK
-    wenv_init() {
+    startup_wenv() {
         wenv_tmux_layout tasks
         tmux rename-window 'src'
         wenv_tmux_split -n 'run' c
         tmux select-window -t1
         $EDITOR src/strategy_sim/sim.py
     }
-    wenv_shutdown() {}
-    wenv_bootstrap() {
+    shutdown_wenv() {}
+    bootstrap_wenv() {
         git clone https://github.com/dgrisham/strategy-sim "$WENV_DIR"
     }
 }

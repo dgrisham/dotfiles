@@ -1,6 +1,6 @@
 #!/bin/zsh
 
-wenv_setup() {
+wenv_def() {
     WENV_DIR="$SRC/bitswap-experiments-ctl"
     WENV_DEPS=('bitswap-tests')
     WENV_PROJECT='bitswap-experiments-ctl'
@@ -8,13 +8,13 @@ wenv_setup() {
     WENV_TASK=''
     WENV_GITDIR=""
 
-    wenv_init() {
+    startup_wenv() {
         tmux rename-window 'src'
         wenv_tmux_split -n 'run' c
         tmux select-window -t1
         $EDITOR run.sh
     }
-    wenv_shutdown() {}
+    shutdown_wenv() {}
 }
 
 edit() {

@@ -1,13 +1,13 @@
 #!/bin/zsh
 
-wenv_setup() {
+wenv_def() {
     WENV_DIR=""
     WENV_DEPS=('x')
     WENV_PROJECT=''
     WENV_BRANCH=''
 
-    wenv_init() { }
-    wenv_shutdown() {
+    startup_wenv() { }
+    shutdown_wenv() {
         aws stop
     }
 }

@@ -1,11 +1,11 @@
 #!/bin/zsh
 
-wenv_setup() {
+wenv_def() {
     export WENV_DIR="$WORK/research/resources/papers/"
     export WENV_PROJECT='bitswap-research'
     export WENV_TASK=72
 
-    wenv_init() {
+    startup_wenv() {
         if [[ -n "$TMUX" ]]; then
             wenv_tmux_layout 'dev' 'wenv t'
             tmux split-window -h

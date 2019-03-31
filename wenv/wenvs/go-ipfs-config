@@ -1,16 +1,16 @@
 #!/bin/zsh
 
-wenv_setup() {
+wenv_def() {
     typeset -Ag WENV_CONSTS
     WENV_DIR="$GOPATH/src/github.com/ipfs/go-ipfs-config"
     WENV_DEPS=()
     WENV_NAME='go-ipfs-config'
     WENV_BRANCH='experimental/bitswap-strategy-config'
-    wenv_init() {
+    startup_wenv() {
         wenv_tmux_layout 'tasks'
         # edit_project
     }
-    wenv_shutdown() { }
+    shutdown_wenv() { }
 }
 
 edit_project() {

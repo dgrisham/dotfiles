@@ -1,15 +1,15 @@
 #!/bin/zsh
 
-wenv_setup() {
+wenv_def() {
     WENV_DIR="/home/grish/scratch/resume"
     WENV_DEPS=('md')
     WENV_PROJECT='resume'
     WENV_TASK=''
     WENV_BRANCH='dgrisham'
-    wenv_init() {
+    startup_wenv() {
         pdf resume.pdf &
-        wenv_tmux_layout devloop -w file resume.md make
+        wenv_tmux_layout devloop -w file resume.md 'make pdf'
         kak resume.md
     }
-    wenv_shutdown() { }
+    shutdown_wenv() { }
 }

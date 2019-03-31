@@ -1,13 +1,12 @@
 #!/bin/zsh
 
-wenv_setup() {
+wenv_def() {
     WENV_DIR="/home/grish/work/research/thesis/repo/thesis/src"
-    # WENV_GIT_DIR="/home/grish/work/research/thesis/repo"
     WENV_DEPS=()
     WENV_NAME='thesis'
     WENV_TASK=''
     WENV_BRANCH='master'
-    wenv_init() {
+    startup_wenv() {
         make
         pdf thesis.pdf &
         wenv_tmux_layout 'devloop' -w files bin/mkbase.sh template.tex sections/* figures/* -- make
@@ -15,7 +14,7 @@ wenv_setup() {
         tmux select-window -t1
         edit -r doc
     }
-    wenv_shutdown() { }
+    shutdown_wenv() { }
 }
 
 edit() {
