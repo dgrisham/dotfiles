@@ -1,3 +1,4 @@
+snippet_support = false
 verbosity = 2
 
 [server]
@@ -68,6 +69,7 @@ args = ["--lsp"]
 filetypes = ["go"]
 roots = ["Gopkg.toml", "go.mod", ".git", ".hg"]
 command = "bingo"
+args = ["--format-style", "gofmt"]
 
 [language.bash]
 filetypes = ["sh"]
