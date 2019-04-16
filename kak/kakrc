@@ -1,6 +1,6 @@
 ## Hooks
 
-# case-insensitive search
+# (case-insensitive) search
 map global user / '/(?i)' -docstring 'case-insensitive search'
 map global user s 's(?i)' -docstring 'case-insensitive select'
 # map global user S 'S(?i)'
@@ -60,7 +60,7 @@ hook global InsertChar ⌫ %{ try %{
     }
 } }
 
-hook global BufCreate .*[.](ts|tsx|html) %{
+hook global BufCreate .*[.](js|jsx|ts|tsx|html) %{
     set buffer tabstop 2
     set buffer indentwidth 2
 }
@@ -168,13 +168,12 @@ hook global BufSetOption filetype=python %!
     map global user d 'iprint(f": {}")<esc>h<a-a>bs(?=[:}])<ret>i' -docstring "debug print statement"
 !
 
-# Typescript
-# ==========
+# Python
+# =======
 
-# html tags
-hook global BufSetOption filetype=typescript %{
-    map global user h 'i<lt><gt><lt>/<gt><esc>hh/<gt><ret>HHHHs<lt>/?<ret>\'a'
-}
+hook global BufSetOption filetype=go %!
+    map global user d 'ifmt.Printf(": %v\n", )<esc>h<a-a>bs(?=[:)])<ret>i' -docstring "debug print statement"
+!
 
 # Markdown manipulation
 # =====================
@@ -259,71 +258,75 @@ hook global BufSetOption filetype=(restructuredtext) %{
     map global user r :role<ret> -docstring 'insert role'
 }
 
-def add-surround %!on-key %@exec %sh&
-  case "$kak_key" in
-      "<lt>") key="<" ;;
-      "<gt>") key=">" ;;
-      "<space>") key=" " ;;
-      \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
-      *) key="$kak_key" ;;
-  esac
+# def add-surround %!on-key %@exec %sh&
+#   case "$kak_key" in
+#       "<lt>") key="<" ;;
+#       "<gt>") key=">" ;;
+#       "<space>") key=" " ;;
+#       \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
+#       *) key="$kak_key" ;;
+#   esac
 
-  open="$key"
-  close="$key"
-  case "$key" in
-      "("|")") open="("; close=")" ;;
-      "["|"]") open="["; close="]" ;;
-      "{"|"}") open="{"; close="}" ;;
-      "<"|">") open="<"; close=">" ;;
-  esac
+#   open="$key"
+#   close="$key"
+#   case "$key" in
+#       "("|")") open="("; close=")" ;;
+#       "["|"]") open="["; close="]" ;;
+#       "{"|"}") open="{"; close="}" ;;
+#       "<"|">") open="<"; close=">" ;;
+#   esac
 
-  epilogue=${close//?/H}
+#   epilogue=${close//?/H}
 
-  open=${open/</<lt>}
-  close=${close/>/<gt>}
+#   open=${open/</<lt>}
+#   close=${close/>/<gt>}
 
-  open=${open/ /<space>}
-  close=${close/ /<space>}
+#   open=${open/ /<space>}
+#   close=${close/ /<space>}
 
-  echo "i$open<esc>a$close<esc>$epilogue"
-&@!
+#   echo "i$open<esc>a$close<esc>$epilogue"
+# &@!
 
-def delete-surround %!on-key %@exec %sh&
-  case "$kak_key" in
-      "<lt>") key="<" ;;
-      "<gt>") key=">" ;;
-      "<space>") key=" " ;;
-      \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
-      "*"|"."|"?"|"\\") key="\\$kak_key" ;;
-      *) key="$kak_key" ;;
-  esac
+# def delete-surround %!on-key %@exec %sh&
+#   case "$kak_key" in
+#       "<lt>") key="<" ;;
+#       "<gt>") key=">" ;;
+#       "<space>") key=" " ;;
+#       \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
+#       "*"|"."|"?"|"\\") key="\\$kak_key" ;;
+#       *) key="$kak_key" ;;
+#   esac
 
-  open="$key"
-  close="$key"
-  case "$key" in
-      "("|")") open="\("; close="\)" ;;
-      "["|"]") open="\["; close="\]" ;;
-      "{"|"}") open="{"; close="}"   ;;
-      "<"|">") open="<"; close=">"   ;;
-  esac
+#   open="$key"
+#   close="$key"
+#   case "$key" in
+#       "("|")") open="\("; close="\)" ;;
+#       "["|"]") open="\["; close="\]" ;;
+#       "{"|"}") open="{"; close="}"   ;;
+#       "<"|">") open="<"; close=">"   ;;
+#   esac
 
-  open=${open/</<lt>}
-  close=${close/>/<gt>}
+#   open=${open/</<lt>}
+#   close=${close/>/<gt>}
 
-  open=${open/ /<space>}
-  close=${close/ /<space>}
+#   open=${open/ /<space>}
+#   close=${close/ /<space>}
 
-  echo "\"eZ<a-a>${kak_key}s${open}|${close}<ret>d<space>\"ez
-&@!
-
-declare-user-mode enclose
-map global enclose a :add-surround<ret> -docstring 'add enclosing pair'
-map global enclose d :delete-surround<ret> -docstring 'delete enclosing pair'
-def -hidden enclose %{ enter-user-mode enclose }
-map global user e :enclose<ret> -docstring 'surround pairs'
+#   echo "\"eZ<a-a>${kak_key}s${open}|${close}<ret>d<space>\"ez
+# &@!
 
 # Plugins
 # =======
+
+# Surround
+# --------
+
+declare-user-mode surround
+map global surround a ':surround<ret>' -docstring 'add enclosing pair'
+map global surround d ':delete-surround<ret>' -docstring 'change enclosing pair'
+map global surround c ':change-surround<ret>' -docstring 'delete enclosing pair'
+map global surround t ':select-surrounding-tag<ret>' -docstring 'select surround tag'
+map global user e ':enter-user-mode surround<ret>' -docstring 'surround'
 
 # Buffers
 # -------

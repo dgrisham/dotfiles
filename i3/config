@@ -53,13 +53,13 @@ bindsym --release $mod+z exec lock
 # browser
 bindsym $mod+b exec google-chrome-stable
 # spotify
-bindsym $mod+p exec spotify
+bindsym $mod+m exec spotify
 # discord
-bindsym $mod+i exec discord
+bindsym $mod+c exec discord
 #bindsym $mod+b exec firefox
 
 # start email client
-bindsym $mod+m exec mutt
+# bindsym $mod+m exec mutt
 
 # tabless browsing
 # for_window [class="Uzbl-core"] focus child, layout stacking, focus

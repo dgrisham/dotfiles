@@ -17,6 +17,9 @@ filetypes = ["javascript"]
 roots = ["package.json"]
 command = "flow"
 args = ["lsp"]
+# command = "javascript-typescript-stdio"
+# command = "flow-language-server"
+# args = ["--stdio"]
 
 [language.json]
 filetypes = ["json"]
@@ -69,7 +72,6 @@ args = ["--lsp"]
 filetypes = ["go"]
 roots = ["Gopkg.toml", "go.mod", ".git", ".hg"]
 command = "bingo"
-args = ["--format-style", "goimports"]
 
 [language.bash]
 filetypes = ["sh"]
