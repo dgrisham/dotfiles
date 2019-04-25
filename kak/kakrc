@@ -165,14 +165,21 @@ map global user c :comment<ret>
 # =======
 
 hook global BufSetOption filetype=python %!
-    map global user d 'iprint(f": {}")<esc>h<a-a>bs(?=[:}])<ret>i' -docstring "debug print statement"
+    map global user d 'iprint(f": {}")<esc>h<a-a>bs(?=[:}])<ret>:lineindent -1<ret>i' -docstring "debug print statement"
 !
 
-# Python
-# =======
+# Go
+# ==
 
 hook global BufSetOption filetype=go %!
-    map global user d 'ifmt.Printf(": %v\n", )<esc>h<a-a>bs(?=[:)])<ret>i' -docstring "debug print statement"
+    map global user d 'ofmt.Printf(": %v\n", )<esc>h<a-a>bs(?=[:)])<ret>:lineindent -1<ret>i' -docstring "debug print statement"
+!
+
+# Javascript
+# ==========
+
+hook global BufSetOption filetype=javascript %!
+    map global user d 'oconsole.log(":", );<esc>hh<a-a>bs(?=[:)])<ret>:lineindent -1<ret>i' -docstring "debug print statement"
 !
 
 # Markdown manipulation
@@ -323,8 +330,8 @@ hook global BufSetOption filetype=(restructuredtext) %{
 
 declare-user-mode surround
 map global surround a ':surround<ret>' -docstring 'add enclosing pair'
-map global surround d ':delete-surround<ret>' -docstring 'change enclosing pair'
-map global surround c ':change-surround<ret>' -docstring 'delete enclosing pair'
+map global surround d ':delete-surround<ret>' -docstring 'delete enclosing pair'
+map global surround c ':change-surround<ret>' -docstring 'change enclosing pair'
 map global surround t ':select-surrounding-tag<ret>' -docstring 'select surround tag'
 map global user e ':enter-user-mode surround<ret>' -docstring 'surround'
 
@@ -351,11 +358,16 @@ alias global bo! buffer-only-force
 # Formatting and LSP
 # ------------------
 
+hook global WinSetOption filetype=go %{
+    hook buffer -group format BufWritePost .* %{ evaluate-commands %sh{ goimports -e -w "$kak_buffile" }; edit! }
+    map global user g :go-format<ret> -docstring 'format'
+}
+
 hook global WinSetOption filetype=rust %{
     set-option global lsp_server_configuration rust.clippy_preference="on"
 }
 
-hook global WinSetOption filetype=(python|rust|go) %{
+hook global WinSetOption filetype=(python|rust) %{
     hook -group lsp window BufWritePre .* lsp-formatting-sync
     map global user g :lsp-formatting<ret> -docstring 'lsp format'
 }
@@ -368,6 +380,13 @@ hook global BufSetOption filetype=(go|python|sh|javascript|rust) %{
     map global user i :lsp-hover<ret> -docstring 'hover lsp message for current line'
     map global goto n "<esc>:lsp-find-error --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to next lsp error'
     map global goto p "<esc>:lsp-find-error --previous --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to previous lsp error'
+
+    # declare-user-mode lsp
+    declare-user-mode lsp-rename
+    map global lsp-rename r ':lsp-rename-prompt<ret>' -docstring 'prompt'
+    map global lsp-rename c ':lsp-rename ' -docstring 'command'
+    map global lsp r ':enter-user-mode lsp-rename<ret>' -docstring 'lsp-rename'
+    map global user l ':enter-user-mode lsp<ret>' -docstring 'lsp'
 }
 eval %sh{kak-lsp --kakoune -s $kak_session}
 set global lsp_hover_anchor true
@@ -377,5 +396,5 @@ lsp-enable
 # lineindent
 # ----------
 
-map global user l ':lineindent -1<ret>' -docstring "indent selection to preceding line's level"
-alias global li lineindent
+# map global user i ':lineindent -1<ret>' -docstring "indent selection to preceding line's level"
+# alias global li lineindent

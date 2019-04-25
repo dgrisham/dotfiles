@@ -71,7 +71,7 @@ args = ["--lsp"]
 [language.go]
 filetypes = ["go"]
 roots = ["Gopkg.toml", "go.mod", ".git", ".hg"]
-command = "bingo"
+command = "gopls"
 
 [language.bash]
 filetypes = ["sh"]

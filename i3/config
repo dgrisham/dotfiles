@@ -56,7 +56,8 @@ bindsym $mod+b exec google-chrome-stable
 bindsym $mod+m exec spotify
 # discord
 bindsym $mod+c exec discord
-#bindsym $mod+b exec firefox
+# virtualbox
+bindsym $mod+v exec virtualbox
 
 # start email client
 # bindsym $mod+m exec mutt
