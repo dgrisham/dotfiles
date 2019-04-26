@@ -12,7 +12,7 @@ export TEXMFHOME="$DOTFILES/texmf"
 autoload bashcompinit
 bashcompinit
 ## IPFS
-source $HOME/.ipfs/completion.bash
+source $DOTFILES/zsh/completion/ipfs.bash
 ## WENV
 source $DOTFILES/zsh/completion/wenv.bash
 ## aws-cli
@@ -36,5 +36,3 @@ export PASSWORD_STORE_CLIP_TIME=15
 
 # nvm
 export NVM_DIR="$HOME/dotfiles/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

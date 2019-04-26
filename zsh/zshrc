@@ -8,6 +8,10 @@ fi
 # start mdpas (enabling via systemd not working)
 systemctl --user start mpdas
 
+# nvm (has to go before profile source or completions break for some reason)
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
 zsh_dir="$HOME/dotfiles/zsh"
 env_files=('profile' 'aliases')
 for env_file in $env_files; do
