@@ -325,35 +325,50 @@ hook global BufSetOption filetype=(restructuredtext) %{
 # Plugins
 # =======
 
-# Surround
-# --------
+source "%val{config}/plugins/plug.kak/rc/plug.kak"
+plug "andreyorst/plug.kak" noload
+plug "occivink/kakoune-find"
+plug "Delapouite/kakoune-palette"
 
-declare-user-mode surround
-map global surround a ':surround<ret>' -docstring 'add enclosing pair'
-map global surround d ':delete-surround<ret>' -docstring 'delete enclosing pair'
-map global surround c ':change-surround<ret>' -docstring 'change enclosing pair'
-map global surround t ':select-surrounding-tag<ret>' -docstring 'select surround tag'
-map global user e ':enter-user-mode surround<ret>' -docstring 'surround'
+plug "andreyorst/fzf.kak" config %{
+    set-option global fzf_implementation 'sk'
+}
 
-# Buffers
-# -------
+plug "alexherbo2/auto-pairs.kak" config %{
+    # NOTE: indentation issue, check back on this later
+    # hook global WinCreate .* %{
+    #     auto-pairs-enable
+    # }
+}
 
-hook global WinDisplay .* info-buffers
-map global user b ':enter-buffers-mode<ret>' -docstring 'buffers mode'
-map global user B ':enter-user-mode -lock buffers<ret>' -docstring 'buffers mode (lock)'
-alias global bd delete-buffer
-alias global bf buffer-first
-alias global bl buffer-last
-alias global bo buffer-only
-alias global bo! buffer-only-force
+plug "lenormf/kakoune-extra" load %{
+    comnotes.kak
+    grepmenu.kak
+    lineindent.kak
+} config %{
+    # map global user i ':lineindent -1<ret>' -docstring "indent selection to preceding line's level"
+    # alias global li lineindent
+}
 
-# auto pairs
-# ----------
+plug "h-youhei/kakoune-surround" config %{
+    declare-user-mode surround
+    map global surround a ':surround<ret>' -docstring 'add enclosing pair'
+    map global surround d ':delete-surround<ret>' -docstring 'delete enclosing pair'
+    map global surround c ':change-surround<ret>' -docstring 'change enclosing pair'
+    map global surround t ':select-surrounding-tag<ret>' -docstring 'select surround tag'
+    map global user e ':enter-user-mode surround<ret>' -docstring 'surround'
+}
 
-# NOTE: indentation errors, check back on this later
-# hook global WinCreate .* %{
-#     auto-pairs-enable
-# }
+plug "Delapouite/kakoune-buffers" config %{
+    hook global WinDisplay .* info-buffers
+    map global user b ':enter-buffers-mode<ret>' -docstring 'buffers mode'
+    map global user B ':enter-user-mode -lock buffers<ret>' -docstring 'buffers mode (lock)'
+    alias global bd delete-buffer
+    alias global bf buffer-first
+    alias global bl buffer-last
+    alias global bo buffer-only
+    alias global bo! buffer-only-force
+}
 
 # Formatting and LSP
 # ------------------
@@ -392,9 +407,3 @@ eval %sh{kak-lsp --kakoune -s $kak_session}
 set global lsp_hover_anchor true
 lsp-enable
 # nop %sh{ (kak-lsp -s $kak_session -vvv ) > /tmp/kak-lsp.log 2>&1 < /dev/null & }
-
-# lineindent
-# ----------
-
-# map global user i ':lineindent -1<ret>' -docstring "indent selection to preceding line's level"
-# alias global li lineindent

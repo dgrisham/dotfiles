@@ -269,9 +269,14 @@ alias gco='git checkout'
 
 alias ta='unbuffer task active | sed \$d'
 
+# Wifi
+# ====
+
+alias wifi="$HOME/bin/wifi"
+
 # Source additional aliases
 # =========================
 [[ -n "$DISPLAY" ]] && source_alias 'x' > /dev/null
 source_alias 'wenv' > /dev/null
 source_alias 'python' > /dev/null
-source_alias 'ipfs' > /dev/null
+# source_alias 'ipfs' > /dev/null
