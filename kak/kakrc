@@ -1,3 +1,4 @@
+
 ## Hooks
 
 # (case-insensitive) search
@@ -329,16 +330,31 @@ source "%val{config}/plugins/plug.kak/rc/plug.kak"
 plug "andreyorst/plug.kak" noload
 plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-palette"
+plug "TeddyDD/kakoune-lf"
+plug "occivink/kakoune-expand" config %{
+    map -docstring "expand" global user x ': expand<ret>'
+    # 'lock' mapping where pressing <space> repeatedly will expand the selection
+    declare-user-mode expand
+    map -docstring "expand" global expand <space> ': expand<ret>'
+    map -docstring "expand (lock)" global user X       ': expand; enter-user-mode -lock expand<ret>'
+}
+
+plug "TeddyDD/kakoune-edit-or-dir" config %{
+    unalias global e edit
+    alias global e edit-or-dir
+}
 
 plug "andreyorst/fzf.kak" config %{
+    map global user f ':fzf-mode<ret>' -docstring fzf
     set-option global fzf_implementation 'sk'
+    set-option global fzf_file_command 'ag'
+    set-option global fzf_tmux_height '20%'
 }
 
 plug "alexherbo2/auto-pairs.kak" config %{
-    # NOTE: indentation issue, check back on this later
-    # hook global WinCreate .* %{
-    #     auto-pairs-enable
-    # }
+    hook global WinCreate .* %{
+        auto-pairs-enable
+    }
 }
 
 plug "lenormf/kakoune-extra" load %{

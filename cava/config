@@ -129,7 +129,7 @@ gravity = 100
 # not able to restore color definitions on exit, simply restart your terminal to restore colors.
 gradient = 1
 gradient_count = 4
-gradient_color_1 = '#010101'
-gradient_color_2 = '#83837D'
-gradient_color_3 = '#93938D'
-gradient_color_4 = '#A3A39C'
+gradient_color_1 = '#120c0c'
+gradient_color_2 = '#B3AFB2'
+gradient_color_3 = '#E1AEA5'
+gradient_color_4 = '#EDC8B8'

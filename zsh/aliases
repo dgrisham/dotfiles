@@ -269,6 +269,17 @@ alias gco='git checkout'
 
 alias ta='unbuffer task active | sed \$d'
 
+# ag default options
+# ==================
+
+alias ag="/bin/ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33'"
+
+# skim + ag to interactively grep files
+
+skag() {
+    sk --ansi -i -c 'ag --color "{}"'
+}
+
 # Wifi
 # ====
 
