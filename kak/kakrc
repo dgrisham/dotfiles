@@ -331,6 +331,7 @@ plug "andreyorst/plug.kak" noload
 plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-palette"
 plug "TeddyDD/kakoune-lf"
+
 plug "occivink/kakoune-expand" config %{
     map -docstring "expand" global user x ': expand<ret>'
     # 'lock' mapping where pressing <space> repeatedly will expand the selection
@@ -345,10 +346,11 @@ plug "TeddyDD/kakoune-edit-or-dir" config %{
 }
 
 plug "andreyorst/fzf.kak" config %{
-    map global user f ':fzf-mode<ret>' -docstring fzf
+    map global user f ':fzf-mode<ret>' -docstring 'fuzzy finder'
     set-option global fzf_implementation 'sk'
     set-option global fzf_file_command 'ag'
     set-option global fzf_tmux_height '20%'
+    set-option fzf_sk_grep_command 'ag --nogroup'
 }
 
 plug "alexherbo2/auto-pairs.kak" config %{

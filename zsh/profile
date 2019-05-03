@@ -34,8 +34,5 @@ export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
 # pass settings
 export PASSWORD_STORE_CLIP_TIME=15
 
-# nvm
-export NVM_DIR="$HOME/dotfiles/nvm"
-
 # skim colors
-export SKIM_DEFAULT_OPTIONS='--color=empty,fg:243,matched:226,current:255,current_match:0,spinner:127,info:33,prompt:248,cursor:255,selected:255'
+export SKIM_DEFAULT_OPTIONS='--color=empty,fg:243,matched:226,current:255,current_match:226,spinner:127,info:33,prompt:248,cursor:255,selected:255'
