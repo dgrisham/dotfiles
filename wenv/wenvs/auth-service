@@ -26,6 +26,7 @@ declare -Ag wenv_dirs=(
 declare -Ag wenv_files=(
     ['db']="${wenv_dirs[db]}/users.sql"
     ['notes']="$HOME/src/inspire/ecommerce/notes.md"
+    ['go']='$(find . -name \*.go)'
 )
 declare -Ag wenv_vars=(
     ['db']='users'

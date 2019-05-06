@@ -237,7 +237,7 @@ hook global BufSetOption filetype=(restructuredtext) %{
     # format text with pandoc
     # map global user g %{ | pandoc --from=rst --to=rst --columns=80 <ret> } -docstring 'format md'
     # format lines to 80 characters (escape backticks to preseve calls to default role)
-    map global user g %{ | sed 's/`/\\`/g' | pandoc --from=rst --to=rst --columns=81 | sed 's/\\`/`/g' <ret> } -docstring 'format md'
+    map global user g %{ | sed 's/`/\\`/g' | pandoc --from=rst --to=rst --columns=81 | sed 's/\\`/`/g' <ret> } -docstring 'format rst'
 
     # custom commands
     def -hidden header %{
@@ -350,7 +350,7 @@ plug "andreyorst/fzf.kak" config %{
     set-option global fzf_implementation 'sk'
     set-option global fzf_file_command 'ag'
     set-option global fzf_tmux_height '20%'
-    set-option fzf_sk_grep_command 'ag --nogroup'
+    set-option global fzf_sk_grep_command 'ag --nogroup'
 }
 
 plug "alexherbo2/auto-pairs.kak" config %{

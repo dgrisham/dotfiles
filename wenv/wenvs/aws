@@ -12,7 +12,8 @@ wenv_def() {
     }
 }
 
-INSTANCE_ID='i-02ee6c7435f38ea79'
+export INSTANCE_ID='i-02ee6c7435f38ea79'
+# export INSTANCE_IP='34.222.165.200'
 
 aws_start() {
     /bin/aws ec2 start-instances --instance-ids $INSTANCE_ID
@@ -27,6 +28,10 @@ aws_status() {
 }
 
 aws_ssh() {
+    ssh bakegood
+}
+
+aws_ssh_bak() {
     while getopts ':w:' opt; do
         case $opt in
             w) if [[ ! -z "$OPTARG" ]]; then
@@ -37,9 +42,9 @@ aws_ssh() {
     done
     shift $((OPTIND-1))
 
-    dst='aws'
+    local dst='aws'
     [ "$1" = 'root' ] && dst='aws-root' && shift
-    addr=$(/bin/aws ec2 describe-instances --instance-ids $INSTANCE_ID |
+    local addr=$(/bin/aws ec2 describe-instances --instance-ids $INSTANCE_ID |
            jq --raw-output '.Reservations[0] | .Instances[0] | .PublicIpAddress')
 
     if [[ -n "$wenv" ]]; then
