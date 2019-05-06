@@ -249,6 +249,7 @@ alias gca='git commit -a'
 alias gcam='git commit -am'
 alias gs='git status'
 alias gl="git log --pretty=format:'%C(auto)%h %ad %C(green)%s%Creset %C(auto)%d [%an]' --graph --date=format:'%Y-%m-%d %H:%M' --all"
+alias gde="git diff --name-only --diff-filter=U | uniq  | xargs $EDITOR"
 gb() {
     git blame $@ | while read hash user date time tz lineno line; do
         gecho "\n$hash $user $date $time $tz $lineno"
@@ -259,14 +260,35 @@ gb() {
 
 alias gco='git checkout'
 
+# Don't forget
+# ------------
+
+# cuesplit && cd split && for f in *.flac; do ffmpeg -i $f -ab 320k -map_metadata 0 -id3v2_version 3 "${f%.*}.mp3"; done && mkdir mp3 && mv *.mp3 mp3
+
 # Task Warrior
 # ============
 
 alias ta='unbuffer task active | sed \$d'
+
+# ag default options
+# ==================
+
+alias ag="/bin/ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33'"
+
+# skim + ag to interactively grep files
+
+skag() {
+    sk --ansi -i -c 'ag --color "{}"'
+}
+
+# Wifi
+# ====
+
+alias wifi="$HOME/bin/wifi"
 
 # Source additional aliases
 # =========================
 [[ -n "$DISPLAY" ]] && source_alias 'x' > /dev/null
 source_alias 'wenv' > /dev/null
 source_alias 'python' > /dev/null
-source_alias 'ipfs' > /dev/null
+# source_alias 'ipfs' > /dev/null
