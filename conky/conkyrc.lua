@@ -77,7 +77,7 @@ ${endif}
 
 # Network
 ${if_existing /sys/class/net/eth0/operstate up}
-    {"full_text":"eth0 up", "color":"\#dddddd",
+    {"full_text":"eth0 up", "color":"\#ffffff",
      "separator":false, "separator_block_width":6},
     {"full_text":"|", "color":"\#545454",
      "separator":false, "separator_block_width":6},

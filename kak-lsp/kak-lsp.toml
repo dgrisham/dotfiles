@@ -89,3 +89,8 @@ command = "dart_language_server"
 filetypes = ["d", "di"]
 roots = [".git", "dub.sdl", "dub.json"]
 command = "dls"
+
+[language.java]
+filetypes = ["java"]
+roots = [".git"]
+command = "jdtls"
