@@ -45,17 +45,17 @@ mdExport() {
 
 # markdown publishing
 md() {
-    format="$1"
-    md_doc="$2"
+    local format="$1"
+    local md_doc="$2"
     shift 2
 
     case "$format" in
-        markdown)   ext='md'                    ;;
-        latex)      ext='pdf'                   ;;
-        latex-raw)  ext='tex'; format='latex'   ;;
-        beamer)     ext='pdf'                   ;;
-        beamer-raw) ext='tex'; format='beamer'  ;;
-        *)          ext="$format"               ;;
+        markdown)   local ext='md'                    ;;
+        latex)      local ext='pdf'                   ;;
+        latex-raw)  local ext='tex'; format='latex'   ;;
+        beamer)     local ext='pdf'                   ;;
+        beamer-raw) local ext='tex'; format='beamer'  ;;
+        *)          local ext="$format"               ;;
     esac
 
     pandoc --standalone \
@@ -69,14 +69,14 @@ md() {
 
 md_dev() {
     [[ -z "$1" ]] && return 1
-    md_file="$1"
+    local md_file="$1"
     shift
     monitor file "$md_file" md latex "$md_file" $@
 }
 
 beamer_loop() {
     [[ -z "$1" ]] && return 1
-    md_file="$1"
+    local md_file="$1"
     shift
     monitor file "$md_file" md beamer "$md_file" $@
 }
@@ -85,8 +85,8 @@ beamer_loop() {
 # --------------
 tex() {
     [[ -z "$1" ]] && return 1
-    file="$1"
-    prefix=${file%.*}
+    local file="$1"
+    local prefix=${file%.*}
 
     pdflatex --shell-escape "$prefix".tex &&
     bibtex                  "$prefix"     &&
@@ -107,14 +107,14 @@ alias vs="vim -S"
 # `$EDITOR <today's_date>.md`
 # -----------------------
 edit_today() {
-    format='%Y-%m-%d'
+    local format='%Y-%m-%d'
     $EDITOR "`date +$format`.md"
 }
 alias et='edit_today'
 
 edit_week() {
-    format='%Y-%m-%d'
-    which_monday='last-monday'
+    local format='%Y-%m-%d'
+    local which_monday='last-monday'
     [[ $(date +%a) == 'Mon' ]] && which_monday='this-monday'
     $EDITOR "`date -d$which_monday +$format`.md"
 }
@@ -123,8 +123,8 @@ alias ew='edit_week'
 # 'journal today'
 # ---------------
 jt() {
-    format='%Y-%m-%d'
-    journal_dir="$PERSONAL/routine/morning/journal/five_minute_journal"
+    local format='%Y-%m-%d'
+    local journal_dir="$PERSONAL/routine/morning/journal/five_minute_journal"
     cp -n "$journal_dir/template.md" "$journal_dir/`date +$format`.md"
     cd "$journal_dir"
     kt
@@ -133,7 +133,7 @@ jt() {
 # copy etc
 # --------
 cp_etc() {
-    dir="$1"
+    local dir="$1"
     [[ ! -d "$DOTFILES/etc/$dir" ]] && return 1
     for file in $(find "$DOTFILES/etc/$dir" -type f); do
         sudo cp "$file" "${file#$DOTFILES}"
@@ -148,16 +148,16 @@ edit_alias() {
         return 1
     fi
 
-    input_arg="$1"
+    local input_arg="$1"
     case "$input_arg" in
         g|global)
-            alias_file="$GLOBAL_ALIAS"
+            local alias_file="$GLOBAL_ALIAS"
             ;;
         l|local)
-            alias_file="$LOCAL_ALIAS"
+            local alias_file="$LOCAL_ALIAS"
             ;;
         *)
-            alias_file="$WENVS/${input_arg}"
+            local alias_file="$WENVS/${input_arg}"
             ;;
     esac
 
@@ -173,18 +173,18 @@ remove_alias() {
         return 1
     fi
 
-    input_arg="$1"
+    local input_arg="$1"
     case "$input_arg" in
         '-f')
-            force=true
+            local force=true
             shift
             ;;
         *)
-            force=false
+            local force=false
             ;;
     esac
 
-    alias_file="$WENVS
+    local alias_file="$WENVS
 /${1}"
 
     [[ -f "$alias_file" ]] || return 1
@@ -212,17 +212,17 @@ source_alias() {
         return 1
     fi
     # check input(s), source associated alias file(s) accordingly
-    input_arg="$1"
+    local input_arg="$1"
     shift
     case "$input_arg" in
         g|global)
-            alias_file="$GLOBAL_ALIAS"
+            local alias_file="$GLOBAL_ALIAS"
             ;;
         l|local)
-            alias_file="$LOCAL_ALIAS"
+            local alias_file="$LOCAL_ALIAS"
             ;;
         *)
-            alias_file="$DOTFILES/wenv/wenvs/${input_arg}"
+            local alias_file="$DOTFILES/wenv/wenvs/${input_arg}"
             ;;
     esac
     if [[ -f "$alias_file" ]]; then

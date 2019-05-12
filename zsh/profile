@@ -36,6 +36,3 @@ export PASSWORD_STORE_CLIP_TIME=15
 
 # skim colors
 export SKIM_DEFAULT_OPTIONS='--color=empty,fg:243,matched:226,current:255,current_match:226,spinner:127,info:33,prompt:248,cursor:255,selected:255'
-
-# ssh-agent
-export SSH_AUTH_SOCK=/run/user/1000/ssh-agent.socket
