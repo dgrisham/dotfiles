@@ -387,6 +387,16 @@ plug "Delapouite/kakoune-buffers" config %{
     alias global bo! buffer-only-force
 }
 
+# inline git blame
+# ----------------
+
+define-command -hidden git-blame-hover -docstring "Render git blame" %{ evaluate-commands %sh{
+    blame="$(git blame -L ${kak_cursor_line},+1 ${kak_buffile} | grep -oP '^([^)]+)\)')"
+    summary="$(git blame --line-porcelain -L 11,+1 main.go | grep -oP '(?<=summary )[^\n]+')"
+    printf "info -anchor %d.%d '%s %s'" ${kak_cursor_line} ${kak_cursor_column} "$blame $summary"
+}}
+map global user h :git-blame-hover<ret> -docstring 'git blame hover'
+
 # Formatting and LSP
 # ------------------
 
