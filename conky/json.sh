@@ -10,4 +10,4 @@ echo '['
 echo '[],'
 
 # Now send blocks with information forever:
-exec conky -c $HOME/.config/conky/conkyrc.lua
+exec conky -c "$XDG_CONFIG_HOME/conky/conkyrc.lua"
