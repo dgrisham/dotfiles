@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+
+wenv_def() {
+    WENV_DIR="$SRC/inspire/vagrant"
+    WENV_DEPS=()
+    WENV_PROJECT=''
+    WENV_TASK=''
+    WENV_EXTENSIONS=()
+
+    startup_wenv() {
+        systemctl --user start ssh-agent
+        vagrant up inspirefitness || vagrant provision inspirefitness
+        sshfs vagrant:/home/vagrant /mnt/vm
+    }
+    shutdown_wenv() {
+        systemctl --user stop ssh-agent
+        vagrant down inspirefitness
+        # sudo umount /mnt/vm # TODO: necessary?
+    }
+    bootstrap_wenv() {}
+}
+
+export GITLAB_PRIVATE_KEY="$HOME/.ssh/git"
+export HOST_PRIVATE_KEY="$HOME/.ssh/vm-inspire"
+
+# for c extension
+# declare -Ag wenv_dirs=()
+
+# for edit extension
+# declare -Ag wenv_files=()
