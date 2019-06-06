@@ -12,13 +12,15 @@ export TEXMFHOME="$DOTFILES/texmf"
 autoload bashcompinit
 bashcompinit
 ## IPFS
-source $DOTFILES/zsh/completion/ipfs.bash
+#source $DOTFILES/zsh/completion/ipfs.bash
 ## WENV
 source $DOTFILES/zsh/completion/wenv.bash
 ## aws-cli
-source aws_zsh_completer.sh
-## keybase command completion
-source $SRC/keybase-completion/keybase
+#source aws_zsh_completer.sh
+## keybase
+#source $SRC/keybase-completion/keybase
+## rustup
+source $DOTFILES/zsh/completion/rustup.bash
 
 # Go path
 export GOPATH="$HOME/.go"
@@ -35,4 +37,7 @@ export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
 export PASSWORD_STORE_CLIP_TIME=15
 
 # skim colors
-export SKIM_DEFAULT_OPTIONS='--color=empty,fg:243,matched:226,current:255,current_match:226,spinner:127,info:33,prompt:248,cursor:255,selected:255'
+export SKIM_DEFAULT_OPTIONS='--color=empty,query:255,fg:243,matched:226,current:255,current_match:226,spinner:127,info:33,prompt:248,cursor:255,selected:255'
+
+# taskwarrior rc
+export TASKRC="$DOTFILES/task/taskrc"

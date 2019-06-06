@@ -29,6 +29,8 @@ include /usr/share/doc/task/rc/dark-gray-256.theme
 #include /usr/share/doc/task/rc/solarized-light-256.theme
 #include /usr/share/doc/task/rc/no-color.theme
 
+verbose=blank,footnote,label,new-id,affected,edit,special,project,sync,unwait
+
 color.active=black on white
 report.active.columns=id,project,description
 report.active.labels=ID,Project,Description
