@@ -5,7 +5,6 @@
 	tool = kak
 [difftool]
 	prompt = false
-	prompt = false
 [alias]
 	d = difftool
 [core]
