@@ -378,8 +378,8 @@ plug "h-youhei/kakoune-surround" config %{
 
 plug "Delapouite/kakoune-buffers" config %{
     hook global WinDisplay .* info-buffers
-    map global user b ':enter-buffers-mode<ret>' -docstring 'buffers mode'
-    map global user B ':enter-user-mode -lock buffers<ret>' -docstring 'buffers mode (lock)'
+    map global user a ':enter-buffers-mode<ret>' -docstring 'buffers mode'
+    map global user A ':enter-user-mode -lock buffers<ret>' -docstring 'buffers mode (lock)'
     alias global bd delete-buffer
     alias global bf buffer-first
     alias global bl buffer-last

@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 wenv_def() {
-    WENV_DIR="/mnt/vm/dev/studio-manager"
+    WENV_DIR="/mnt/vm/dev/encoder"
     WENV_DEPS=()
     WENV_PROJECT=''
     WENV_TASK=''

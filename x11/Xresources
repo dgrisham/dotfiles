@@ -9,8 +9,8 @@
 
 URxvt*.transparent: true
 URxvt*.shading: 15
-URxvt.font:xft:inconsolata:antialias=true:size=13
-URxvt.boldFont:xft:inconsolata:bold:antialias=true:size=13
+URxvt.font:xft:inconsolata:antialias=true:size=12
+URxvt.boldFont:xft:inconsolata:bold:antialias=true:size=12
 
 URxvt*dynamicColors: on
 
