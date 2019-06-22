@@ -15,7 +15,6 @@ wenv_def() {
     shutdown_wenv() {
         systemctl --user stop ssh-agent
         vagrant down inspirefitness
-        # sudo umount /mnt/vm # TODO: necessary?
     }
     bootstrap_wenv() {}
 }

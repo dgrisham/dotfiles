@@ -45,22 +45,23 @@ export VIMRUNTIME="/usr/share/nvim/runtime"
 ### open fbterm/x automatically, depending on tty
 virtual_terminal="$( tty | grep -oE ....$ )"
 case "$virtual_terminal" in
-    tty1)
-        if ! startx; then
-            current=$(ls -l /etc/X11/xorg.conf | rev | cut -f1 -d' ' | cut -f1 -d'.' | rev)
-            if [[ "$current" = 'discrete' ]]; then
-                sudo ln -sf /etc/X11/xorg.conf.hybrid /etc/X11/xorg.conf
-                startx
-            elif [[ "$current" = 'hybrid' ]]; then
-                sudo ln -sf /etc/X11/xorg.conf.discrete /etc/X11/xorg.conf
-                startx
-            fi
-        fi
+    tty1|tty2)
+        startx
+        # if ! startx; then
+        #     current=$(ls -l /etc/X11/xorg.conf | rev | cut -f1 -d' ' | cut -f1 -d'.' | rev)
+        #     if [[ "$current" = 'discrete' ]]; then
+        #         sudo ln -sf /etc/X11/xorg.conf.hybrid /etc/X11/xorg.conf
+        #         startx
+        #     elif [[ "$current" = 'hybrid' ]]; then
+        #         sudo ln -sf /etc/X11/xorg.conf.discrete /etc/X11/xorg.conf
+        #         startx
+        #     fi
+        # fi
     ;;
-    tty2|tty3)
+    tty3|tty4)
         fbterm-bi "$MEDIA/pictures/backgrounds/current_bg" -- zsh -c 'TERM=fbterm tmux'
     ;;
-    tty4|tty5)
+    tty5|tty6)
         fbterm-bi "$MEDIA/pictures/backgrounds/current_bg" -- zsh -c "TERM=fbterm ssh_login"
     ;;
 esac

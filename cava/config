@@ -98,7 +98,7 @@ monstercat = 1
 
 # Set gravity percentage for "drop off". Higher values means bars will drop faster.
 # Accepts only non-negative values. 50 means half gravity, 200 means double. Set to 0 to disable "drop off".
-gravity = 200
+gravity = 60
 
 
 # In bar height, bars that would have been lower that this will not be drawn.
@@ -128,6 +128,8 @@ gravity = 200
 # or remain commented out. 1 = on, 0 = off. Warning: for certain terminal emulators cava will
 # not able to restore color definitions on exit, simply restart your terminal to restore colors.
 gradient = 1
-gradient_count = 2
-gradient_color_1 = '#2a68b8'
-gradient_color_2 = '#f90801'
+gradient_count = 4
+gradient_color_1 = '#516567'
+gradient_color_2 = '#bca077'
+gradient_color_3 = '#93986F'
+gradient_color_4 = '#CEA062'

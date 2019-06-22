@@ -1,0 +1,21 @@
+#!/usr/bin/env zsh
+
+wenv_def() {
+    WENV_DIR="/home/grish/scratch/suckless/st"
+    WENV_DEPS=()
+    WENV_PROJECT=''
+    WENV_TASK=''
+    WENV_EXTENSIONS=()
+
+    startup_wenv() {
+        wenv_tmux_layout 'monitor' 'sudo make install'
+    }
+    shutdown_wenv() {}
+    bootstrap_wenv() {}
+}
+
+# for c extension
+# declare -Ag wenv_dirs=()
+
+# for edit extension
+# declare -Ag wenv_files=()
