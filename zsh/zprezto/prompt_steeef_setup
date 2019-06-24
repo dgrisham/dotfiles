@@ -44,11 +44,12 @@ function prompt_steeef_setup {
   # Use extended color pallete if available.
   if [[ $TERM = *256color* || $TERM = *rxvt* ]]; then
     _prompt_steeef_colors=(
-      "%F{81}"  # 
-      "%F{8}" # hostname
-      "%F{25}" # username
-      "%F{161}" # 
+      "%F{81}"  #
+      "%F{24}"   # hostname
+      "%F{161}"  # username
+      "%F{161}" #
       "%F{3}"   # working directory
+      "%F{241}" # @ and :
     )
   else
     _prompt_steeef_colors=(
@@ -89,7 +90,7 @@ function prompt_steeef_setup {
 
   # Define prompts.
   PROMPT="
-${_prompt_steeef_colors[3]}%n%f@${_prompt_steeef_colors[2]}%m%f:${_prompt_steeef_colors[5]}%~%f "'${vcs_info_msg_0_}'"
+${_prompt_steeef_colors[3]}%n%f${_prompt_steeef_colors[6]}@${_prompt_steeef_colors[2]}%m%f${_prompt_steeef_colors[6]}:${_prompt_steeef_colors[5]}%~%f "'${vcs_info_msg_0_}'"
 "'$python_info[virtualenv]${editor_info[keymap]} '
   RPROMPT=''
 }
