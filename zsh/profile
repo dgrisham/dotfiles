@@ -7,7 +7,7 @@ bashcompinit
 #source $DOTFILES/zsh/completion/ipfs.bash
 
 ## WENV
-source $DOTFILES/zsh/completion/wenv.bash
+#source $DOTFILES/zsh/completion/wenv.bash
 ## aws-cli
 #source aws_zsh_completer.sh
 
@@ -15,7 +15,7 @@ source $DOTFILES/zsh/completion/wenv.bash
 #source $SRC/keybase-completion/keybase
 
 ## rustup
-source $DOTFILES/zsh/completion/rustup.bash
+#source $DOTFILES/zsh/completion/rustup.bash
 
 # path
 

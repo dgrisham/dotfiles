@@ -1,3 +1,3 @@
-ZDOTDIR="/etc/zsh"
+ZDOTDIR="/usr/local/etc/zsh"
 
 [[ -f "$HOME/dotfiles/zsh/zshenv" ]] && source "$HOME/dotfiles/zsh/zshenv"

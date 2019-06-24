@@ -1,3 +1,6 @@
+## NOTE: This needs to be linked in same dir as `zsh` folder
+## (e.g. do `cd /usr/local/etc && ln -s zsh/zshrc .`)
+
 # ZSH options
 # ===========
 
@@ -62,7 +65,7 @@ preexec () { echo -ne "\e[0m" }
 
 # Source environment stuff
 # ------------------------
-zsh_dir="/etc/zsh"
+zsh_dir="/usr/local/etc/zsh"
 env_files=("profile" "aliases")
 for env_file in $env_files; do
     [[ -f "$zsh_dir/$env_file" ]] && source "$zsh_dir/$env_file"
