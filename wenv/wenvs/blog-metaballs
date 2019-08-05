@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+
+wenv_def() {
+    WENV_DIR="/home/grish/src/blog/metaballs"
+    WENV_DEPS=()
+    WENV_PROJECT=''
+    WENV_TASK=''
+    WENV_EXTENSIONS=('c' 'edit')
+
+    startup_wenv() {
+        wenv_tmux_split h 'edit prequel'
+        edit -r outline
+    }
+    shutdown_wenv() {}
+    bootstrap_wenv() {}
+}
+
+declare -Ag wenv_dirs=(
+    ['thoughts']="$HOME/personal/thoughts"
+)
+
+declare -Ag wenv_files=(
+    ['outline']='outline.md'
+    ['prequel']="${wenv_dirs[thoughts]}/metaballs-prequel.md"
+    ['metaballs']="${wenv_dirs[thoughts]}/metaballs.md"
+)
+
+# for c extension
+# declare -Ag wenv_dirs=()
+
+# for edit extension
+# declare -Ag wenv_files=()

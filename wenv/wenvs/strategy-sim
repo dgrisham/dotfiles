@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 wenv_def() {
-    WENV_DIR="$SRC/strategy-sim"
+    WENV_DIR="$SRC/masters/strategy-sim"
     WENV_DEPS=('python')
     WENV_PROJECT='strategy_sim'
     WENV_BRANCH='feat/incremental-exchanges'

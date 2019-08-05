@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 wenv_def() {
-    WENV_DIR="/home/grish/src/bitswap-tests"
+    WENV_DIR="/home/grish/src/masters/bitswap-tests"
     WENV_DEPS=('iptb')
     WENV_PROJECT='bitswap-tests'
     WENV_BRANCH='master'

@@ -13,7 +13,7 @@ hook global KakBegin .* %{addhl global/ number-lines -relative}
     #addhl regex ^\V{80}(\V) 1:Error
 #}
 hook global WinCreate .*[.](md|tex|rst) %{
-    set buffer autowrap_column 80
+    set buffer autowrap_column 200
     autowrap-enable
 }
 
@@ -36,14 +36,14 @@ set global scrolloff 12,0
 set global indentwidth 4
 set global tabstop 4
 ## 2-space tabs for Haskell
-hook global BufSetOption filetype=.*?(haskell|ruby) %{
+hook global BufSetOption filetype=.*?(haskell|ruby|yaml) %{
     set buffer tabstop 2
     set buffer indentwidth 2
 }
-hook global InsertChar \t %{ exec -draft -itersel h@ }
+# hook global InsertChar \t %{ exec -draft -itersel h@ }
 
-# soft tabs (excluding makefiles and Go)
-hook global BufSetOption filetype=.*?(go|makefile) %{
+# # soft tabs (excluding makefiles and Go)
+hook global BufSetOption filetype=(?!go)(?!makefile).* %{
     hook buffer InsertChar \t %{ exec -draft -itersel h@ }
 }
 
@@ -121,7 +121,7 @@ map global tmux c ':tmux-terminal-window kak -c %val{session}<ret>' \
     -docstring 'new window'
 map global tmux y ':nop %sh{tmux set-buffer "${kak_selection}"}<ret>' \
     -docstring 'yank primary selection to tmux buffer'
-map global tmux p '!tmux show-buffer<ret>' \
+map global tmux p 'o<esc>!tmux show-buffer<ret>d' \
     -docstring 'paste tmux buffer contents'
 map global tmux r ':tmux-repl<ret>' -docstring 'prefix for tmux repl commands'
 def -hidden tmux %{ enter-user-mode tmux }
@@ -172,11 +172,16 @@ hook global BufSetOption filetype=python %!
 # ==
 
 hook global BufSetOption filetype=go %!
-    map global user d 'ofmt.Printf(": %v\n", )<esc>h<a-a>bs(?=[:)])<ret>:lineindent -1<ret>i' -docstring "debug print statement"
+    declare-user-mode write-code-template
+    map global write-code-template d 'ofmt.Printf(": %v\n", )<esc>h<a-a>bs(?=[:)])<ret>:lineindent -1<ret>i' -docstring 'Printf debug statement'
+    map global write-code-template l 'alog.WithFields(logrus.Fields{"error": err}).Error("")<esc><ret>:lineindent -1<ret>hhi' -docstring 'logrus error'
+    map global write-code-template c 'I* <esc>A *<esc>xypI<esc>r/l<a-l>r*jxypjr/I<esc><a-l>Hr*;' -docstring 'header comment block'
+    map global user w ':enter-user-mode write-code-template<ret>' -docstring 'write code template'
 !
 
 # Javascript
 # ==========
+
 
 hook global BufSetOption filetype=javascript %!
     map global user d 'oconsole.log(":", );<esc>hh<a-a>bs(?=[:)])<ret>:lineindent -1<ret>i' -docstring "debug print statement"
@@ -358,7 +363,7 @@ plug "alexherbo2/auto-pairs.kak" config %{
     }
 }
 
-plug "lenormf/kakoune-extra" load %{
+plug "lenormf/kakoune-extra" branch "dev" load %{
     comnotes.kak
     grepmenu.kak
     lineindent.kak
@@ -409,10 +414,10 @@ hook global WinSetOption filetype=rust %{
     set-option global lsp_server_configuration rust.clippy_preference="on"
 }
 
-hook global WinSetOption filetype=(python|rust) %{
-    hook -group lsp window BufWritePre .* lsp-formatting-sync
-    map global user g :lsp-formatting<ret> -docstring 'lsp format'
-}
+# hook global WinSetOption filetype=(python|rust) %{
+#     hook -group lsp window BufWritePre .* lsp-formatting-sync
+#     map global user g :lsp-formatting<ret> -docstring 'lsp format'
+# }
 
 hook global BufSetOption filetype=python %{
     set-option global lsp_server_configuration pyls.configurationSources=['flake8']
@@ -430,7 +435,7 @@ hook global BufSetOption filetype=(go|python|sh|javascript|rust) %{
     map global lsp r ':enter-user-mode lsp-rename<ret>' -docstring 'lsp-rename'
     map global user l ':enter-user-mode lsp<ret>' -docstring 'lsp'
 }
-eval %sh{kak-lsp --kakoune -s $kak_session}
+eval %sh{kak-lsp --config ~/dotfiles/kak-lsp/kak-lsp.toml --kakoune -s $kak_session}
 set global lsp_hover_anchor true
 lsp-enable
 # nop %sh{ (kak-lsp -s $kak_session -vvv ) > /tmp/kak-lsp.log 2>&1 < /dev/null & }

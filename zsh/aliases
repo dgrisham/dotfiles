@@ -136,7 +136,7 @@ cp_etc() {
     local dir="$1"
     [[ ! -d "$DOTFILES/etc/$dir" ]] && return 1
     for file in $(find "$DOTFILES/etc/$dir" -type f); do
-        sudo cp "$file" "${file#$DOTFILES}"
+        sudo cp "$file" "/usr/local${file#$DOTFILES}"
     done
 }
 
@@ -273,7 +273,7 @@ alias ta='unbuffer task active | sed \$d'
 # ag default options
 # ==================
 
-alias ag="/bin/ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33'"
+alias ag="/usr/local/bin/ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33'"
 
 # skim + ag to interactively grep files
 

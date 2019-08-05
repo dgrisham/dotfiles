@@ -30,11 +30,13 @@ zstyle ':prezto:load' pmodule \
   'history' \
   'directory' \
   'spectrum' \
-  'utility' \
   'completion' \
   'syntax-highlighting' \
+  'autosuggestions' \
   'history-substring-search' \
   'prompt'
+
+  # 'utility'
 
 #
 # Editor

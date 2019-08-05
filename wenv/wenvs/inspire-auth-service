@@ -1,14 +1,17 @@
 #!/usr/bin/env zsh
 
 wenv_def() {
-    WENV_DIR="/home/grish/src/suckless/dwm"
+    WENV_DIR="/mnt/vm/dev/auth_service"
     WENV_DEPS=()
     WENV_PROJECT=''
     WENV_TASK=''
-    WENV_EXTENSIONS=()
+    WENV_EXTENSIONS=('ssh_agent')
 
     startup_wenv() {
-        wenv_tmux_layout 'monitor' 'sudo make install'
+        wenv start -d inspire-vagrant
+        wenv cd inspire-vagrant
+        until [[ -d "$WENV_DIR" ]]; do :; done
+        wenv cd
     }
     shutdown_wenv() {}
     bootstrap_wenv() {}

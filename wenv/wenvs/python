@@ -1,7 +1,8 @@
 # General
 # =======
 
-alias ipy='ipython3'
+alias python=$(which python3.6)
+alias ipy=$(which ipython3)
 
 # Environment
 # -----------
@@ -11,6 +12,23 @@ export VENV="$HOME/.venv"
 
 # Functions
 # =========
+
+venv() {
+    local cmd="$1"
+    shift
+    case "$cmd" in
+        create)
+            create_venv $@
+            ;;
+        start)
+            start_venv $@
+            ;;
+        *)
+            >&2 echo "unknown command '$cmd'"
+            return 1
+            ;;
+    esac
+}
 
 # create virtual environment
 # --------------------------

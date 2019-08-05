@@ -1,18 +1,20 @@
 #!/usr/bin/env zsh
 
 wenv_def() {
-    WENV_DIR="/home/grish/src/suckless/dwm"
+    WENV_DIR="/home/grish/src/masters/ansible"
     WENV_DEPS=()
     WENV_PROJECT=''
     WENV_TASK=''
-    WENV_EXTENSIONS=()
+    WENV_EXTENSIONS=('c' 'edit')
 
-    startup_wenv() {
-        wenv_tmux_layout 'monitor' 'sudo make install'
-    }
+    startup_wenv() {}
     shutdown_wenv() {}
     bootstrap_wenv() {}
 }
+
+declare -Ag wenv_dirs=(
+    ['vagrant']='../vagrant'
+)
 
 # for c extension
 # declare -Ag wenv_dirs=()

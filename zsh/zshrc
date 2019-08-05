@@ -11,13 +11,10 @@ for env_file in $env_files; do
     [[ -f "$zsh_dir/$env_file" ]] && source "$zsh_dir/$env_file"
 done
 
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-bindkey '^F' autosuggest-accept
+bindkey '^ ' autosuggest-accept
 ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(
     vi-end-of-line
 )
-
-export LSCOLORS='GaGxxxdxcxegedabagacad'
 
 # necessary for WENVs
 eval "$WENV_EXEC"
