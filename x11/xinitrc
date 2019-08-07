@@ -37,12 +37,19 @@ xrandr --dpi 100
 # hide mouse cursor after 1 second of inactivity
 unclutter -idle 1 -root &
 
-redshift &
+#redshift &
 
 setxkbmap -option caps:ctrl_modifier
 
-# exec i3
-exec dwm
+xrandr --newmode "2560x1440R"  241.50  2560 2608 2640 2720  1440 1443 1448 1481 +hsync -vsync
+xrandr --addmode HDMI-1 2560x1440R
+
+$HOME/.screenlayout/two-monitors.sh
+
+$HOME/bin/fehbg
+
+exec i3
+#exec dwm
 
 #twm &
 #xclock -geometry 50x50-1+1 &

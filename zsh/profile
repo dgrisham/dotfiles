@@ -15,31 +15,31 @@ source $DOTFILES/zsh/completion/wenv.bash
 #source $SRC/keybase-completion/keybase
 
 ## rustup
-source $DOTFILES/zsh/completion/rustup.bash
+#source $DOTFILES/zsh/completion/rustup.bash
 
 # path
 
 ## cabal
-export PATH="$PATH:$HOME/.cabal/bin"
+#export PATH="$HOME/.cabal/bin:$PATH"
 
 ## Go path
 export GOPATH="$HOME/.go"
 # add GOPATH/bin to PATH
-export PATH="$PATH:$GOPATH/bin"
+export PATH="$GOPATH/bin:$PATH"
 
 ## Rust Cargo path
-export PATH="$PATH:$HOME/.cargo/bin"
+export PATH="$HOME/.cargo/bin:$PATH"
 
 ## yarn
-export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
+export PATH="$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 # config
 
 ## beets config
-export BEETSDIR="$DOTFILES/beets"
+#export BEETSDIR="$DOTFILES/beets"
 
 ## cbgp (libgds)
-export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig"
+#export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig"
 
 ## latex
 export TEXMFHOME="$DOTFILES/texmf"

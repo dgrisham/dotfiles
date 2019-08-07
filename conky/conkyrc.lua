@@ -61,18 +61,18 @@ conky.config = {
 conky.text = [[
 [
 # MPD
-${if_mpd_playing}
-    {"full_text":"♫", "color":"\#ffffff",
-     "separator":false, "separator_block_width":6},
-    {"full_text":"${mpd_artist 27}", "color" : "\#888888",
-     "separator" : false, "separator_block_width":3 },
-    {"full_text":" - ", "color" : "\#888888",
-     "separator" : false, "separator_block_width":3 },
-    {"full_text":"${mpd_title 30}", "color" : "\#888888",
-     "separator" : false, "separator_block_width":6 },
-    {"full_text":"|", "color":"\#545454",
-     "separator":false, "separator_block_width":6},
-${endif}
+#${if_mpd_playing}
+#    {"full_text":"♫", "color":"\#ffffff",
+#     "separator":false, "separator_block_width":6},
+#    {"full_text":"${mpd_artist 27}", "color" : "\#888888",
+#     "separator" : false, "separator_block_width":3 },
+#    {"full_text":" - ", "color" : "\#888888",
+#     "separator" : false, "separator_block_width":3 },
+#    {"full_text":"${mpd_title 30}", "color" : "\#888888",
+#     "separator" : false, "separator_block_width":6 },
+#    {"full_text":"|", "color":"\#545454",
+#     "separator":false, "separator_block_width":6},
+#${endif}
 #{"full_text":"${exec mpc -f %artist% status | head -n1 | sed 's/\(\w\)\w*\( \|$\)/\1/g'}", "color" : "\#5c5dad",
 
 # Network

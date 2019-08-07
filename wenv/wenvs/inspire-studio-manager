@@ -2,15 +2,15 @@
 
 wenv_def() {
     WENV_DIR="/mnt/vm/dev/studio-manager"
-    WENV_DEPS=()
+    WENV_DEPS=('inspire-vagrant')
     WENV_PROJECT=''
     WENV_TASK=''
-    WENV_EXTENSIONS=()
+    WENV_EXTENSIONS=('c')
 
     startup_wenv() {
         wenv start -d inspire-vagrant
         wenv cd inspire-vagrant
-        until [[ -d "$WENV_DIR"  ]]; do :; done
+        until [[ -d "$WENV_DIR" ]]; do sleep 1; done
         wenv cd
     }
     shutdown_wenv() {}
@@ -18,7 +18,9 @@ wenv_def() {
 }
 
 # for c extension
-# declare -Ag wenv_dirs=()
+declare -Ag wenv_dirs=(
+    ['studio-api']="../studio_api"
+)
 
 # for edit extension
 # declare -Ag wenv_files=()

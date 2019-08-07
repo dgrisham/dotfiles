@@ -5,17 +5,23 @@ wenv_def() {
     WENV_DEPS=()
     WENV_PROJECT=''
     WENV_TASK=''
-    WENV_EXTENSIONS=()
+    WENV_EXTENSIONS=('ssh-agent')
 
     startup_wenv() {
         wenv start -d inspire-vagrant
         wenv cd inspire-vagrant
-        until [[ -d "$WENV_DIR"  ]]; do :; done
+        until [[ -d "$WENV_DIR" ]]; do :; done
         wenv cd
     }
     shutdown_wenv() {}
     bootstrap_wenv() {}
 }
+
+vagrant_run() {
+    wenv cd inspire-vagrant
+    monitor git "vagrant ssh inspirefitness -- -t '$@'"""
+}
+alias vrun='vagrant_run'
 
 # for c extension
 # declare -Ag wenv_dirs=()
