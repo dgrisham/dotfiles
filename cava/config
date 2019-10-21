@@ -22,8 +22,8 @@ sensitivity = 100
 # The number of bars (0-200). 0 sets it to auto (fill up console).
 # Bars' width and space between bars in number of characters.
 bars = 0
-bar_width = 0.5
-bar_spacing = 0
+bar_width = 1
+bar_spacing = 1
 
 # Lower and higher cutoff frequencies for lowest and highest bars
 # the bandwidth of the visualizer.
@@ -129,7 +129,7 @@ gravity = 60
 # not able to restore color definitions on exit, simply restart your terminal to restore colors.
 gradient = 1
 gradient_count = 4
-gradient_color_1 = '#516567'
-gradient_color_2 = '#bca077'
-gradient_color_3 = '#93986F'
-gradient_color_4 = '#CEA062'
+gradient_color_1 = '#0E0D0D'
+gradient_color_2 = '#736A72'
+gradient_color_3 = '#946A62'
+gradient_color_4 = '#6A6E8A'

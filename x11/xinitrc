@@ -46,7 +46,9 @@ xrandr --addmode HDMI-1 2560x1440R
 
 $HOME/.screenlayout/two-monitors.sh
 
-$HOME/bin/fehbg
+# start mdpas (enabling via systemd not working)
+systemctl --user start mpd
+systemctl --user start mpdas
 
 exec i3
 #exec dwm

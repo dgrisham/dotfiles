@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+
+wenv_def() {
+    WENV_DIR="/mnt/vm/dev/payment-processor"
+    WENV_DEPS=('inspire-vagrant')
+    WENV_PROJECT=''
+    WENV_TASK=''
+    WENV_EXTENSIONS=('c' 'edit')
+
+    startup_wenv() {
+        wenv start -d inspire-vagrant
+        wenv cd inspire-vagrant
+        until [[ -d "$WENV_DIR" ]]; do sleep 1; done
+        wenv cd
+    }
+    shutdown_wenv() {}
+    bootstrap_wenv() {}
+}
+
+# for c extension
+declare -Ag wenv_dirs=()
+
+# for edit extension
+declare -Ag wenv_files=()

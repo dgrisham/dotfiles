@@ -36,7 +36,7 @@ export PATH="$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 # config
 
 ## beets config
-#export BEETSDIR="$DOTFILES/beets"
+export BEETSDIR="$DOTFILES/beets"
 
 ## cbgp (libgds)
 #export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/lib/pkgconfig"

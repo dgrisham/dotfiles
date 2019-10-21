@@ -234,5 +234,5 @@ bar {
     # status_command conky -c ~/.config/conky/conkyrc.lua
 }
 
-exec_always --no-startup-id "$DOTFILES/fehbg"
+exec_always --no-startup-id "$BIN/fehbg"
 exec --no-startup-id compton -b --config "$DOTFILES/compton/compton.conf"

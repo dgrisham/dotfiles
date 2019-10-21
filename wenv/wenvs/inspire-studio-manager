@@ -5,7 +5,7 @@ wenv_def() {
     WENV_DEPS=('inspire-vagrant')
     WENV_PROJECT=''
     WENV_TASK=''
-    WENV_EXTENSIONS=('c')
+    WENV_EXTENSIONS=('c' 'edit')
 
     startup_wenv() {
         wenv start -d inspire-vagrant
@@ -20,7 +20,16 @@ wenv_def() {
 # for c extension
 declare -Ag wenv_dirs=(
     ['studio-api']="../studio_api"
+    ['wiki']="$SRC/inspire/studio-manager.wiki"
+    ['api']="$SRC/inspire/api-documentation"
 )
 
 # for edit extension
-# declare -Ag wenv_files=()
+declare -Ag wenv_files=(
+    ['api']="${wenv_dirs[api]}/reference/studio-manager/openapi.yaml"
+)
+
+reset_studio_db() {
+    vagrant_run 'sudo su -l postgres -c "psql -f ~vagrant/dev/studio-manager/tables.sql && psql -f ~vagrant/dev/studio-manager/db-init.sql"'
+}
+alias rsd='reset_studio_db'
