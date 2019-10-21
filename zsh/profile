@@ -15,7 +15,7 @@ source $DOTFILES/zsh/completion/wenv.bash
 #source $SRC/keybase-completion/keybase
 
 ## rustup
-source $DOTFILES/zsh/completion/rustup.bash
+#source $DOTFILES/zsh/completion/rustup.bash
 
 # path
 

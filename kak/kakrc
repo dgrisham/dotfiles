@@ -331,6 +331,10 @@ plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-palette"
 plug "TeddyDD/kakoune-lf"
 
+plug "ul/kak-lsp" do %{
+    cargo install --locked --force --path .
+}
+
 plug "occivink/kakoune-expand" config %{
     map -docstring "expand" global user x ': expand<ret>'
     # 'lock' mapping where pressing <space> repeatedly will expand the selection

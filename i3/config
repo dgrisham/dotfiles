@@ -51,7 +51,7 @@ bindsym $mod+Return exec urxvt
 bindsym --release $mod+z exec lock
 
 # browser
-bindsym $mod+b exec google-chrome-stable
+bindsym $mod+b exec chromium
 # spotify
 bindsym $mod+m exec spotify
 # discord
