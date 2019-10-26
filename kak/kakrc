@@ -2,8 +2,27 @@
 
 # (case-insensitive) search
 map global user / '/(?i)' -docstring 'case-insensitive search'
-map global user s 's(?i)' -docstring 'case-insensitive select'
 # map global user S 'S(?i)'
+
+# commenting
+declare-user-mode selection
+map global selection i 's(?i)' -docstring 'case-insensitive select'
+def selection-exclude %{ execute-keys %sh{
+    printf 's[^\\n]+<left><left>'
+}}
+map global selection e :selection-exclude<ret> -docstring 'select all except input character group'
+def -hidden selection %{ enter-user-mode selection }
+map global user s :selection<ret> -docstring 'selection shortcuts'
+
+# def header %{
+#     on-key %{ %sh{
+#         case "$kak_key" in
+#             '1') echo comment-line; echo 'exec hxypj<a-h>f\ l<a-l>r=o<esc>h<a-h>d' ;;
+#             '2') echo comment-line; echo 'exec hxypj<a-h>f\ l<a-l>r-o<esc>h<a-h>d' ;;
+#             # '3') echo comment-line; echo 'exec I##<esc>A<ret><esc>hd' ;;
+#         esac
+#     } }
+# }
 
 # add line numbers
 hook global KakBegin .* %{addhl global/ number-lines -relative}
@@ -13,7 +32,7 @@ hook global KakBegin .* %{addhl global/ number-lines -relative}
     #addhl regex ^\V{80}(\V) 1:Error
 #}
 hook global WinCreate .*[.](md|tex|rst) %{
-    set buffer autowrap_column 80
+    set buffer autowrap_column 200
     autowrap-enable
 }
 
@@ -36,14 +55,14 @@ set global scrolloff 12,0
 set global indentwidth 4
 set global tabstop 4
 ## 2-space tabs for Haskell
-hook global BufSetOption filetype=.*?(haskell|ruby) %{
+hook global BufSetOption filetype=.*?(haskell|ruby|yaml) %{
     set buffer tabstop 2
     set buffer indentwidth 2
 }
-hook global InsertChar \t %{ exec -draft -itersel h@ }
+# hook global InsertChar \t %{ exec -draft -itersel h@ }
 
-# soft tabs (excluding makefiles and Go)
-hook global BufSetOption filetype=.*?(go|makefile) %{
+# # soft tabs (excluding makefiles and Go)
+hook global BufSetOption filetype=(?!go)(?!makefile).* %{
     hook buffer InsertChar \t %{ exec -draft -itersel h@ }
 }
 
@@ -121,7 +140,7 @@ map global tmux c ':tmux-terminal-window kak -c %val{session}<ret>' \
     -docstring 'new window'
 map global tmux y ':nop %sh{tmux set-buffer "${kak_selection}"}<ret>' \
     -docstring 'yank primary selection to tmux buffer'
-map global tmux p '!tmux show-buffer<ret>' \
+map global tmux p 'o<esc>!tmux show-buffer<ret>d' \
     -docstring 'paste tmux buffer contents'
 map global tmux r ':tmux-repl<ret>' -docstring 'prefix for tmux repl commands'
 def -hidden tmux %{ enter-user-mode tmux }
@@ -172,7 +191,21 @@ hook global BufSetOption filetype=python %!
 # ==
 
 hook global BufSetOption filetype=go %!
-    map global user d 'ofmt.Printf(": %v\n", )<esc>h<a-a>bs(?=[:)])<ret>:lineindent -1<ret>i' -docstring "debug print statement"
+    declare-user-mode write-code-template
+    map global write-code-template d 'ofmt.Printf(": %v\n", )<esc>h<a-a>bs(?=[:)])<ret>:lineindent -1<ret>i' -docstring 'Printf debug statement'
+    map global write-code-template l 'alog.WithFields(logrus.Fields{"error": err}).Error("")<esc><ret>:lineindent -1<ret>hhi' -docstring 'logrus error'
+    map global write-code-template c 'I* <esc>A *<esc>xypI<esc>r/l<a-l>r*jxypjr/I<esc><a-l>Hr*;' -docstring 'header comment block'
+    map global write-code-template b '<a-i>p<a-s>I* <esc>A *<esc>)<space>xypI<esc>r/l<a-l>r*jxypjr/I<esc><a-l>Hr*;' -docstring 'header comment block'
+    map global user w ':enter-user-mode write-code-template<ret>' -docstring 'write code template'
+!
+
+# SQL
+# ===
+
+hook global BufSetOption filetype=sql %!
+    declare-user-mode write-code-template
+    map global write-code-template c 'I-- <esc>A --<esc>xypHr-jxypj<a-h>r-;' -docstring 'header comment block'
+    map global user w ':enter-user-mode write-code-template<ret>' -docstring 'write code template'
 !
 
 # Javascript
@@ -265,62 +298,23 @@ hook global BufSetOption filetype=(restructuredtext) %{
     map global user r :role<ret> -docstring 'insert role'
 }
 
-# def add-surround %!on-key %@exec %sh&
-#   case "$kak_key" in
-#       "<lt>") key="<" ;;
-#       "<gt>") key=">" ;;
-#       "<space>") key=" " ;;
-#       \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
-#       *) key="$kak_key" ;;
-#   esac
+# inline git blame
+# ----------------
 
-#   open="$key"
-#   close="$key"
-#   case "$key" in
-#       "("|")") open="("; close=")" ;;
-#       "["|"]") open="["; close="]" ;;
-#       "{"|"}") open="{"; close="}" ;;
-#       "<"|">") open="<"; close=">" ;;
-#   esac
+define-command -hidden git-blame-hover -docstring "Render git blame" %{ evaluate-commands %sh{
+    blame="$(git blame -L ${kak_cursor_line},+1 ${kak_buffile} | grep -oP '^([^)]+)\)')"
+    summary="$(git blame --line-porcelain -L 11,+1 main.go | grep -oP '(?<=summary )[^\n]+')"
+    printf "info -anchor %d.%d '%s %s'" ${kak_cursor_line} ${kak_cursor_column} "$blame $summary"
+}}
+map global user h :git-blame-hover<ret> -docstring 'git blame hover'
 
-#   epilogue=${close//?/H}
+# Formatting
+# ----------
 
-#   open=${open/</<lt>}
-#   close=${close/>/<gt>}
-
-#   open=${open/ /<space>}
-#   close=${close/ /<space>}
-
-#   echo "i$open<esc>a$close<esc>$epilogue"
-# &@!
-
-# def delete-surround %!on-key %@exec %sh&
-#   case "$kak_key" in
-#       "<lt>") key="<" ;;
-#       "<gt>") key=">" ;;
-#       "<space>") key=" " ;;
-#       \<*\>) echo ":echo<space>no<ret>"; exit 1 ;;
-#       "*"|"."|"?"|"\\") key="\\$kak_key" ;;
-#       *) key="$kak_key" ;;
-#   esac
-
-#   open="$key"
-#   close="$key"
-#   case "$key" in
-#       "("|")") open="\("; close="\)" ;;
-#       "["|"]") open="\["; close="\]" ;;
-#       "{"|"}") open="{"; close="}"   ;;
-#       "<"|">") open="<"; close=">"   ;;
-#   esac
-
-#   open=${open/</<lt>}
-#   close=${close/>/<gt>}
-
-#   open=${open/ /<space>}
-#   close=${close/ /<space>}
-
-#   echo "\"eZ<a-a>${kak_key}s${open}|${close}<ret>d<space>\"ez
-# &@!
+hook global WinSetOption filetype=go %{
+    hook buffer -group format BufWritePost .* %{ evaluate-commands %sh{ gofumports -e -w "$kak_buffile" }; edit! }
+    map global user g :go-format<ret> -docstring 'format'
+}
 
 # Plugins
 # =======
@@ -331,21 +325,12 @@ plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-palette"
 plug "TeddyDD/kakoune-lf"
 
-plug "ul/kak-lsp" do %{
-    cargo install --locked --force --path .
-}
-
 plug "occivink/kakoune-expand" config %{
     map -docstring "expand" global user x ': expand<ret>'
     # 'lock' mapping where pressing <space> repeatedly will expand the selection
     declare-user-mode expand
     map -docstring "expand" global expand <space> ': expand<ret>'
     map -docstring "expand (lock)" global user X       ': expand; enter-user-mode -lock expand<ret>'
-}
-
-plug "TeddyDD/kakoune-edit-or-dir" config %{
-    unalias global e edit
-    alias global e edit-or-dir
 }
 
 plug "andreyorst/fzf.kak" config %{
@@ -362,7 +347,7 @@ plug "alexherbo2/auto-pairs.kak" config %{
     }
 }
 
-plug "lenormf/kakoune-extra" load %{
+plug "lenormf/kakoune-extra" branch "dev" load %{
     comnotes.kak
     grepmenu.kak
     lineindent.kak
@@ -391,50 +376,42 @@ plug "Delapouite/kakoune-buffers" config %{
     alias global bo! buffer-only-force
 }
 
-# inline git blame
-# ----------------
-
-define-command -hidden git-blame-hover -docstring "Render git blame" %{ evaluate-commands %sh{
-    blame="$(git blame -L ${kak_cursor_line},+1 ${kak_buffile} | grep -oP '^([^)]+)\)')"
-    summary="$(git blame --line-porcelain -L 11,+1 main.go | grep -oP '(?<=summary )[^\n]+')"
-    printf "info -anchor %d.%d '%s %s'" ${kak_cursor_line} ${kak_cursor_column} "$blame $summary"
-}}
-map global user h :git-blame-hover<ret> -docstring 'git blame hover'
-
-# Formatting and LSP
-# ------------------
-
-hook global WinSetOption filetype=go %{
-    hook buffer -group format BufWritePost .* %{ evaluate-commands %sh{ goimports -e -w "$kak_buffile" }; edit! }
-    map global user g :go-format<ret> -docstring 'format'
-}
-
-hook global WinSetOption filetype=rust %{
-    set-option global lsp_server_configuration rust.clippy_preference="on"
-}
-
-hook global WinSetOption filetype=(python|rust) %{
-    hook -group lsp window BufWritePre .* lsp-formatting-sync
-    map global user g :lsp-formatting<ret> -docstring 'lsp format'
-}
-
-hook global BufSetOption filetype=python %{
-    set-option global lsp_server_configuration pyls.configurationSources=['flake8']
-}
-
-hook global BufSetOption filetype=(go|python|sh|javascript|rust) %{
-    map global user i :lsp-hover<ret> -docstring 'hover lsp message for current line'
-    map global goto n "<esc>:lsp-find-error --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to next lsp error'
-    map global goto p "<esc>:lsp-find-error --previous --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to previous lsp error'
-
-    # declare-user-mode lsp
-    declare-user-mode lsp-rename
-    map global lsp-rename r ':lsp-rename-prompt<ret>' -docstring 'prompt'
-    map global lsp-rename c ':lsp-rename ' -docstring 'command'
-    map global lsp r ':enter-user-mode lsp-rename<ret>' -docstring 'lsp-rename'
-    map global user l ':enter-user-mode lsp<ret>' -docstring 'lsp'
-}
-eval %sh{kak-lsp --kakoune -s $kak_session}
-set global lsp_hover_anchor true
-lsp-enable
+# eval %sh{kak-lsp --config ~/dotfiles/kak-lsp/kak-lsp.toml --kakoune -s $kak_session}
 # nop %sh{ (kak-lsp -s $kak_session -vvv ) > /tmp/kak-lsp.log 2>&1 < /dev/null & }
+plug "ul/kak-lsp" do %{
+    cargo build --release --locked
+    cargo install --force --path .
+} config %{
+    define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
+
+    hook global WinSetOption filetype=rust %{
+        set-option global lsp_server_configuration rust.clippy_preference="on"
+    }
+
+    # hook global WinSetOption filetype=(python|rust) %{
+    #     hook -group lsp window BufWritePre .* lsp-formatting-sync
+    #     map global user g :lsp-formatting<ret> -docstring 'lsp format'
+    # }
+
+    hook global BufSetOption filetype=python %{
+        set-option global lsp_server_configuration pyls.configurationSources=['flake8']
+    }
+
+    hook global WinSetOption filetype=(go|python|sh|javascript|rust) %{
+        set global lsp_hover_anchor true
+        map global user i :lsp-hover<ret> -docstring 'hover lsp message for current line'
+        map global goto n "<esc>:lsp-find-error --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to next lsp error'
+        map global goto p "<esc>:lsp-find-error --previous --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to previous lsp error'
+
+        # declare-user-mode lsp
+        declare-user-mode lsp-rename
+        map global lsp-rename e ':lsp-rename-prompt<ret>' -docstring 'edit'
+        map global lsp-rename r ':lsp-rename ' -docstring 'rename'
+        map global lsp r ':enter-user-mode lsp-rename<ret>' -docstring 'lsp-rename'
+        map global user l ':enter-user-mode lsp<ret>' -docstring 'lsp'
+
+    }
+    lsp-enable
+
+    hook global KakEnd .* lsp-exit
+}
