@@ -26,7 +26,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
 -- user variables
-local wlandev = 'wlan0'
+local wlandev = 'wlp3s0'
 local ethdev = 'eth0'
 local ci = color_indicator_bright
 
@@ -82,8 +82,8 @@ ${if_existing /sys/class/net/eth0/operstate up}
     {"full_text":"|", "color":"\#545454",
      "separator":false, "separator_block_width":6},
 ${endif}
-${if_existing /sys/class/net/wlan0/operstate up}
-    {"full_text":"wlan0 up", "color":"\#ffffff",
+${if_existing /sys/class/net/wlp3s0/operstate up}
+    {"full_text":"wlp3s0 up", "color":"\#ffffff",
      "separator":false, "separator_block_width":6},
     {"full_text":"|", "color":"\#545454",
      "separator":false, "separator_block_width":6},
@@ -143,8 +143,8 @@ ${endif}
 --     {"full_text":"|", "color":"\#545454",
 --      "separator":false, "separator_block_width":6},
 -- ${endif}
--- ${if_existing /sys/class/net/wlan0/operstate up}
---     {"full_text":"wlan0 up", "color":"\#00ff00",
+-- ${if_existing /sys/class/net/wlp3s0/operstate up}
+--     {"full_text":"wlp3s0 up", "color":"\#00ff00",
 --      "separator":false, "separator_block_width":6},
 --     {"full_text":"|", "color":"\#545454",
 --      "separator":false, "separator_block_width":6},

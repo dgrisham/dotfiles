@@ -1,0 +1,14 @@
+[unit]
+Description=Start wifi on boot
+After=network-pre.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+StandardOutput=syslog
+Environment=WIFI_CONFIG=/etc/wpa_supplicant/wifi_networks
+Environment=WIFI_CARD=wlp3s0
+ExecStart=/usr/local/bin/wifi connect
+
+[Install]
+WantedBy=multi-user.target
