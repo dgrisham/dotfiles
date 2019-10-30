@@ -1,8 +1,8 @@
 #!/usr/bin/env zsh
 
 wenv_def() {
-    WENV_DIR="/mnt/vm/dev/encoder"
-    WENV_DEPS=()
+    WENV_DIR="/mnt/vm/dev/encoder-v2"
+    WENV_DEPS=('inspire-vagrant')
     WENV_PROJECT=''
     WENV_TASK=''
     WENV_EXTENSIONS=()
@@ -10,7 +10,7 @@ wenv_def() {
     startup_wenv() {
         wenv start -d inspire-vagrant
         wenv cd inspire-vagrant
-        until [[ -d "$WENV_DIR"  ]]; do :; done
+        until [[ -d "$WENV_DIR" ]]; do :; done
         wenv cd
     }
     shutdown_wenv() {}

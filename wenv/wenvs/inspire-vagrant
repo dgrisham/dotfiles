@@ -8,19 +8,89 @@ wenv_def() {
     WENV_EXTENSIONS=('ssh-agent')
 
     startup_wenv() {
-        systemctl --user start ssh-agent
+        ssh_agent start
         vagrant up inspirefitness || vagrant provision inspirefitness
         sshfs vagrant:/home/vagrant /mnt/vm
     }
     shutdown_wenv() {
-        systemctl --user stop ssh-agent
-        vagrant down inspirefitness
+        vagrant halt inspirefitness
+        ssh_agent stop
     }
     bootstrap_wenv() {}
 }
 
-export GITLAB_PRIVATE_KEY="$HOME/.ssh/id_rsa"
+export GITLAB_PRIVATE_KEY="$HOME/.ssh/git"
 export HOST_PRIVATE_KEY="$HOME/.ssh/vm-inspire"
+
+vagrant_ssh() {
+    wenv cd inspire-vagrant >/dev/null
+    vagrant ssh inspirefitness
+    wenv cd >/dev/null
+}
+alias vssh='vagrant_ssh'
+
+vagrant_run() {
+    wd="$(pwd)"
+    wenv cd inspire-vagrant >/dev/null
+    vagrant ssh inspirefitness -- -t "$@"
+    cd "$wd"
+}
+alias vr='vagrant_run'
+
+vagrant_run_persist() {
+    wd="$(pwd)"
+    wenv cd inspire-vagrant >/dev/null
+    monitor git "vagrant ssh inspirefitness -- -t '$@'"""
+    cd "$wd"
+}
+alias vrp='vagrant_run_persist'
+
+vagrant_run_go() {
+    arg="$1"
+    shift
+    case "$arg" in
+        'build')
+            cmd="cd dev/$1; go fmt ./...; go build"
+            ;;
+        'run')
+            cmd="cd dev/$1; go fmt ./...; go build && ./$1"
+            ;;
+    esac
+    vagrant_run_persist "$cmd"
+}
+alias vrg='vagrant_run_go'
+_vagrant_run_go() {
+    COMPREPLY=()
+    complete +o default
+
+    local word="${COMP_WORDS[COMP_CWORD]}"
+    local prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    if (( COMP_CWORD == 1 )); then
+        local opts="build run"
+        COMPREPLY=( $(compgen -W "${opts}" -- ${word}) )
+    elif (( COMP_CWORD == 2 )); then
+        local opts="encoder-v2 scheduler studio-manager vm-manager"
+        COMPREPLY=( $(compgen -W "${opts}" -- ${word}) )
+    fi
+}
+complete -F _vagrant_run_go vagrant_run_go
+
+broadcast() {
+    tmux rename-window 'broadcast'
+    wenv_tmux_split vertical 'vagrant_run_go run vm-manager'
+    wenv_tmux_split horizontal 'vagrant_run_go run auth_service'
+    tmux select-pane -U
+    wenv_tmux_split horizontal 'vagrant_run_go run scheduler'
+    tmux select-pane -L
+    vagrant_run_go run studio-manager
+}
+
+vagrant_run_sql() {
+        scp db.sql inspire-vagrant:~
+        vagrant_run 'sudo cp db.sql ~postgres/dgrisham-tmp-db.sql && sudo su -l postgres -c "psql -f ~/dgrisham-tmp-db.sql"'
+}
+alias vsql='vagrant_run_sql'
 
 # for c extension
 # declare -Ag wenv_dirs=()
