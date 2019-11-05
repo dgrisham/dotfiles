@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+
+wenv_def() {
+    WENV_DIR="/home/grish/scratch/witness/windmill-client"
+    WENV_DEPS=()
+    WENV_PROJECT=''
+    WENV_TASK=''
+    WENV_EXTENSIONS=()
+
+    startup_wenv() {}
+    shutdown_wenv() {}
+    bootstrap_wenv() {}
+}
+
+build() {
+    wenv cd
+    ./proto.sh
+    ./soy.sh
+    ./compile.sh local
+    cd -
+}
+
+run() {
+    wenv cd
+    python -m http.server
+    cd -
+}
+
+# for c extension
+# declare -Ag wenv_dirs=()
+
+# for edit extension
+# declare -Ag wenv_files=()
