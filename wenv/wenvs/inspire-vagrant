@@ -19,7 +19,7 @@ wenv_def() {
     bootstrap_wenv() {}
 }
 
-export GITLAB_PRIVATE_KEY="$HOME/.ssh/git"
+export GITLAB_PRIVATE_KEY="$HOME/.ssh/id_rsa"
 export HOST_PRIVATE_KEY="$HOME/.ssh/vm-inspire"
 
 vagrant_ssh() {
