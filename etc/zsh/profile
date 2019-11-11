@@ -45,6 +45,9 @@ export VIMRUNTIME="/usr/share/nvim/runtime"
 ### open fbterm/x automatically, depending on tty
 virtual_terminal="$( tty | grep -oE ....$ )"
 case "$virtual_terminal" in
+    tty*)
+        systemctl start wifi
+    ;&
     tty1|tty2)
         startx
         # if ! startx; then
