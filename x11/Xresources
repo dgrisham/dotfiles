@@ -27,12 +27,11 @@ URxvt.cursorColor: #B47CAD
 URxvt.scrollBar: false
 
 ! disable searchable scrollback
-URxvt.perl-ext-common: "default, -searchable-scrollback"
+URxvt.perl-ext-common: "default,font-size,-searchable-scrollback"
+URxvt.keysym.C-backslash: font-size:reset
 
 URxvt.iso14755: true
 URxvt.iso14755_52: false
-
-URxvt.perl-ext-common:...,font-size
 
 ! ! BLK
 ! URxvt.color0: t_bg_bump
