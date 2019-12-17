@@ -19,6 +19,34 @@ wenv_def() {
     bootstrap_wenv() {}
 }
 
+# curl with auth included
+alias curla='scurl -H "x-swagger-auth: 8a7bb0ae88e8d1f613e89bbaa85e62bd"'
+# curl various endpoints
+curli() {
+    local url
+    case "$1" in
+        v|vagrant)
+            url='http://inspirefitness.vm:9090'
+            ;;
+        b|beta)
+            url='https://beta.inspirefitness.com/api/studio-manager'
+            ;;
+        *)
+            echo "error: unsupported destination '$1'" >&2
+            return 1
+            ;;
+    esac
+    shift
+
+    local request=$(printf '%s' "$1" | tr '[a-z]' '[A-Z]')
+    shift
+
+    local dst="$1"
+    shift
+
+    curla -X"$request" "$url$dst" $@
+}
+
 export GITLAB_PRIVATE_KEY="$HOME/.ssh/git"
 export HOST_PRIVATE_KEY="$HOME/.ssh/vm-inspire"
 
@@ -53,7 +81,7 @@ vagrant_run_go() {
             cmd="cd dev/$1; go fmt ./...; go build"
             ;;
         'run')
-            cmd="cd dev/$1; go fmt ./...; go build && ./$1"
+            cmd="cd dev/$1; go fmt ./...; go build && AWS_ACCESS_KEY_ID=AKIAIZZVPKGQPUPYINGQ AWS_SECRET_ACCESS_KEY=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 ./$@"
             ;;
     esac
     vagrant_run_persist "$cmd"
@@ -87,8 +115,8 @@ broadcast() {
 }
 
 vagrant_run_sql() {
-        scp db.sql inspire-vagrant:~
-        vagrant_run 'sudo cp db.sql ~postgres/dgrisham-tmp-db.sql && sudo su -l postgres -c "psql -f ~/dgrisham-tmp-db.sql"'
+    scp db.sql inspire-vagrant:~
+    vagrant_run 'sudo cp db.sql ~postgres/dgrisham-tmp-db.sql && sudo su -l postgres -c "psql -f ~/dgrisham-tmp-db.sql"'
 }
 alias vsql='vagrant_run_sql'
 
