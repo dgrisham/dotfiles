@@ -90,12 +90,12 @@ ${if_existing /sys/class/net/wlp3s0/operstate up}
 ${endif}
 
 # Battery
-{"full_text":"${exec cat /sys/class/power_supply/BAT0/status | cut -c1-3 | tr '/a-z/' '/A-Z/'}", "color":"\#aaaaaa",
- "separator":false, "separator_block_width":6 },
-{"full_text":"${battery_percent BAT0}%", "color":"\#aaaaaa",
- "separator":false, "separator_block_width":6 },
-{"full_text":"|", "color":"\#545454",
- "separator":false, "separator_block_width":6},
+#{"full_text":"${exec cat /sys/class/power_supply/BAT0/status | cut -c1-3 | tr '/a-z/' '/A-Z/'}", "color":"\#aaaaaa",
+# "separator":false, "separator_block_width":6 },
+#{"full_text":"${battery_percent BAT0}%", "color":"\#aaaaaa",
+# "separator":false, "separator_block_width":6 },
+#{"full_text":"|", "color":"\#545454",
+# "separator":false, "separator_block_width":6},
 
 # Time:
     {"full_text":"${time %m-%d}", "color":"\#bfbfbf",
