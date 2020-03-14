@@ -16,5 +16,10 @@ done
 
 export LS_COLORS="$LS_COLORS:di=01;36"
 
+bindkey '^ ' autosuggest-accept
+ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(
+    vi-end-of-line
+)
+
 # necessary for WENVs
 eval "$WENV_EXEC"

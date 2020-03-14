@@ -4,7 +4,6 @@
 map global user / '/(?i)' -docstring 'case-insensitive search'
 # map global user S 'S(?i)'
 
-# commenting
 declare-user-mode selection
 map global selection i 's(?i)' -docstring 'case-insensitive select'
 def selection-exclude %{ execute-keys %sh{
@@ -13,16 +12,6 @@ def selection-exclude %{ execute-keys %sh{
 map global selection e :selection-exclude<ret> -docstring 'select all except input character group'
 def -hidden selection %{ enter-user-mode selection }
 map global user s :selection<ret> -docstring 'selection shortcuts'
-
-# def header %{
-#     on-key %{ %sh{
-#         case "$kak_key" in
-#             '1') echo comment-line; echo 'exec hxypj<a-h>f\ l<a-l>r=o<esc>h<a-h>d' ;;
-#             '2') echo comment-line; echo 'exec hxypj<a-h>f\ l<a-l>r-o<esc>h<a-h>d' ;;
-#             # '3') echo comment-line; echo 'exec I##<esc>A<ret><esc>hd' ;;
-#         esac
-#     } }
-# }
 
 # add line numbers
 hook global KakBegin .* %{addhl global/ number-lines -relative}
@@ -83,6 +72,7 @@ hook global BufCreate .*[.](js|jsx|ts|tsx|html) %{
     set buffer tabstop 2
     set buffer indentwidth 2
 }
+# set-option global disabled_hooks '.*-trim-indent'
 
 # map global user f '/%opt{$function_start}<a-n>?%opt{$function_end}<ret>' -docstring '(not working)'
 
@@ -178,7 +168,7 @@ declare-user-mode commenting
 map global commenting c ':comment-line<ret>' -docstring 'line comment'
 map global commenting b '<a-i>pH:comment-block<ret>' -docstring 'block comment'
 def comment %{ enter-user-mode commenting }
-map global user c :comment<ret>
+map global user c :comment<ret> -docstring 'comment commands'
 
 # Python
 # =======
@@ -324,6 +314,13 @@ plug "andreyorst/plug.kak" noload
 plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-palette"
 plug "TeddyDD/kakoune-lf"
+
+plug "occivink/kakoune-snippets" config %{
+    set-option -add global snippets_directories "%opt{plug_install_dir}/kakoune-snippet-collection/snippets"
+    set global snippets_auto_expand false
+    map global user m :snippets-menu<ret> -docstring 'snippets'
+}
+plug "andreyorst/kakoune-snippet-collection"
 
 plug "occivink/kakoune-expand" config %{
     map -docstring "expand" global user x ': expand<ret>'

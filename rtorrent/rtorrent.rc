@@ -5,6 +5,9 @@
 # link with commands for v0.9:
 #https://github.com/rakshasa/rtorrent/wiki/rTorrent-0.9-Comprehensive-Command-list-(WIP)
 
+network.scgi.open_port = 127.0.0.1:5000
+encoding.add = UTF-8
+
 # Maximum and minimum number of peers to connect to per torrent.
 #min_peers = 40
 #max_peers = 100
