@@ -140,7 +140,7 @@ map global tmux c ':tmux-terminal-window kak -c %val{session}<ret>' \
     -docstring 'new window'
 map global tmux y ':nop %sh{tmux set-buffer "${kak_selection}"}<ret>' \
     -docstring 'yank primary selection to tmux buffer'
-map global tmux p 'o<esc>!tmux show-buffer<ret>d' \
+map global tmux p '<esc>!tmux show-buffer<ret>' \
     -docstring 'paste tmux buffer contents'
 map global tmux r ':tmux-repl<ret>' -docstring 'prefix for tmux repl commands'
 def -hidden tmux %{ enter-user-mode tmux }
