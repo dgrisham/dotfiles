@@ -62,7 +62,7 @@ conky.text = [[
 [
 # MPD
 ${if_mpd_playing}
-    {"full_text":"♫", "color":"\#ffffff",
+    {"full_text":"♬", "color":"\#ffffff",
      "separator":false, "separator_block_width":6},
     {"full_text":"${mpd_artist 27}", "color" : "\#888888",
      "separator" : false, "separator_block_width":3 },

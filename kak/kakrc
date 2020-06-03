@@ -25,6 +25,8 @@ hook global WinCreate .*[.](md|tex|rst) %{
     autowrap-enable
 }
 
+map global user W '|fmt --width 80 --goal 80<ret>' -docstring 'Wrap to 80 characters'
+
 # add brackets highlighting
 hook global KakBegin .* %{addhl global/ show-matching}
 
@@ -44,7 +46,7 @@ set global scrolloff 12,0
 set global indentwidth 4
 set global tabstop 4
 ## 2-space tabs for Haskell
-hook global BufSetOption filetype=.*?(haskell|ruby|yaml) %{
+hook global BufSetOption filetype=.*?(haskell|ruby|yaml|html|css) %{
     set buffer tabstop 2
     set buffer indentwidth 2
 }
@@ -407,7 +409,10 @@ plug "ul/kak-lsp" do %{
         map global lsp r ':enter-user-mode lsp-rename<ret>' -docstring 'lsp-rename'
         map global user l ':enter-user-mode lsp<ret>' -docstring 'lsp'
 
+        echo -debug "Enabling LSP for filetype %opt{filetype}"
+        # lsp-enable-window
     }
+
     lsp-enable
 
     hook global KakEnd .* lsp-exit

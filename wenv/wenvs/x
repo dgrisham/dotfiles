@@ -19,11 +19,11 @@ pdf() {
 alias stm='LD_PRELOAD='"'"'/usr/$LIB/libstdc++.so.6 /usr/$LIB/libgcc_s.so.1 /usr/$LIB/libxcb.so.1 /usr/$LIB/libgpg-error.so'"'"' steam'
 
 # ncmpcpp/visualizer (for album art)
-if [[ ! -n "$TMUX" ]]; then
-    alias ncmpcpp='urxvt --shading 0 -e zsh -c "/bin/ncmpcpp ; zsh -i" &; exit'
-    # alias cava='urxvt --shading 0 -e zsh -c "/bin/cava ; zsh -i" &; exit'
-    alias cava='urxvt --shading 0 -e zsh -c "mpd_watch.sh \"mnuc2; dynamic_cava_colors >/dev/null 2>&1\" &; /usr/local/bin/cava; zsh -i" &; exit'
-fi
+# if [[ ! -n "$TMUX" ]]; then
+#     alias ncmpcpp='urxvt --shading 0 -e zsh -c "/bin/ncmpcpp ; zsh -i" &; exit'
+#     # alias cava='urxvt --shading 0 -e zsh -c "/bin/cava ; zsh -i" &; exit'
+#     alias cava='urxvt --shading 0 -e zsh -c "mpd_watch.sh \"mnuc2; dynamic_cava_colors >/dev/null 2>&1\" &; /usr/local/bin/cava; zsh -i" &; exit'
+# fi
 
 set_window_name() {
     eval 'precmd() {echo -ne "\033]0;'"$*"'\007"}'

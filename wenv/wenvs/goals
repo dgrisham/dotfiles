@@ -7,7 +7,8 @@ wenv_def() {
     WENV_BRANCH=''
     startup_wenv() {
         [[ -z "$TMUX" ]] && return 1
+        wenv_tmux_split v 'echo this is a great day to work on your goals and achieve great things!!!'
         wenv_tmux_split h
-        tmux send-keys 'kak goals.md' 'Enter'
+        tmux send-keys "$EDITOR goals.md" 'Enter'
     }
 }

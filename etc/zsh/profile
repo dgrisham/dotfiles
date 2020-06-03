@@ -46,10 +46,10 @@ export VIMRUNTIME="/usr/share/nvim/runtime"
 virtual_terminal="$( tty | grep -oE ....$ )"
 case "$virtual_terminal" in
     tty*)
-        systemctl start wifi
+        # systemctl start wifi
     ;&
     tty1|tty2)
-        startx
+        startx "$XDG_CONFIG_HOME/X11/xinitrc"
         # if ! startx; then
         #     current=$(ls -l /etc/X11/xorg.conf | rev | cut -f1 -d' ' | cut -f1 -d'.' | rev)
         #     if [[ "$current" = 'discrete' ]]; then

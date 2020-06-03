@@ -1,171 +1,37 @@
 #!/bin/zsh
 
 wenv_def() {
-    WENV_DIR="$GOPATH/src/github.com/ipfs/go-ipfs"
+    WENV_DIR="$SRC/ipfs/go-ipfs"
     WENV_DEPS=()
     WENV_PROJECT=''
     WENV_BRANCH=''
+    WENV_EXTENSIONS=('c' 'edit')
 
     bootstrap_wenv() {
-        go get -u github.com/whyrusleeping/gx
-        go get -u github.com/whyrusleeping/gx-go
-        go get -u -d github.com/ipfs/go-ipfs
-        go get -u -d github.com/ipfs/go-bitswap
-        go get -u -d github.com/ipfs/go-ipfs-config
+        local -a projects=('go-ipfs' 'go-bitswap' 'go-peertaskqueue')
 
-        cd "$GOPATH/src/github.com/ipfs/go-bitswap"
-        git remote add personal git@github.com:dgrisham/go-bitswap
-        git fetch personal impl/strategy-prq
-        git checkout impl/strategy-prq
-
-        cd "$GOPATH/src/github.com/ipfs/go-ipfs-config"
-        git remote add personal git@github.com:dgrisham/go-bitswap
-        git fetch personal experimental/bitswap-strategy-config
-        git checkout experimental/bitswap-strategy-config
-
-        cd "$GOPATH/src/github.com/ipfs/go-ipfs"
-        git remote add personal git@github.com:dgrisham/go-ipfs
-        git fetch personal impl/bitswap/strategy-prq
-        git checkout impl/bitswap/strategy-prq
-        make install
-        gx-go lock-gen > gx-lock.json
-        gx lock-install
-
-        for repo in 'go-bitswap' 'go-ipfs-config'; do
-            unlink "vendor/github.com/ipfs/$repo"
-            ln -s "../../../../$repo" "vendor/github.com/ipfs/$repo"
+        local owd=$(pwd)
+        local basedir=$(dirname $WENV_DIR)
+        cd $(dirname $WENV_DIR) >/dev/null
+        for p in $projects; do
+            git clone git@github.com:dgrisham/$p
+            cd $p >/dev/null
+            git remote add upstream https://github.com/ipfs/$p
+            git fetch upstream
+            cd $basedir >/dev/null
         done
-        # TODO: getting a make build error at this point, gotta debug
+
+        cd $WENV_DIR >/dev/null
+        go build
+
+        cd $owd >/dev/null
     }
     startup_wenv() {}
-}
-
-ipfs() {
-    case "$1" in
-        'public')      config='--config ~/.ipfs'
-                       shift
-                       ;;
-        'p'|'private') config='--config ~/.ipfs-private'
-                       shift
-                       ;;
-        *)             config=''
-                       ;;
-    esac
-    eval $GOPATH/bin/ipfs "$config" $@
+    shutdown_wenv() {}
 }
 
 declare -Ag wenv_dirs=(
-    ['bitswap']="$GOPATH/src/github.com/ipfs/go-bitswap"
-    ['ipfs-config']="$GOPATH/src/github.com/ipfs/go-ipfs-config"
-    ['gx']="$GOPATH/src/github.com/whyrusleeping/gx"
-    ['gx-go']="$GOPATH/src/github.com/whyrusleeping/gx-go"
+    ['bitswap']='../go-bitswap'
+    ['peertaskqueue']='../go-peertaskqueue'
 )
 declare -Ag wenv_files=()
-
-c() {
-    local flag_r=0
-    local wname=""
-    while getopts ":rn:" opt; do
-        case $opt in
-            r)
-                flag_r=1
-                ;;
-            n)
-                wname="$OPTARG"
-                ;;
-            \?)
-                echo "unknown option: -$OPTARG" >&2
-                ;;
-        esac
-    done
-    shift $((OPTIND-1))
-
-    local input="$1"
-    shift
-
-    [ "${wenv_dirs[$input]+0}" ] || { echo "no entry '$input'" >&2 ; return 1 }
-    dir="${wenv_dirs[$input]}"
-    (( flag_r == 1 )) && wname="$input"
-
-    local abs
-    if [[ $dir != /* ]]; then
-        abs=$(realpath --relative-to=. "$WENV_DIR/$dir")
-    else
-        abs=$dir
-    fi
-    cd "$abs"
-
-    [[ ! -z "$wname" ]] && tmux rename-window "$wname"
-}
-_c() {
-    COMPREPLY=()
-    complete +o default
-
-    local word="${COMP_WORDS[COMP_CWORD]}"
-    local prev="${COMP_WORDS[COMP_CWORD-1]}"
-
-    if (( COMP_CWORD == 1 )) && [[ ${word} == -* ]]; then
-        COMPREPLY=( $(compgen -W "-r" -- ${word}) )
-    elif (( COMP_CWORD == 1 )) || { ((COMP_CWORD == 2 )) && [[ ${prev} == -* ]]; }; then
-        local opts="${(k)wenv_dirs[@]}"
-        COMPREPLY=( $(compgen -W "${opts}" -- ${word}) )
-    fi
-}
-complete -F _c c
-
-edit() {
-    local flag_r=0
-    local wname=""
-    local opts=""
-    while getopts ":rn:o:" opt; do
-        case $opt in
-            r)
-                flag_r=1
-                ;;
-            n)
-                wname="$OPTARG"
-                ;;
-            o)
-                opts="$OPTARG"
-                ;;
-            \?)
-                echo "unknown option: -$OPTARG" >&2
-                ;;
-        esac
-    done
-    shift $((OPTIND-1))
-
-    local files=()
-    for arg in $@; do
-        [ "${wenv_files[$arg]+0}" ] || { echo "no entry '$arg'" >&2 ; return 1 }
-        files+="${wenv_files[$arg]}"
-    done
-    (( flag_r == 1 )) && wname="$1"
-
-    local abs=()
-    for file in $files; do
-        if [[ $file != /* ]]; then
-            abs+=($(realpath --relative-to=. "$WENV_DIR/$file"))
-        else
-            abs+=($file)
-        fi
-    done
-
-    [[ ! -z "$wname" ]] && tmux rename-window "$wname"
-    eval "$EDITOR $opts $abs"
-}
-_edit() {
-    COMPREPLY=()
-    complete +o default
-
-    local word="${COMP_WORDS[COMP_CWORD]}"
-    local prev="${COMP_WORDS[COMP_CWORD-1]}"
-
-    if [[ ${word} == -* ]]; then
-        COMPREPLY=($(compgen -W "-r -n -o" -- ${word}))
-    else
-        local opts="${(k)wenv_files[@]}"
-        COMPREPLY=($(compgen -W "${opts}" -- ${word}))
-    fi
-}
-complete -F _edit edit

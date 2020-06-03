@@ -28,7 +28,8 @@ export GOPATH="$HOME/.go"
 export PATH="$PATH:$GOPATH/bin"
 
 ## Rust Cargo path
-export PATH="$PATH:$HOME/.cargo/bin"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export PATH="$PATH:$CARGO_HOME/bin"
 
 ## yarn
 export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
@@ -52,3 +53,5 @@ export SKIM_DEFAULT_OPTIONS='--color=empty,query:255,fg:243,matched:226,current:
 
 # taskwarrior rc
 export TASKRC="$DOTFILES/task/taskrc"
+
+export TWITCH_STREAM_KEY='live_57133341_CBD8E5rVoI8McTefzMBxXwTkuHQXI5'

@@ -1,17 +1,17 @@
 #!/usr/bin/zsh
 
 # Source Prezto.
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+if [[ -s "$SRC/zprezto/init.zsh" ]]; then
+  source "$SRC/zprezto/init.zsh"
 fi
 
 # start mdpas (enabling via systemd not working)
 # systemctl --user start mpdas
 
-zsh_dir="$HOME/dotfiles/zsh"
+# zsh_dir="$HOME/dotfiles/zsh"
 env_files=('profile' 'aliases')
 for env_file in $env_files; do
-    [[ -f "$zsh_dir/$env_file" ]] && source "$zsh_dir/$env_file"
+    [[ -f "$ZDOTDIR/$env_file" ]] && source "$ZDOTDIR/$env_file"
 done
 
 export LS_COLORS="$LS_COLORS:di=01;36"
@@ -22,4 +22,4 @@ ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(
 )
 
 # necessary for WENVs
-eval "$WENV_EXEC"
+[[ -n "$WENV" ]] && wenv_exec "$WENV"

@@ -49,7 +49,7 @@ mpd_music_dir = ~/media/music/library/
 # }
 ##
 #
-visualizer_fifo_path = 
+visualizer_fifo_path = /tmp/mpd.fifo
 #
 ##
 ## Note: Below parameter is needed for ncmpcpp to determine which output
@@ -62,7 +62,7 @@ visualizer_fifo_path =
 ##
 ## If you set format to 44100:16:2, make it 'yes'.
 ##
-# visualizer_in_stereo = yes
+visualizer_in_stereo = yes
 #
 ##
 ## Note: Below parameter defines how often ncmpcpp has to "synchronize"
@@ -80,17 +80,17 @@ visualizer_fifo_path =
 #
 ## Available values: spectrum, wave, wave_filled, ellipse.
 
-visualizer_type = wave
-visualizer_look = ..
+# visualizer_type = wave_filled
+# visualizer_look = --
 # black and white
-visualizer_color = 242, 243, 244, 245, 246, 248, 249, 250, 251, 252, 253, 254, 255
+# visualizer_color = 242, 243, 244, 245, 246, 248, 249, 250, 251, 252, 253, 254, 255
 
-# visualizer_type = spectrum
-# visualizer_look = -|
+visualizer_type = wave
+visualizer_look = --
 # black and white
 # visualizer_color = 235, 237, 239, 241, 243, 245, 247, 249, 251, 253
 # ocean
-# visualizer_color = 240, 25, 26, 27, 28, 34, 40, 46, white
+visualizer_color = 241, 25, 26, 27, 28, 34, 40, 46, white
 # fire
 
 #visualizer_color = blue, magenta, red, yellow, white
@@ -281,7 +281,7 @@ song_columns_list_format = (50)[256]{t|f:Title} (20)[247]{b} (20)[251]{a} (7f)[2
 ## notifications etc.
 ##
 
-execute_on_song_change = "/home/grish/bin/mnuc"
+# execute_on_song_change = "/home/grish/bin/mnuc"
 
 ##
 ## Note: Custom command that will be executed each time player state
@@ -328,7 +328,7 @@ show_duplicate_tags = no
 ## Note: You can specify third character which will be used to build 'empty'
 ## part of progressbar.
 ##
-#progressbar_look = =>
+progressbar_look = ~>
 #
 ## Available values: database, playlist.
 ##
@@ -537,9 +537,9 @@ main_window_color = 255
 #
 #color2 = green
 #
-#progressbar_color = black:b
+progressbar_color = black:b
 #
-progressbar_elapsed_color = white:b
+progressbar_elapsed_color = 250:b
 #
 #statusbar_color = default
 #
