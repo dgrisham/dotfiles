@@ -21,7 +21,7 @@ hook global KakBegin .* %{addhl global/ number-lines -relative}
     #addhl regex ^\V{80}(\V) 1:Error
 #}
 hook global WinCreate .*[.](md|tex|rst) %{
-    set buffer autowrap_column 200
+    set buffer autowrap_column 120
     autowrap-enable
 }
 
@@ -53,7 +53,7 @@ hook global BufSetOption filetype=.*?(haskell|ruby|yaml|html|css) %{
 # hook global InsertChar \t %{ exec -draft -itersel h@ }
 
 # # soft tabs (excluding makefiles and Go)
-hook global BufSetOption filetype=(?!go)(?!makefile).* %{
+hook global BufSetOption filetype=(?!go)(?!makefile)(?!c).* %{
     hook buffer InsertChar \t %{ exec -draft -itersel h@ }
 }
 
