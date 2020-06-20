@@ -12,6 +12,7 @@ import:
     per_disc_numbering : yes
     asciify_paths      : yes
     threaded           : yes
+    # duplicate_action   : remove
 
 ui:
     color : yes
@@ -53,9 +54,12 @@ replace:
     '[\s_]{2,}'    : '_'
     '\s'           : '_'
 
-plugins: inline fetchart scrub lastgenre ftintitle play info edit web
+plugins: inline fetchart scrub lastgenre ftintitle play info edit web ipfs
 fetchart:
     minwidth: 600
     sources: coverart itunes amazon albumart google wikipedia
 ftintitle:
     format: (feat. {0})
+ipfs:
+  auto: no
+  nocopy: true

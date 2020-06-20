@@ -6,7 +6,7 @@ wenv_def() {
     WENV_PROJECT=''
     unset WENV_BRANCH
     WENV_TASK=''
-    WENV_GITDIR=""
+    WENV_EXTENSIONS=('c')
 
     startup_wenv() {
         tmux send-keys 'rtorrent' Enter
@@ -15,3 +15,6 @@ wenv_def() {
     }
     shutdown_wenv() { }
 }
+
+declare -Ag wenv_dirs
+wenv_dirs[library]="$MUSIC/library"

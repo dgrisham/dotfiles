@@ -1,5 +1,29 @@
 #!/bin/zsh
 
+publish_library() {
+    local library_hash=$(beet ipfs --publish 2>&1 | ag -o '(?<=ipfs: hash of library: )Qm.*?$')
+    [[ -z "$library_hash" ]] && { echo "failed to publish beet library to ipfs" ; return 1 ; }
+    ipfs pubsub pub 'grish-desktop-library' $library_hash
+}
+
+alias fetch_lib='beet ipfs --import $(ipfs resolve /ipns/QmZRbzaoPehexUKDwxDzfYZGANaLM3w3gvPCv5Z6PfVwGp | sed "s|/ipfs/||")'
+#ipfs pubsub sub --encoding json testing | jq --raw-output --unbuffered '.data' | while read f; do libHash=$(base64 --decode <<<$f); echo "importing library $libHash"; beet ipfs --import $libHash; done
+
+beet_import_ipfs() {
+    beet import "$@" && beet ipfs --add
+}
+alias bii=beet_import_ipfs
+
+# cava
+# ----
+
+cava() {
+    mpd_watch.sh '{ mnuc2 ; dynamic_cava_colors ; }' &
+    local pid=$!
+    /usr/local/bin/cava
+    kill $pid
+}
+
 # Shortcuts
 # =========
 
