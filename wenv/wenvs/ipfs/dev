@@ -1,0 +1,37 @@
+#!/bin/zsh
+
+wenv_def() {
+    WENV_DIR="$SRC/ipfs/go-ipfs"
+    WENV_DEPS=()
+    WENV_PROJECT=''
+    WENV_BRANCH=''
+    WENV_EXTENSIONS=('c' 'edit')
+
+    bootstrap_wenv() {
+        local -a projects=('go-ipfs' 'go-bitswap' 'go-peertaskqueue')
+
+        local owd=$(pwd)
+        local basedir=$(dirname $WENV_DIR)
+        cd $(dirname $WENV_DIR) >/dev/null
+        for p in $projects; do
+            git clone git@github.com:dgrisham/$p
+            cd $p >/dev/null
+            git remote add upstream https://github.com/ipfs/$p
+            git fetch upstream
+            cd $basedir >/dev/null
+        done
+
+        cd $WENV_DIR >/dev/null
+        go build
+
+        cd $owd >/dev/null
+    }
+    startup_wenv() {}
+    shutdown_wenv() {}
+}
+
+declare -Ag wenv_dirs=(
+    ['bitswap']='../go-bitswap'
+    ['peertaskqueue']='../go-peertaskqueue'
+)
+declare -Ag wenv_files=()
