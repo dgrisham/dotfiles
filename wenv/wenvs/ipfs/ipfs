@@ -12,8 +12,23 @@ wenv_def() {
     bootstrap_wenv() {}
 }
 
-export PRIVATE_PATH="$WENV_DIR/private"
-export PUBLIC_PATh="$WENV_DIR/public"
+export IPFS_BIN=/usr/bin/ipfs
+
+declare -Ag ipfs_path
+ipfs_path[public]="$WENV_DIR/public"
+ipfs_path[private]="$WENV_DIR/private"
+
+ipfs() {
+    case "$1" in
+        'public'|'private')
+            local cfg=$1 && shift
+            IPFS_PATH=${ipfs_path[$cfg]} $IPFS_BIN $@
+            ;;
+        *) # default to public ipfs node
+            IPFS_PATH=${ipfs_path[public]} $IPFS_BIN $@
+            ;;
+    esac
+}
 
 # for c extension
 # declare -Ag wenv_dirs=()

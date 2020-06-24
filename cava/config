@@ -89,8 +89,8 @@ gravity = 60
 
 gradient = 1
 gradient_count = 5
-gradient_color_1 = '#090909'
-gradient_color_2 = '#757985'
-gradient_color_3 = '#7F7289'
-gradient_color_4 = '#9A688D'
-gradient_color_5 = '#8C8C8E'
+gradient_color_1 = '#0C0D0B'
+gradient_color_2 = '#962B24'
+gradient_color_3 = '#9E2D28'
+gradient_color_4 = '#9C453F'
+gradient_color_5 = '#A6625E'
