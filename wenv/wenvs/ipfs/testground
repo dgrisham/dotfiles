@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+
+wenv_def() {
+    WENV_DIR="$SCRATCH/ipfs/testground-home"
+    WENV_DEPS=()
+    WENV_PROJECT=''
+    WENV_TASK=''
+    WENV_EXTENSIONS=('c')
+
+    startup_wenv() {
+        sudo systemctl start docker
+    }
+    shutdown_wenv() {
+        sudo systemctl stop docker
+    }
+    bootstrap_wenv() {}
+}
+
+export TESTGROUND_HOME="$WENV_DIR"
+
+# for c extension
+declare -Ag wenv_dirs
+wenv_dirs[testground]="$SRC/ipfs/testground"
+
+# for edit extension
+# declare -Ag wenv_files=()

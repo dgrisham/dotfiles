@@ -1,10 +1,27 @@
 #!/bin/zsh
 
 publish_library() {
+    local topic='grish-desktop-library'
     local library_hash=$(beet ipfs --publish 2>&1 | ag -o '(?<=ipfs: hash of library: )Qm.*?$')
     [[ -z "$library_hash" ]] && { echo "failed to publish beet library to ipfs" ; return 1 ; }
-    ipfs pubsub pub 'grish-desktop-library' $library_hash
+    ipfs pubsub pub $topic $library_hash
 }
+
+subscribe_to_library() {
+    local topic='grish-work-library'
+    [[ -n "$1" ]] && topic="$1"
+    echo "subscribing to topic '$topic'"
+
+    ipfs pubsub sub --encoding json $topic \
+    | jq --raw-output --unbuffered ".data" \
+    | while read data; do
+        libHash=$(base64 --decode <<<$data)
+        echo "importing library $libHash as $topic"
+        beet ipfs --import $libHash $topic
+        echo "finished importing library $libHash"
+    done
+}
+
 
 alias fetch_lib='beet ipfs --import $(ipfs resolve /ipns/QmZRbzaoPehexUKDwxDzfYZGANaLM3w3gvPCv5Z6PfVwGp | sed "s|/ipfs/||")'
 #ipfs pubsub sub --encoding json testing | jq --raw-output --unbuffered '.data' | while read f; do libHash=$(base64 --decode <<<$f); echo "importing library $libHash"; beet ipfs --import $libHash; done
@@ -14,15 +31,17 @@ beet_import_ipfs() {
 }
 alias bii=beet_import_ipfs
 
-# cava
-# ----
+# music
+# -----
 
 cava() {
-    mpd_watch.sh '{ mnuc2 ; dynamic_cava_colors ; }' &
+    mpd_watch.sh '{ mnuc2 ; dynamic_cava_colors 5 ; }' &
     local pid=$!
     /usr/local/bin/cava
     kill $pid
 }
+
+alias apv='mpv --vid=no'
 
 # Shortcuts
 # =========
@@ -294,20 +313,42 @@ alias gco='git checkout'
 
 alias ta='unbuffer task active | sed \$d'
 
-# ag default options
-# ==================
+# sk + ag
+# =======
 
+# ag default options
 alias ag="/bin/ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33' --ignore node_modules --ignore git"
 
-# skim + ag to interactively grep files
-
+# sk + ag to interactively search files
 skag() {
     sk --ansi -i -c 'ag --color "{}"'
 }
 
+# open skag() result in kak
 skak() {
-    $EDITOR $(skag | perl -pe 's/^(.*?):(\d+):\s*.*?$/\1 +\2/')
+    local flag_f=0
+    while getopts ":hf" opt; do
+        case "$opt" in
+            f)
+                flag_f=1
+                ;;
+            h)
+                echo "usage: skak [-h] [-f]"
+                return 0
+                ;;
+            \?)
+                echo "unknown option: -$OPTARG" >&2
+                return 1
+                ;;
+        esac
+    done
+
+    ((flag_f == 1)) \
+        && $EDITOR $(sk -m) \
+        || $EDITOR $(skag | perl -pe 's/^(.*?):(\d+):\s*.*?$/\1 +\2/')
 }
+alias skaf='skak -f'
+
 
 # ncmpcpp
 # =======

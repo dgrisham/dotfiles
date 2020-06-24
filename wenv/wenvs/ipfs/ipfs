@@ -1,0 +1,22 @@
+#!/usr/bin/env zsh
+
+wenv_def() {
+    WENV_DIR="/home/grish/.ipfs"
+    WENV_DEPS=()
+    WENV_PROJECT=''
+    WENV_TASK=''
+    WENV_EXTENSIONS=('c')
+
+    startup_wenv() {}
+    shutdown_wenv() {}
+    bootstrap_wenv() {}
+}
+
+export PRIVATE_PATH="$WENV_DIR/private"
+export PUBLIC_PATh="$WENV_DIR/public"
+
+# for c extension
+# declare -Ag wenv_dirs=()
+
+# for edit extension
+# declare -Ag wenv_files=()

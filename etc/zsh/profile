@@ -4,11 +4,12 @@
 # Wifi card
 export WIFI_CARD="wlp3s0"
 
+## Stack (Haskell)
+export PATH="$HOME/.local/bin:$PATH"
+
 # Bin
 export BIN="$HOME/bin"
-export PATH="$PATH:$BIN"
-## Stack (Haskell)
-export PATH="$PATH:$HOME/.local/bin"
+export PATH="$BIN:$PATH"
 
 # Directories
 export DOTFILES="$HOME/dotfiles"
