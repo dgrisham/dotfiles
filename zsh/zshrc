@@ -19,5 +19,5 @@ ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(
 )
 
 # necessary for WENVs
-eval "$WENV_EXEC"
-eval "$ZSH_STARTUP_CMD"
+[[ -n "$WENV" ]] && wenv_exec -c "$WENV"
+if [ -e /home/grish/.nix-profile/etc/profile.d/nix.sh ]; then . /home/grish/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer

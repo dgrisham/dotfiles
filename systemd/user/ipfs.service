@@ -3,7 +3,7 @@ Description=IPFS daemon -- Public network
 After=network.target
 
 [Service]
-ExecStart=/home/grish/.go/bin/ipfs daemon
+ExecStart=/usr/bin/ipfs daemon --migrate --enable-pubsub-experiment
 Restart=on-failure
 
 [Install]

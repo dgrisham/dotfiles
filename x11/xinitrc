@@ -50,8 +50,8 @@ $HOME/.screenlayout/two-monitors.sh
 systemctl --user start mpd
 systemctl --user start mpdas
 
-exec i3
-#exec dwm
+# exec i3
+exec dwm
 
 #twm &
 #xclock -geometry 50x50-1+1 &

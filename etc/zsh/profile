@@ -35,7 +35,7 @@ export GLOBAL_ALIAS="$DOTFILES/etc/zsh/aliases"
 export EDITOR="kak"
 export VISUAL="$EDITOR"
 export VIEWER="mupdf"
-export BROWSER="w3m"
+export BROWSER="chromium"
 export PUBLISHER="git"
 export PLAYER="mpv"
 ## NeoVim

@@ -4,7 +4,7 @@ autoload bashcompinit
 bashcompinit
 
 ## IPFS
-#source $DOTFILES/zsh/completion/ipfs.bash
+source $DOTFILES/zsh/completion/ipfs.bash
 
 ## WENV
 source $DOTFILES/zsh/completion/wenv.bash
