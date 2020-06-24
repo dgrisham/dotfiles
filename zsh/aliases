@@ -24,7 +24,7 @@ ipfs_connect() {
 }
 
 subscribe_to_library() {
-    topic='grish-desktop-library'
+    local topic='grish-desktop-library'
     [[ -n "$1" ]] && topic="$1"
     echo "subscribing to topic '$topic'"
 
@@ -33,17 +33,37 @@ subscribe_to_library() {
     | while read data; do
         libHash=$(base64 --decode <<<$data)
         echo "importing library $libHash as $topic"
-        beet ipfs --import $libHash $topic && echo "successfully imported library $libHash"
+        beet ipfs --import $libHash $topic
+        echo "finished importing library $libHash"
     done
 }
+
+alias fetch_lib='beet ipfs --import $(ipfs resolve /ipns/QmZRbzaoPehexUKDwxDzfYZGANaLM3w3gvPCv5Z6PfVwGp | sed "s|/ipfs/||")'
+#ipfs pubsub sub --encoding json testing | jq --raw-output --unbuffered '.data' | while read f; do libHash=$(base64 --decode <<<$f); echo "importing library $libHash"; beet ipfs --import $libHash; done
+
+beet_import_ipfs() {
+    beet import "$@" && beet ipfs --add
+}
+alias bii=beet_import_ipfs
 
 ipfs_local_stat() {
     ipfs files stat --with-local /ipfs/$1
 }
-alias ils=ipfs_local_stat
 
-# colored echo
-# ------------
+# music
+# -----
+
+cava() {
+    mpd_watch.sh '{ mnuc2 ; dynamic_cava_colors 5 ; }' &
+    local pid=$!
+    /usr/local/bin/cava
+    kill $pid
+}
+
+alias apv='mpv --vid=no'
+
+# Shortcuts
+# =========
 
 becho() { echo '\033[0;36m'$@'\033[0m' }
 gecho() { echo '\033[0;32m'$@'\033[0m' }
@@ -312,19 +332,55 @@ alias gco='git checkout'
 
 alias ta='unbuffer task active | sed \$d'
 
+# sk + ag
+# =======
+
 # ag default options
-# ==================
+alias ag="/bin/ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33' --ignore node_modules --ignore git"
 
-alias ag="/bin/ag --color --color-path='1;36' --color-line-number='0;37' --color-match='1;33'"
-
-# skim + ag to interactively grep files
-
+# sk + ag to interactively search files
 skag() {
-    sk --ansi -i -c 'ag --color "{}"'
+    sk -m --ansi -i -c 'ag --color "{}"'
 }
 
+# open skag() result in kak
 skak() {
-    $EDITOR $(skag | perl -pe 's/^(.*?):(\d+):\s*.*?$/\1 +\2/')
+    local flag_f=0
+    while getopts ":hf" opt; do
+        case "$opt" in
+            f)
+                flag_f=1
+                ;;
+            h)
+                echo "usage: skak [-h] [-f]"
+                return 0
+                ;;
+            \?)
+                echo "unknown option: -$OPTARG" >&2
+                return 1
+                ;;
+        esac
+    done
+
+    if ((flag_f == 1)); then
+        local choice=$(sk)
+        if [[ -f $choice ]]; then
+            $EDITOR $choice
+        else [[ -d $choice ]]
+            cd $choice
+        fi
+    else
+        $EDITOR $(skag | perl -pe 's/^(.*?):(\d+):\s*.*?$/\1 +\2/')
+    fi
+}
+alias skaf='skak -f'
+
+# ncmpcpp
+# =======
+ncmpcpp() {
+    # start mpd if not already running
+    [[ ! -f "$DOTFILES/mpd/pid" ]] && mpd
+    /bin/ncmpcpp
 }
 
 # Wifi
