@@ -16,6 +16,8 @@ import:
 
 ui:
     color : yes
+    colors:
+        action: cyan
 
 match:
     ignored  : missing_tracks unmatched_tracks

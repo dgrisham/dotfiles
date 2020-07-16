@@ -31,6 +31,11 @@ beet_import_ipfs() {
 }
 alias bii=beet_import_ipfs
 
+ipfs_local_stat() {
+    ipfs files stat --with-local /ipfs/$1
+}
+alias ils=ipfs_local_stat
+
 # music
 # -----
 

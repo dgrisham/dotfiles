@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 wenv_def() {
-    WENV_DIR="/home/grish/.ipfs"
+    WENV_DIR="/home/grish/.ipfs-private"
     WENV_DEPS=()
     WENV_PROJECT=''
     WENV_TASK=''
@@ -12,11 +12,30 @@ wenv_def() {
     bootstrap_wenv() {}
 }
 
+# # useful command sequences
+#
+# ## remove all data from local ipfs datastore
+# $ ipfs pin ls --type=recursive | cut -d' ' -f1 | xargs -n1 ipfs pin rm
+# $ ipfs repo gc
+
 export IPFS_BIN=/usr/bin/ipfs
 
 declare -Ag ipfs_path
-ipfs_path[public]="$WENV_DIR/public"
-ipfs_path[private]="$WENV_DIR/private"
+ipfs_path[public]="$HOME/.ipfs-public"
+ipfs_path[private]="$HOME/.ipfs-private"
+
+set_ipfs_path() {
+    case "$1" in
+        'public'|'private')
+            export IPFS_PATH="${ipfs_path[$1]}"
+            ;;
+        *) # default to private ipfs node
+            export IPFS_PATH="${ipfs_path[private]}"
+            ;;
+    esac
+}
+alias sip=set_ipfs_path
+sip private
 
 ipfs() {
     case "$1" in
@@ -24,8 +43,8 @@ ipfs() {
             local cfg=$1 && shift
             IPFS_PATH=${ipfs_path[$cfg]} $IPFS_BIN $@
             ;;
-        *) # default to public ipfs node
-            IPFS_PATH=${ipfs_path[public]} $IPFS_BIN $@
+        *) # default to private ipfs node
+            IPFS_PATH=${ipfs_path[private]} $IPFS_BIN $@
             ;;
     esac
 }

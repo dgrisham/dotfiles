@@ -3,8 +3,8 @@ Description=IPFS daemon -- Public network
 After=network.target
 
 [Service]
-Environment="IPFS_PATH=/home/grish/.ipfs/public"
-ExecStart=/usr/bin/ipfs daemon
+Environment="IPFS_PATH=/home/grish/.ipfs-public"
+ExecStart=/usr/bin/ipfs daemon --migrate --enable-pubsub-experiment
 Restart=on-failure
 
 [Install]
