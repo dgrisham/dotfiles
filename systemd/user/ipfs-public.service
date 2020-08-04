@@ -3,7 +3,7 @@ Description=IPFS daemon -- Public network
 After=network.target
 
 [Service]
-Environment="IPFS_PATH=/home/grish/.ipfs/public"
+Environment="IPFS_PATH=/home/grish/.ipfs-public"
 ExecStart=/usr/bin/ipfs daemon
 Restart=on-failure
 

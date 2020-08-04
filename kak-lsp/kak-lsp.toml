@@ -94,3 +94,9 @@ command = "dls"
 filetypes = ["java"]
 roots = [".git"]
 command = "jdtls"
+
+[language.clojure]
+filetypes = ["clojure"]
+roots = ["project.clj", "config.edn", ".git"]
+command = "sh"
+args = ["-c", "/usr/bin/clojure-lsp"]

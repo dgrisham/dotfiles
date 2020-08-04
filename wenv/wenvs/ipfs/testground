@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 wenv_def() {
-    WENV_DIR="$SCRATCH/ipfs/testground-home"
+    WENV_DIR="$SRC/ipfs/testground/home"
     WENV_DEPS=()
     WENV_PROJECT=''
     WENV_TASK=''
@@ -20,7 +20,10 @@ export TESTGROUND_HOME="$WENV_DIR"
 
 # for c extension
 declare -Ag wenv_dirs
-wenv_dirs[testground]="$SRC/ipfs/testground"
+wenv_dirs[src]="$WENV_DIR/../src"
+wenv_dirs[docs]="$WENV_DIR/../docs"
+wenv_dirs[ipfs-test-plans]="$WENV_DIR/../ipfs-test-plans"
+wenv_dirs[bitswap]="$SRC/ipfs/go-bitswap"
 
 # for edit extension
 # declare -Ag wenv_files=()
