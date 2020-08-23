@@ -45,10 +45,10 @@ function prompt_steeef_setup {
   if [[ $TERM = *256color* || $TERM = *rxvt* ]]; then
     _prompt_steeef_colors=(
       "%F{81}"  # 
-      "%F{8}" # hostname
-      "%F{25}" # username
+      "%F{162}" # hostname
+      "%F{33}" # username
       "%F{161}" # 
-      "%F{3}"   # working directory
+      "%F{231}"   # working directory
     )
   else
     _prompt_steeef_colors=(

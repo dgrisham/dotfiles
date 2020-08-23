@@ -3,7 +3,8 @@
 
 # colors
 # ------
-alias ls='ls --color=auto'
+alias ls='ls -G'
+export LSCOLORS='Gxfxcxdxbxegedabagacad'
 alias grep='grep --color=auto'
 
 # list
