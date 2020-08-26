@@ -12,7 +12,7 @@ export BIN="$HOME/bin"
 export PATH="$BIN:$PATH"
 
 # Directories
-export DOTFILES="$HOME/dotfiles"
+#export DOTFILES="$HOME/dotfiles" # set in zshenv
 export DOWNLOADS="$HOME/downloads"
 export SRC="$HOME/src"
 export PERSONAL="$HOME/personal"

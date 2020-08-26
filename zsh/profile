@@ -1,5 +1,13 @@
 # command completion
 
+## brew
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+
+  autoload -Uz compinit
+  compinit
+fi
+
 autoload bashcompinit
 bashcompinit
 
@@ -19,13 +27,19 @@ source $DOTFILES/zsh/completion/wenv.bash
 
 # path
 
+export PATH="$HOME/.local/bin:$PATH"
+
+## mysql-client
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+export MYSQL_HOME="$HOME/.config/mysql_home"
+
 ## cabal
-export PATH="$PATH:$HOME/.cabal/bin"
+export PATH="$HOME/.cabal/bin:$PATH"
 
 ## Go path
 export GOPATH="$HOME/.go"
 # add GOPATH/bin to PATH
-export PATH="$PATH:$GOPATH/bin"
+export PATH="$GOPATH/bin:$PATH"
 
 ## Rust Cargo path
 export CARGO_HOME="$XDG_DATA_HOME/cargo"

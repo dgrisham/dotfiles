@@ -322,11 +322,11 @@ alias ta='unbuffer task active | sed \$d'
 # =======
 
 # ag default options
-alias ag="/bin/ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33' --ignore node_modules --ignore git"
+alias ag="/usr/local/bin/ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33' --ignore node_modules --ignore git"
 
 # sk + ag to interactively search files
 skag() {
-    sk -m --ansi -i -c 'ag --color "{}"'
+    sk -m --ansi -i -c 'ag --color "{}"' --preview 'preview.sh {}'
 }
 
 # open skag() result in kak
