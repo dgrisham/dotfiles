@@ -137,6 +137,24 @@ map global tmux p 'o<esc>!tmux show-buffer<ret>d' \
 map global tmux r ':tmux-repl<ret>' -docstring 'prefix for tmux repl commands'
 def -hidden tmux %{ enter-user-mode tmux }
 
+declare-user-mode tmux-fzf
+map global tmux f ':enter-user-mode tmux-fzf<ret>' -docstring 'fzf'
+map global tmux-fzf '\' ':tmux-terminal-horizontal sk-kak -c %val{session}<ret>' \
+    -docstring 'horizontal fzf split'
+map global tmux-fzf '<minus>' ':tmux-terminal-vertical sk-kak -c %val{session}<ret>' \
+    -docstring 'vertical fzf split'
+map global tmux-fzf c ':tmux-terminal-window sk-kak -c %val{session}<ret>' \
+    -docstring 'new fzf window'
+
+declare-user-mode tmux-grep
+map global tmux g ':enter-user-mode tmux-grep<ret>' -docstring 'grep'
+map global tmux-grep '\' ':tmux-terminal-horizontal skag-kak -c %val{session}<ret>' \
+    -docstring 'horizontal grep split'
+map global tmux-grep '<minus>' ':tmux-terminal-vertical skag-kak -c %val{session}<ret>' \
+    -docstring 'vertical grep split'
+map global tmux-grep c ':tmux-terminal-window skag-kak -c %val{session}<ret>' \
+    -docstring 'new grep window'
+
 # declare-user-mode tmux-repl
 # map global tmux-repl '\' ':tmux-repl-horizontal<ret>' \
 #     -docstring 'horizontal split'
@@ -181,6 +199,12 @@ hook global BufSetOption filetype=python %!
 
 # Go
 # ==
+
+hook global BufSetOption filetype=javascript %!
+    declare-user-mode write-code-template
+    map global write-code-template c 'I* <esc>A *<esc>xypI<esc>r/l<a-l>r*jxypjr/I<esc><a-l>Hr*;' -docstring 'header comment block'
+    map global user w ':enter-user-mode write-code-template<ret>' -docstring 'write code template'
+!
 
 hook global BufSetOption filetype=go %!
     declare-user-mode write-code-template
@@ -317,7 +341,8 @@ plug "alexherbo2/prelude.kak"
 plug "occivink/kakoune-find"
 plug "Delapouite/kakoune-palette"
 plug "TeddyDD/kakoune-lf"
-# plug "alexherbo2/terminal-mode.kak"
+plug "dgrisham/connect.kak"
+plug "eraserhd/kak-ansi"
 
 # plug 'alexherbo2/connect.kak' %{
 #   require-module connect-fzf
@@ -343,8 +368,15 @@ plug "TeddyDD/kakoune-lf"
 # Modules
 require-module connect-fzf
 
-# # Explore files and buffers with fzf
+# Explore files and buffers with fzf
+
 alias global explore-files fzf-files
+declare-user-mode fzf-mode
+map global fzf-mode f ':nop %sh{tmux resize-pane -Z}<ret>:fzf-files<ret>:nop %sh{tmux resize-pane -Z}<ret>' -docstring 'fuzzy search file names'
+map global fzf-mode g ':nop %sh{tmux resize-pane -Z}<ret>:fzf-grep<ret>:nop %sh{tmux resize-pane -Z}<ret>' -docstring 'fuzzy search file contents'
+def -hidden fzf-mode %{ enter-user-mode fzf-mode }
+map global user f :fzf-mode<ret> -docstring 'enter fzf mode'
+
 alias global explore-buffers fzf-buffers
 
 # # # Terminal settings

@@ -360,7 +360,7 @@ alias ta='unbuffer task active | sed \$d'
 # =======
 
 # ag default options
-alias ag="/bin/ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33' --ignore node_modules --ignore git"
+alias ag="/usr/local/bin/ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33' --ignore node_modules --ignore git"
 
 # sk + ag to interactively search files
 skag() {
@@ -386,7 +386,9 @@ skak() {
     done
     shift $((OPTIND-1))
 
-    $EDITOR $(find . $args | skag | perl -pe 's/^(.*?):(\d+):\s*.*?$/\1 +\2/')
+    local target=$(skag $@ | perl -pe 's/^(.*?):(\d+):\s*.*?$/\1 +\2/')
+    [[ -z "$target" ]] && return 1
+    eval $EDITOR $target
 }
 # alias skaf='skak -f'
 
@@ -405,11 +407,12 @@ skaf() {
     done
     shift $((OPTIND-1))
 
-    local choice=$(sk)
-    if [[ -f $choice ]]; then
-        $EDITOR $choice
-    else [[ -d $choice ]]
-        cd $choice
+    local target=$(sk)
+    [[ -z "$target" ]] && return 1
+    if [[ -f $target ]]; then
+        $EDITOR $target
+    else [[ -d $target ]]
+        cd $target
     fi
 }
 
