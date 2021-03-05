@@ -18,3 +18,5 @@ wenv_def() {
 
 declare -Ag wenv_dirs
 wenv_dirs[library]="$MUSIC/library"
+wenv_dirs[movies]="$MEDIA/videos/film"
+wenv_dirs[media]="$MEDIA"

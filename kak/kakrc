@@ -1,3 +1,6 @@
+## clippy -> dilbert
+set-option global ui_options ncurses_assistant=dilbert
+
 ## Hooks
 
 # (case-insensitive) search
@@ -36,7 +39,7 @@ hook -group TrailingWhitespaces global KakBegin .* %{
 }
 
 # colors
-colorscheme solarized2
+colorscheme grisharized
 
 # scroll offset
 set global scrolloff 12,0
@@ -180,8 +183,8 @@ hook global WinSetOption filetype=diff %{
 
 # X11 (copy/paste)
 # ===============
-map global user y 'y<a-|>pbcopy<ret>; :echo "copied selection to X11 clipboard"<ret>' -docstring 'copy to X clipboard'
-map global user p '!pbpaste<ret>' -docstring 'paste from X clipboard'
+map global user y 'y<a-|>xclip<ret>; :echo "copied selection to X11 clipboard"<ret>' -docstring 'copy to X clipboard'
+map global user p '!xclip -o<ret>' -docstring 'paste from X clipboard'
 
 # commenting
 declare-user-mode commenting
@@ -332,6 +335,10 @@ hook global WinSetOption filetype=go %{
     map global user g :go-format<ret> -docstring 'format'
 }
 
+hook global WinSetOption filetype=python %{
+    hook buffer -group format BufWritePost .* %{ evaluate-commands %sh{ black "$kak_buffile" }; edit! }
+}
+
 # Plugins
 # =======
 
@@ -480,7 +487,7 @@ plug "ul/kak-lsp" do %{
         set-option global lsp_server_configuration pyls.configurationSources=['flake8']
     }
 
-    hook global WinSetOption filetype=(go|python|sh|javascript|rust) %{
+    hook global WinSetOption filetype=(c|go|python|sh|javascript|rust) %{
         set global lsp_hover_anchor true
         map global user i :lsp-hover<ret> -docstring 'hover lsp message for current line'
         map global goto n "<esc>:lsp-find-error --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to next lsp error'

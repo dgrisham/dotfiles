@@ -1,5 +1,5 @@
-library       : /home/grish/dotfiles/beets/library.blb.bak
-directory     : /home/grish/media/music/library/
+library       : /home/grish/dotfiles/beets/library.blb
+directory     : /home/grish/media/music/library
 original_date : yes
 
 import:
@@ -51,7 +51,7 @@ replace:
     '[\[\]()&,]'   : ''
     '\.$'          : _
     '\s+$'         : ''
-    "['!.]"         : ''
+    "['’!.]"         : ''
     '^\s+'         : ''
     '[\s_]{2,}'    : '_'
     '\s'           : '_'

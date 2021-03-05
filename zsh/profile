@@ -3,10 +3,18 @@
 autoload bashcompinit
 bashcompinit
 
-## IPFS
+export TTY=$(tty)
+
+## GPG
+export GPG_TTY=$TTY
+
+## ipfs
 source $DOTFILES/zsh/completion/ipfs.bash
 
-## WENV
+## kjv
+source $DOTFILES/zsh/completion/kjv.bash
+
+## wenv
 source $DOTFILES/zsh/completion/wenv.bash
 ## aws-cli
 #source aws_zsh_completer.sh

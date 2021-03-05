@@ -7,9 +7,7 @@ wenv_def() {
     WENV_TASK=''
     WENV_EXTENSIONS=('c')
 
-    startup_wenv() {
-        wenv_tmux_layout 'monitor' 'sudo make install'
-    }
+    startup_wenv() {}
     shutdown_wenv() {}
     bootstrap_wenv() {}
 }

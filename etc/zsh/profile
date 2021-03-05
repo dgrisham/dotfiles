@@ -50,6 +50,7 @@ case "$virtual_terminal" in
         # systemctl start wifi
     ;&
     tty1|tty2)
+        export DISPLAY=:0.0
         startx "$XDG_CONFIG_HOME/X11/xinitrc"
         # if ! startx; then
         #     current=$(ls -l /etc/X11/xorg.conf | rev | cut -f1 -d' ' | cut -f1 -d'.' | rev)
