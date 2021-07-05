@@ -1,3 +1,34 @@
+# Terminal
+[[ $TMUX = "" ]] && export TERM='xterm-256color'
+
+# Bin
+export BIN="$HOME/bin"
+export PATH="$BIN:$PATH"
+
+# Directories
+export DOTFILES="$HOME/dotfiles"
+export DOWNLOADS="$HOME/downloads"
+export SRC="$HOME/src"
+export PERSONAL="$HOME/personal"
+export MEDIA="$HOME/media"
+export MUSIC="$MEDIA/music"
+export SCRATCH="$HOME/scratch"
+
+## XDG
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$DOTFILES"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DOWNLOAD_DIR="$DOWNLOADS"
+export XDG_DESKTOP_DIR="/dev/null"
+#export XDG_RUNTIME_DIR="/tmp"
+
+# Alias files
+export LOCAL_ALIAS="$DOTFILES/zsh/aliases"
+
+# Defaults
+export EDITOR="kak"
+export VISUAL="$EDITOR"
+
 # command completion
 
 autoload bashcompinit
@@ -12,7 +43,7 @@ export GPG_TTY=$TTY
 source $DOTFILES/zsh/completion/ipfs.bash
 
 ## kjv
-source $DOTFILES/zsh/completion/kjv.bash
+# source $DOTFILES/zsh/completion/kjv.bash
 
 ## wenv
 source $DOTFILES/zsh/completion/wenv.bash

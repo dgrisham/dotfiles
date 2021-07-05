@@ -1,5 +1,30 @@
 #!/bin/zsh
 
+# list
+# ----
+alias ll="ls -lh"
+alias lr="ls -lrh"
+alias la="ls -lah"
+alias lt="ls -lrth"
+alias lta="ls -lrtah"
+alias lat="ls -lrtah"
+
+# tmux
+# ----
+alias tm="tmux -2 attach"
+
+# convenient cd
+# -------------
+chpwd() { ll }            # cd and ls
+mc() { mv $@ && ${(P)#} } # mv and cd
+cc() { cp $@ && ${(P)#} } # cp and cd
+
+# compression
+# -----------
+alias tarx='tar -xvf'
+tarc() { tar -cvf $1.tar $1 }
+zipd() { zip -rv $1.zip $1 }
+
 # curl with status code
 # ---------------------
 alias scurl='curl -w "%{http_code}"'
@@ -360,7 +385,7 @@ alias ta='unbuffer task active | sed \$d'
 # =======
 
 # ag default options
-alias ag="/usr/bin/ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33' --ignore node_modules --ignore git"
+alias ag="/usr/local/bin/ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33' --ignore node_modules --ignore git"
 
 # sk + ag to interactively search files
 skag() {
