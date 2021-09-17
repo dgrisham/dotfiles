@@ -1,14 +1,24 @@
 #!/usr/bin/zsh
 
+git_branch_prompt() {
+    local branch=$(git branch --show-current 2>/dev/null)
+    [[ -n "$branch" ]] && echo " ($branch)"
+}
+
 # Enable colors and change prompt:
 autoload -U colors && colors
-PS1="%{$fg[gray]%}%{$fg[gray]%}%n@%M:%{$fg[yellow]%}%~%{$reset_color%}
+setopt prompt_subst
+PS1="%{$fg[gray]%}%n@%M:%{$fg[yellow]%}%~%{$reset_color%}\$(git_branch_prompt)
 $%b "
 
 # History in cache directory:
 HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.cache/zsh/history
+setopt INC_APPEND_HISTORY
+
+# cd into directory automatically
+setopt AUTO_CD
 
 # Basic auto/tab complete:
 autoload -U compinit
@@ -20,6 +30,9 @@ _comp_options+=(globdots)		# Include hidden files.
 # vi mode
 bindkey -v
 export KEYTIMEOUT=1
+
+# history search
+bindkey "^R" history-incremental-search-backward
 
 # Use vim keys in tab complete menu:
 bindkey -M menuselect 'h' vi-backward-char
@@ -71,6 +84,10 @@ bindkey '^e' edit-command-line
 
 # Load zsh-syntax-highlighting; should be last.
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+# completion stuff (has to be called after syntax highlighting) (NOTE: requires installing this plugin)
+source /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+bindkey -M vicmd k history-substring-search-up
+bindkey -M vicmd j history-substring-search-down
 
 [[ -f "$HOME/dotfiles/zsh/profile" ]] && source "$HOME/dotfiles/zsh/profile"
 [[ -f "$HOME/dotfiles/zsh/aliases" ]] && source "$HOME/dotfiles/zsh/aliases"

@@ -183,8 +183,8 @@ hook global WinSetOption filetype=diff %{
 
 # X11 (copy/paste)
 # ===============
-map global user y 'y<a-|>xclip<ret>; :echo "copied selection to X11 clipboard"<ret>' -docstring 'copy to X clipboard'
-map global user p '!xclip -o<ret>' -docstring 'paste from X clipboard'
+map global user y 'y<a-|>pbcopy<ret>; :echo "copied selection to X11 clipboard"<ret>' -docstring 'copy to X clipboard'
+map global user p '!pbpaste<ret>' -docstring 'paste from X clipboard'
 
 # commenting
 declare-user-mode commenting
@@ -204,6 +204,12 @@ hook global BufSetOption filetype=python %!
 # ==
 
 hook global BufSetOption filetype=javascript %!
+    declare-user-mode write-code-template
+    map global write-code-template c 'I* <esc>A *<esc>xypI<esc>r/l<a-l>r*jxypjr/I<esc><a-l>Hr*;' -docstring 'header comment block'
+    map global user w ':enter-user-mode write-code-template<ret>' -docstring 'write code template'
+!
+
+hook global BufSetOption filetype=jai %!
     declare-user-mode write-code-template
     map global write-code-template c 'I* <esc>A *<esc>xypI<esc>r/l<a-l>r*jxypjr/I<esc><a-l>Hr*;' -docstring 'header comment block'
     map global user w ':enter-user-mode write-code-template<ret>' -docstring 'write code template'
@@ -431,11 +437,11 @@ plug "occivink/kakoune-expand" config %{
 #     set-option global fzf_sk_grep_command 'ag --nogroup'
 # }
 
-plug "alexherbo2/auto-pairs.kak" config %{
-    hook global WinCreate .* %{
-        auto-pairs-enable
-    }
-}
+# plug "alexherbo2/auto-pairs.kak" config %{
+#     hook global WinCreate .* %{
+#         auto-pairs-enable
+#     }
+# }
 
 plug "lenormf/kakoune-extra" branch "dev" load %{
     comnotes.kak

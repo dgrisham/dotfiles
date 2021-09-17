@@ -28,7 +28,7 @@ export MAGIC="$HOME/.magic"
 export LOCAL_ALIAS="$DOTFILES/zsh/aliases"
 
 # Defaults
-export EDITOR="kak"
+export EDITOR="kak_session"
 export VISUAL="$EDITOR"
 
 # command completion
@@ -59,6 +59,9 @@ source $DOTFILES/zsh/completion/wenv.bash
 #source $DOTFILES/zsh/completion/rustup.bash
 
 # path
+
+# mysql
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
 ## cabal
 export PATH="$PATH:$HOME/.cabal/bin"
