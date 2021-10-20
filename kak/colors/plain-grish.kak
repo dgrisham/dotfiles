@@ -34,10 +34,10 @@ face global PrimaryCursorEol default,white
 face global SecondaryCursorEol default,rgb:707070
 face global LineNumbers default
 face global LineNumberCursor default
-face global MenuForeground white
-face global MenuBackground default
+face global MenuForeground yellow,rgb:282828
+face global MenuBackground white,rgb:282828
 face global MenuInfo default
-face global Information default
+face global Information yellow,rgb:282828
 face global Error default
 face global StatusLine default
 face global StatusLineMode default
