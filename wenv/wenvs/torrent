@@ -2,7 +2,7 @@
 
 wenv_def() {
     WENV_DIR="/home/grish/downloads/torrents"
-    WENV_DEPS=('ipfs/ipfs')
+    # WENV_DEPS=('ipfs/ipfs')
     WENV_PROJECT=''
     unset WENV_BRANCH
     WENV_TASK=''

@@ -7,6 +7,8 @@ set-option global ui_options ncurses_assistant=dilbert
 map global user / '/(?i)' -docstring 'case-insensitive search'
 # map global user S 'S(?i)'
 
+map global user > 'i▸<esc>' -docstring 'insert ▸'
+
 declare-user-mode selection
 map global selection i 's(?i)' -docstring 'case-insensitive select'
 def selection-exclude %{ execute-keys %sh{
@@ -28,7 +30,15 @@ hook global WinCreate .*[.](md|tex|rst) %{
     autowrap-enable
 }
 
-map global user W '|fmt --width 80 --goal 80<ret>' -docstring 'Wrap to 80 characters'
+declare-user-mode fmt
+
+map global fmt g '"ZZ<a-a>p|fmt --width 120 --goal 120<ret>;"Zz' -docstring 'Wrap current paragraph to 120 characters'
+map global fmt G 'S\n\n+<ret>|fmt --width 120 --goal 120<ret>' -docstring 'Wrap selected block of paragraphs to 120 characters'
+map global fmt c '"ZZ<a-i>p<a-j><a-h>;' -docstring 'Collapse current paragraph to one line'
+map global fmt C 'S\n\n+<ret><a-i>p<a-j>' -docstring 'Collapse selected paragraphs to one line'
+
+def -hidden fmt %{ enter-user-mode fmt }
+map global user g :fmt<ret> -docstring 'paragraph formatting subcommands'
 
 # add brackets highlighting
 hook global KakBegin .* %{addhl global/ show-matching}
@@ -39,7 +49,7 @@ hook -group TrailingWhitespaces global KakBegin .* %{
 }
 
 # colors
-colorscheme grisharized
+colorscheme plain-grish
 
 # scroll offset
 set global scrolloff 12,0
@@ -209,6 +219,12 @@ hook global BufSetOption filetype=javascript %!
     map global user w ':enter-user-mode write-code-template<ret>' -docstring 'write code template'
 !
 
+hook global BufSetOption filetype=jai %!
+    declare-user-mode write-code-template
+    map global write-code-template c 'I* <esc>A *<esc>xypI<esc>r/l<a-l>r*jxypjr/I<esc><a-l>Hr*;' -docstring 'header comment block'
+    map global user w ':enter-user-mode write-code-template<ret>' -docstring 'write code template'
+!
+
 hook global BufSetOption filetype=go %!
     declare-user-mode write-code-template
     map global write-code-template d 'ofmt.Printf(": %v\n", )<esc>h<a-a>bs(?=[:)])<ret>:lineindent -1<ret>i' -docstring 'Printf debug statement'
@@ -252,7 +268,7 @@ hook global BufSetOption filetype=(markdown|latex) %{
     # map global user w %{ :nop "%sh{ alias_call md beamer ${kak_buffile}  }" <ret> }
 
     # format text with pandoc
-    map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> } -docstring 'format md'
+    # map global user g %{ | pandoc --from=markdown --to=markdown --columns=80 <ret> } -docstring 'format md'
 
     # format github-flavored markdown with pandoc (utility, should be function)
     map global user z %{ | pandoc --from=gfm --to=gfm --columns=80 <ret> } -docstring 'format gfm'
@@ -288,7 +304,7 @@ hook global BufSetOption filetype=(restructuredtext) %{
     # format text with pandoc
     # map global user g %{ | pandoc --from=rst --to=rst --columns=80 <ret> } -docstring 'format md'
     # format lines to 80 characters (escape backticks to preseve calls to default role)
-    map global user g %{ | sed 's/`/\\`/g' | pandoc --from=rst --to=rst --columns=81 | sed 's/\\`/`/g' <ret> } -docstring 'format rst'
+    # map global user g %{ | sed 's/`/\\`/g' | pandoc --from=rst --to=rst --columns=81 | sed 's/\\`/`/g' <ret> } -docstring 'format rst'
 
     # custom commands
     def -hidden header %{
@@ -431,11 +447,11 @@ plug "occivink/kakoune-expand" config %{
 #     set-option global fzf_sk_grep_command 'ag --nogroup'
 # }
 
-plug "alexherbo2/auto-pairs.kak" config %{
-    hook global WinCreate .* %{
-        auto-pairs-enable
-    }
-}
+# plug "alexherbo2/auto-pairs.kak" config %{
+#     hook global WinCreate .* %{
+#         auto-pairs-enable
+#     }
+# }
 
 plug "lenormf/kakoune-extra" branch "dev" load %{
     comnotes.kak
@@ -469,9 +485,10 @@ plug "Delapouite/kakoune-buffers" config %{
 # eval %sh{kak-lsp --config ~/dotfiles/kak-lsp/kak-lsp.toml --kakoune -s $kak_session}
 # nop %sh{ (kak-lsp -s $kak_session -vvv ) > /tmp/kak-lsp.log 2>&1 < /dev/null & }
 plug "ul/kak-lsp" do %{
-    cargo build --release --locked
-    cargo install --force --path .
+    cargo install --locked --force --path .
 } config %{
+
+    set global lsp_cmd "kak-lsp -s %val{session} -vvv --log /tmp/kak-lsp.log"
     define-command lsp-restart -docstring 'restart lsp server' %{ lsp-stop; lsp-start }
 
     hook global WinSetOption filetype=rust %{
@@ -487,7 +504,7 @@ plug "ul/kak-lsp" do %{
         set-option global lsp_server_configuration pyls.configurationSources=['flake8']
     }
 
-    hook global WinSetOption filetype=(c|go|python|sh|javascript|rust) %{
+    hook global WinSetOption filetype=(c|go|python|sh|javascript|rust|typescript) %{
         set global lsp_hover_anchor true
         map global user i :lsp-hover<ret> -docstring 'hover lsp message for current line'
         map global goto n "<esc>:lsp-find-error --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to next lsp error'
@@ -495,16 +512,16 @@ plug "ul/kak-lsp" do %{
 
         # declare-user-mode lsp
         declare-user-mode lsp-rename
-        map global lsp-rename e ':lsp-rename-prompt<ret>' -docstring 'edit'
-        map global lsp-rename r ':lsp-rename ' -docstring 'rename'
-        map global lsp r ':enter-user-mode lsp-rename<ret>' -docstring 'lsp-rename'
-        map global user l ':enter-user-mode lsp<ret>' -docstring 'lsp'
+        map global lsp-rename e ':lsp-rename-prompt<ret>'          -docstring 'edit'
+        map global lsp-rename r ':lsp-rename '                     -docstring 'rename'
+        map global lsp        r ':enter-user-mode lsp-rename<ret>' -docstring 'lsp-rename'
+        map global user       l ':enter-user-mode lsp<ret>'        -docstring 'lsp'
 
         echo -debug "Enabling LSP for filetype %opt{filetype}"
-        # lsp-enable-window
+        lsp-enable-window
     }
 
-    lsp-enable
+    # lsp-enable
 
     hook global KakEnd .* lsp-exit
 }

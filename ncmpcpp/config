@@ -322,7 +322,7 @@ show_duplicate_tags = no
 #
 #autocenter_mode = no
 #
-#centered_cursor = no
+centered_cursor = yes
 #
 ##
 ## Note: You can specify third character which will be used to build 'empty'

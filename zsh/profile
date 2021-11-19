@@ -63,3 +63,6 @@ export SKIM_DEFAULT_OPTIONS='--color=empty,query:255,fg:243,matched:226,current:
 export TASKRC="$DOTFILES/task/taskrc"
 
 export TWITCH_STREAM_KEY='live_57133341_CBD8E5rVoI8McTefzMBxXwTkuHQXI5'
+
+# display variable gets unset all of the time somehow
+export DISPLAY=:0

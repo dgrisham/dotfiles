@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 wenv_def() {
-    WENV_DIR="$SCRATCH/ipfs/testground-home/plans/testbed/testbed"
+    WENV_DIR="$SRC/ipfs/testground"
     WENV_DEPS=()
     WENV_PROJECT=''
     WENV_TASK=''
