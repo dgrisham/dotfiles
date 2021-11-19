@@ -21,6 +21,13 @@ args = ["lsp"]
 # command = "flow-language-server"
 # args = ["--stdio"]
 
+[language.typescript]
+filetypes = ["typescript"]
+roots = ["package.json", "tsconfig.json"]
+offset_encoding = "utf-8"
+command = "typescript-language-server"
+args = ["--stdio"]
+
 [language.json]
 filetypes = ["json"]
 roots = ["package.json"]

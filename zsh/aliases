@@ -42,12 +42,12 @@ publish_library() {
 }
 
 # alias publish_library='ipfs name publish /ipfs/$(beet ipfs --publish 2>&1 | ag --nocolor -o "(?<=ipfs: hash of library: )Qm.*?$")'
-alias fetch_library='beet ipfs --import $(ipfs name resolve /ipns/QmPDZYSLVUiFWHztvFPXRmvaVZp217kL1hgZ35jEyXqNj6 | sed "s|/ipfs/||")'
+alias fetch_library='beet ipfs --import $(ipfs name resolve /ipns/12D3KooWRF4oi22ncExUYiFwhYNxVtrnxHhGjQA8YPxKDQ9jA5ZA | sed "s|/ipfs/||")'
 
 ipfs_connect() {
     port="$1"
     [[ -z "$port" ]] && { echo "port required" >&2 ; return 1 ; }
-    ipfs swarm connect "/ip4/73.3.139.32/tcp/$port/p2p/QmPDZYSLVUiFWHztvFPXRmvaVZp217kL1hgZ35jEyXqNj6"
+    ipfs swarm connect "/ip4/73.3.139.32/tcp/$port/p2p/12D3KooWRF4oi22ncExUYiFwhYNxVtrnxHhGjQA8YPxKDQ9jA5ZA"
 }
 
 subscribe_to_library() {
@@ -65,9 +65,6 @@ subscribe_to_library() {
         echo "finished importing library $libHash"
     done
 }
-
-alias fetch_lib='beet ipfs --import $(ipfs resolve /ipns/QmZRbzaoPehexUKDwxDzfYZGANaLM3w3gvPCv5Z6PfVwGp | sed "s|/ipfs/||")'
-#ipfs pubsub sub --encoding json testing | jq --raw-output --unbuffered '.data' | while read f; do libHash=$(base64 --decode <<<$f); echo "importing library $libHash"; beet ipfs --import $libHash; done
 
 beet_import_ipfs() {
     beet import "$@" && beet ipfs --add
@@ -195,58 +192,58 @@ gb() {
 alias ag="ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33' --ignore node_modules --ignore git"
 
 # sk + ag to interactively search files
-skag() {
-    local extensions
-    local ag_args
-    (($# != 0)) && { extensions="$(tr ' ' '|' <<<($@))"; ag_args=('-G' "'.*?$extensions'") }
-    sk -m --ansi -i -c 'ag '"$ag_args"' --color "{}"'
-}
+# skag() {
+#     local extensions
+#     local ag_args
+#     (($# != 0)) && { extensions="$(tr ' ' '|' <<<($@))"; ag_args=('-G' "'.*?$extensions'") }
+#     sk -m --ansi -i -c 'ag '"$ag_args"' --color "{}"'
+# }
 
 # open skag() result in kak
-skak() {
-    while getopts ":h" opt; do
-        case "$opt" in
-            h)
-                echo "usage: skak [-h]"
-                return 0
-                ;;
-            \?)
-                echo "unknown option: -$OPTARG" >&2
-                return 1
-                ;;
-        esac
-    done
-    shift $((OPTIND-1))
+# skak() {
+#     while getopts ":h" opt; do
+#         case "$opt" in
+#             h)
+#                 echo "usage: skak [-h]"
+#                 return 0
+#                 ;;
+#             \?)
+#                 echo "unknown option: -$OPTARG" >&2
+#                 return 1
+#                 ;;
+#         esac
+#     done
+#     shift $((OPTIND-1))
 
-    local target=$(skag $@ | perl -pe 's/^(.*?):(\d+):\s*.*?$/\1 +\2/')
-    [[ -z "$target" ]] && return 1
-    eval $EDITOR $target
-}
+#     local target=$(skag $@ | perl -pe 's/^(.*?):(\d+):\s*.*?$/\1 +\2/')
+#     [[ -z "$target" ]] && return 1
+#     eval $EDITOR $target
+# }
 # alias skaf='skak -f'
 
-skaf() {
-    while getopts ":h:" opt; do
-        case "$opt" in
-            h)
-                echo "usage: skaf [-h] "
-                return 0
-                ;;
-            \?)
-                echo "unknown option: -$OPTARG" >&2
-                return 1
-                ;;
-        esac
-    done
-    shift $((OPTIND-1))
+# skaf() {
+#     while getopts ":h:" opt; do
+#         case "$opt" in
+#             h)
+#                 echo "usage: skaf [-h] "
+#                 return 0
+#                 ;;
+#             \?)
+#                 echo "unknown option: -$OPTARG" >&2
+#                 return 1
+#                 ;;
+#         esac
+#     done
+#     shift $((OPTIND-1))
 
-    local target=$(sk)
-    [[ -z "$target" ]] && return 1
-    if [[ -f $target ]]; then
-        $EDITOR $target
-    else [[ -d $target ]]
-        cd $target
-    fi
-}
+#     local target=$(sk)
+#     [[ -z "$target" ]] && return 1
+#     if [[ -f $target ]]; then
+#         $EDITOR $target
+#     else [[ -d $target ]]
+#         cd $target
+#     fi
+# }
 
 # ncmpcpp
 # =======

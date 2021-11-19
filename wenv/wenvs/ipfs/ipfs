@@ -12,8 +12,12 @@ wenv_def() {
     bootstrap_wenv() {}
 }
 
-# # useful command sequences
-#
+# for c extension
+# declare -Ag wenv_dirs=()
+
+# for edit extension
+# declare -Ag wenv_files=()# # useful command sequences
+
 # ## remove all data from local ipfs datastore
 # $ ipfs pin ls --type=recursive | cut -d' ' -f1 | xargs -n1 ipfs pin rm
 # $ ipfs repo gc
@@ -35,6 +39,23 @@ set_ipfs_path() {
     esac
 }
 alias sip=set_ipfs_path
+
+_set_ipfs_path() {
+    COMPREPLY=()
+    complete +o default
+
+    local word="${COMP_WORDS[COMP_CWORD]}"
+    local prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+    if (( COMP_CWORD == 1 )) && [[ ${word} == -* ]]; then
+        COMPREPLY=( $(compgen -W "-r -h" -- ${word}) )
+    elif (( COMP_CWORD == 1 )) || { ((COMP_CWORD == 2 )) && [[ ${prev} == -* ]]; }; then
+        local opts="${(k)ipfs_path[@]}"
+        COMPREPLY=( $(compgen -W "${opts}" -- ${word}) )
+    fi
+}
+complete -F _set_ipfs_path set_ipfs_path
+
 sip private
 
 ipfs() {
@@ -48,9 +69,3 @@ ipfs() {
             ;;
     esac
 }
-
-# for c extension
-# declare -Ag wenv_dirs=()
-
-# for edit extension
-# declare -Ag wenv_files=()

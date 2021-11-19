@@ -1,5 +1,14 @@
 #!/usr/bin/zsh
 
+# disown background processes
+setopt NO_HUP
+# remove commands prefixed with a space from history
+setopt HIST_IGNORE_SPACE
+
+wenv_prompt() {
+    [[ -n "$WENV" ]] && echo "($WENV)"
+}
+
 git_branch_prompt() {
     local branch=$(git branch --show-current 2>/dev/null)
     [[ -n "$branch" ]] && echo " ($branch)"
@@ -85,7 +94,7 @@ bindkey '^e' edit-command-line
 # Load zsh-syntax-highlighting; should be last.
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 # completion stuff (has to be called after syntax highlighting) (NOTE: requires installing this plugin)
-source /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
 bindkey -M vicmd k history-substring-search-up
 bindkey -M vicmd j history-substring-search-down
 
@@ -94,3 +103,9 @@ bindkey -M vicmd j history-substring-search-down
 
 source $SRC/wenv/wenv
 [[ -n "$WENV" ]] && wenv_exec "$WENV"
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+export NVM_DIR="$HOME/dotfiles/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

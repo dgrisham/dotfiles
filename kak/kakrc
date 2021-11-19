@@ -507,8 +507,12 @@ plug "ul/kak-lsp" do %{
     hook global WinSetOption filetype=(c|go|python|sh|javascript|rust|typescript) %{
         set global lsp_hover_anchor true
         map global user i :lsp-hover<ret> -docstring 'hover lsp message for current line'
-        map global goto n "<esc>:lsp-find-error --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to next lsp error'
-        map global goto p "<esc>:lsp-find-error --previous --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to previous lsp error'
+        map global goto n ":lsp-find-error --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to next lsp error'
+        map global goto p ":lsp-find-error --previous --include-warnings<ret>:lsp-hover<ret>" -docstring 'go to previous lsp error'
+
+        # enabled by default
+        # map global goto d :lsp-definition<ret> -docstring '(lsp) go to symbol definition'
+        # map global goto r :lsp-references<ret> -docstring '(lsp) go to symbol references'
 
         # declare-user-mode lsp
         declare-user-mode lsp-rename
