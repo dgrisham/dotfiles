@@ -1,37 +1,66 @@
 #!/usr/bin/zsh
 
-# Source Prezto.
-if [[ -s "$SRC/zprezto/init.zsh" ]]; then
-  source "$SRC/zprezto/init.zsh"
-fi
+# disown background processes
+setopt NO_HUP
+# remove commands prefixed with a space from history
+setopt HIST_IGNORE_SPACE
 
-# start mdpas (enabling via systemd not working)
-# systemctl --user start mpdas
+wenv_prompt() {
+    [[ -n "$WENV" ]] && echo "($WENV)"
+}
 
-# zsh_dir="$HOME/dotfiles/zsh"
-env_files=('profile' 'aliases')
-for env_file in $env_files; do
-    [[ -f "$ZDOTDIR/$env_file" ]] && source "$ZDOTDIR/$env_file"
-done
+git_branch_prompt() {
+    local branch=$(git branch --show-current 2>/dev/null)
+    [[ -n "$branch" ]] && echo " ($branch)"
+}
 
-export LS_COLORS="$LS_COLORS:di=01;36"
+# Enable colors and change prompt:
+autoload -U colors && colors
+setopt prompt_subst
+PS1="%{$fg[gray]%}%n@%M:%{$fg[yellow]%}%~%{$reset_color%}\$(git_branch_prompt)
+$%b "
 
-bindkey '^ ' autosuggest-accept
-ZSH_AUTOSUGGEST_ACCEPT_WIDGETS=(
-    vi-end-of-line
-)
+# History in cache directory:
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=~/.cache/zsh/history
+setopt INC_APPEND_HISTORY
+
+# cd into directory automatically
+setopt AUTO_CD
+
+# Basic auto/tab complete:
+autoload -U compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit
+_comp_options+=(globdots)		# Include hidden files.
+
+# vi mode
+bindkey -v
+export KEYTIMEOUT=1
+
+# history search
+bindkey "^R" history-incremental-search-backward
+
+# Use vim keys in tab complete menu:
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+bindkey -v '^?' backward-delete-char
 
 # Change cursor shape for different vi modes.
 function zle-keymap-select {
-    if [[ ${KEYMAP} == vicmd ]] ||
-        [[ $1 = 'block' ]]; then
-        echo -ne '\e[1 q'
-    elif [[ ${KEYMAP} == main ]] ||
-         [[ ${KEYMAP} == viins ]] ||
-         [[ ${KEYMAP} = '' ]] ||
-         [[ $1 = 'beam' ]]; then
-       echo -ne '\e[5 q'
-    fi
+  if [[ ${KEYMAP} == vicmd ]] ||
+     [[ $1 = 'block' ]]; then
+    echo -ne '\e[1 q'
+  elif [[ ${KEYMAP} == main ]] ||
+       [[ ${KEYMAP} == viins ]] ||
+       [[ ${KEYMAP} = '' ]] ||
+       [[ $1 = 'beam' ]]; then
+    echo -ne '\e[5 q'
+  fi
 }
 zle -N zle-keymap-select
 zle-line-init() {
@@ -42,5 +71,41 @@ zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
-# necessary for WENVs
+# Use lf to switch directories and bind it to ctrl-o
+lfcd () {
+    tmp="$(mktemp)"
+    lf -last-dir-path="$tmp" "$@"
+    if [ -f "$tmp" ]; then
+        dir="$(cat "$tmp")"
+        rm -f "$tmp"
+        [ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
+    fi
+}
+bindkey -s '^o' 'lfcd\n'
+
+# Edit line in vim with ctrl-e:
+autoload edit-command-line; zle -N edit-command-line
+bindkey '^e' edit-command-line
+
+# Load aliases and shortcuts if existent.
+[ -f "$HOME/.config/shortcutrc" ] && source "$HOME/.config/shortcutrc"
+[ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
+
+# Load zsh-syntax-highlighting; should be last.
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+# completion stuff (has to be called after syntax highlighting) (NOTE: requires installing this plugin)
+source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
+bindkey -M vicmd k history-substring-search-up
+bindkey -M vicmd j history-substring-search-down
+
+[[ -f "$HOME/dotfiles/zsh/profile" ]] && source "$HOME/dotfiles/zsh/profile"
+[[ -f "$HOME/dotfiles/zsh/aliases" ]] && source "$HOME/dotfiles/zsh/aliases"
+
+source $SRC/wenv/wenv
 [[ -n "$WENV" ]] && wenv_exec "$WENV"
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+export NVM_DIR="$HOME/dotfiles/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

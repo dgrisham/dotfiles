@@ -1,5 +1,32 @@
 #!/bin/zsh
 
+# list
+# ----
+alias ll="ls -lh"
+alias lr="ls -lrh"
+alias la="ls -lah"
+alias lt="ls -lrth"
+alias lta="ls -lrtah"
+alias lat="ls -lrtah"
+
+# tmux
+# ----
+alias tm="tmux -2 attach"
+
+alias kak='kak_session'
+
+# convenient cd
+# -------------
+chpwd() { ll }            # cd and ls
+mc() { mv $@ && ${(P)#} } # mv and cd
+cc() { cp $@ && ${(P)#} } # cp and cd
+
+# compression
+# -----------
+alias tarx='tar -xvf'
+tarc() { tar -cvf $1.tar $1 }
+zipd() { zip -rv $1.zip $1 }
+
 # curl with status code
 # ---------------------
 alias scurl='curl -w "%{http_code}"'
@@ -16,12 +43,12 @@ publish_library() {
 }
 
 # alias publish_library='ipfs name publish /ipfs/$(beet ipfs --publish 2>&1 | ag --nocolor -o "(?<=ipfs: hash of library: )Qm.*?$")'
-alias fetch_library='beet ipfs --import $(ipfs name resolve /ipns/QmPDZYSLVUiFWHztvFPXRmvaVZp217kL1hgZ35jEyXqNj6 | sed "s|/ipfs/||")'
+alias fetch_library='beet ipfs --import $(ipfs name resolve /ipns/12D3KooWRF4oi22ncExUYiFwhYNxVtrnxHhGjQA8YPxKDQ9jA5ZA | sed "s|/ipfs/||")'
 
 ipfs_connect() {
     port="$1"
     [[ -z "$port" ]] && { echo "port required" >&2 ; return 1 ; }
-    ipfs swarm connect "/ip4/73.3.139.32/tcp/$port/p2p/QmPDZYSLVUiFWHztvFPXRmvaVZp217kL1hgZ35jEyXqNj6"
+    ipfs swarm connect "/ip4/73.3.139.32/tcp/$port/p2p/12D3KooWRF4oi22ncExUYiFwhYNxVtrnxHhGjQA8YPxKDQ9jA5ZA"
 }
 
 subscribe_to_library() {
@@ -39,9 +66,6 @@ subscribe_to_library() {
         echo "finished importing library $libHash"
     done
 }
-
-alias fetch_lib='beet ipfs --import $(ipfs resolve /ipns/QmZRbzaoPehexUKDwxDzfYZGANaLM3w3gvPCv5Z6PfVwGp | sed "s|/ipfs/||")'
-#ipfs pubsub sub --encoding json testing | jq --raw-output --unbuffered '.data' | while read f; do libHash=$(base64 --decode <<<$f); echo "importing library $libHash"; beet ipfs --import $libHash; done
 
 beet_import_ipfs() {
     beet import "$@" && beet ipfs --add
@@ -94,102 +118,11 @@ becho() { echo '\033[0;36m'$@'\033[0m' }
 gecho() { echo '\033[0;32m'$@'\033[0m' }
 recho() { echo '\033[0;31m'$@'\033[0m' }
 
-# open pdf, refresh tmux on close
-# -------------------------------
-unalias pdf 2>/dev/null
-pdf() {
-    # note: update to check for jfbview
-    # $VIEWER "$1"
-    jfbview "$1"
-    tmux refresh-client
-}
 # open pdf as plaintext
 # ---------------------
 tdf() {
     lesspipe.sh "$1" | less
 }
-
-mdImport() {
-    [[ -z "$1" ]] && return 1
-    [[ -f ".${1}.bak" ]] && rm -f ".${1}.bak"
-    pandoc --from=gfm --to=markdown --columns=80 "$1" > ".${1}.bak" &&
-    cp -f ".${1}.bak" "$1"
-}
-
-mdExport() {
-    [[ -z "$1" ]] && return 1
-    [[ -f ".${1}.bak" ]] && rm -f ".${1}.bak"
-    pandoc --from=markdown --to=gfm --wrap=none "$1" > ".${1}.bak" &&
-    cp -f ".${1}.bak" "$1"
-}
-
-#wkak() {
-    #kak -e 'exec \%,z<a-\;>\;' "$1" &&
-    #cp "$1" "${1}.bak" &&
-    #rm -f "$1" &&
-    #rm -f "${1}.bak"
-#}
-
-# markdown publishing
-md() {
-    local format="$1"
-    local md_doc="$2"
-    shift 2
-
-    case "$format" in
-        markdown)   local ext='md'                    ;;
-        latex)      local ext='pdf'                   ;;
-        latex-raw)  local ext='tex'; format='latex'   ;;
-        beamer)     local ext='pdf'                   ;;
-        beamer-raw) local ext='tex'; format='beamer'  ;;
-        *)          local ext="$format"               ;;
-    esac
-
-    pandoc --standalone \
-           --from=markdown --to="$format" \
-           --highlight-style tango \
-           --pdf-engine=pdflatex $* \
-           --output="${md_doc%.*}.$ext" "$md_doc" \
-        || echo "pandoc error ..."
-    # tango, espresso
-}
-
-md_dev() {
-    [[ -z "$1" ]] && return 1
-    local md_file="$1"
-    shift
-    monitor file "$md_file" md latex "$md_file" $@
-}
-
-beamer_loop() {
-    [[ -z "$1" ]] && return 1
-    local md_file="$1"
-    shift
-    monitor file "$md_file" md beamer "$md_file" $@
-}
-
-# latex building
-# --------------
-tex() {
-    [[ -z "$1" ]] && return 1
-    local file="$1"
-    local prefix=${file%.*}
-
-    pdflatex --shell-escape "$prefix".tex &&
-    bibtex                  "$prefix"     &&
-    pdflatex --shell-escape "$prefix".tex &&
-    pdflatex --shell-escape "$prefix".tex
-
-    rm -f $prefix.{out,snm,aux,toc,nav,lo?}
-}
-
-# cmus with lyrics and cover art
-# ------------------------------
-alias cf='cmus_full && exit'
-
-# start existing vim session
-# --------------------------
-alias vs="vim -S"
 
 # `$EDITOR <today's_date>.md`
 # -----------------------
@@ -227,109 +160,9 @@ cp_etc() {
     done
 }
 
-# edit alias file
-# ---------------
-edit_alias() {
-    if [[ $# -eq 0 ]]; then
-        print_aliases
-        return 1
-    fi
+# git
+# ---
 
-    local input_arg="$1"
-    case "$input_arg" in
-        g|global)
-            local alias_file="$GLOBAL_ALIAS"
-            ;;
-        l|local)
-            local alias_file="$LOCAL_ALIAS"
-            ;;
-        *)
-            local alias_file="$WENVS/${input_arg}"
-            ;;
-    esac
-
-    "$EDITOR" "$alias_file"
-}
-alias ea='edit_alias'
-
-# remove alias file
-# -----------------
-remove_alias() {
-    if [[ $# -eq 0 ]]; then
-        print_aliases
-        return 1
-    fi
-
-    local input_arg="$1"
-    case "$input_arg" in
-        '-f')
-            local force=true
-            shift
-            ;;
-        *)
-            local force=false
-            ;;
-    esac
-
-    local alias_file="$WENVS
-/${1}"
-
-    [[ -f "$alias_file" ]] || return 1
-
-    # confirm with user if 'force' flag not provided
-    if [[ "$force" = false ]]; then
-        echo -n "Remove $alias_file (y/n)? "
-        read choice
-
-        if ! echo "$choice" | grep -iq "^y"; then
-            return 1
-        fi
-    fi
-
-    rm -f "$alias_file"
-}
-alias ra='remove_alias'
-
-# source alias file
-# -----------------
-source_alias() {
-    # if no input, print list of possible inputs and return
-    if [[ $# -eq 0 ]]; then
-        print_aliases
-        return 1
-    fi
-    # check input(s), source associated alias file(s) accordingly
-    local input_arg="$1"
-    shift
-    case "$input_arg" in
-        g|global)
-            local alias_file="$GLOBAL_ALIAS"
-            ;;
-        l|local)
-            local alias_file="$LOCAL_ALIAS"
-            ;;
-        *)
-            local alias_file="$DOTFILES/wenv/wenvs/${input_arg}"
-            ;;
-    esac
-    if [[ -f "$alias_file" ]]; then
-        # echo "sourcing $alias_file"
-        source "$alias_file"
-    fi
-    [[ $# -gt 0 ]] && source_alias $@
-}
-alias sa='source_alias'
-
-### print alias file options (helper for {source,edit}_alias)
-print_aliases() {
-        echo "options:"
-        echo "  - global (g)"
-        echo "  - local (l)"
-        ls -lh "$WENVS" | tail -n +2 | awk '{ print $9 }'
-}
-
-# general git (more in git_aliases)
-# ---------------------------------
 alias gc='git commit -m'
 alias gcm='git commit -m'
 alias gca='git commit -a'
@@ -337,6 +170,9 @@ alias gcam='git commit -am'
 alias gs='git status'
 alias gl="git log --pretty=format:'%C(auto)%h %ad %C(green)%s%Creset %C(auto)%d [%an]' --graph --date=format:'%Y-%m-%d %H:%M' --all"
 alias gde="git diff --name-only --diff-filter=U | uniq  | xargs $EDITOR"
+alias gco='git checkout'
+alias gbr='git for-each-ref --sort=-committerdate refs/heads/ --format="%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))"'
+
 gb() {
     git blame $@ | while read hash user date time tz lineno line; do
         gecho "\n$hash $user $date $time $tz $lineno"
@@ -345,77 +181,70 @@ gb() {
     done
 }
 
-alias gco='git checkout'
-
 # Don't forget
 # ------------
 
 # cuesplit && cd split && for f in *.flac; do ffmpeg -i $f -ab 320k -map_metadata 0 -id3v2_version 3 "${f%.*}.mp3"; done && mkdir mp3 && mv *.mp3 mp3
 
-# Task Warrior
-# ============
-
-alias ta='unbuffer task active | sed \$d'
-
 # sk + ag
 # =======
 
 # ag default options
-alias ag="/usr/bin/ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33' --ignore node_modules --ignore git"
+alias ag="ag --color-path='1;36' --color-line-number='0;37' --color-match='1;33' --ignore node_modules --ignore git"
 
 # sk + ag to interactively search files
-skag() {
-    local extensions
-    local ag_args
-    (($# != 0)) && { extensions="$(tr ' ' '|' <<<($@))"; ag_args=('-G' "'.*?$extensions'") }
-    sk -m --ansi -i -c 'ag '"$ag_args"' --color "{}"'
-}
+# skag() {
+#     local extensions
+#     local ag_args
+#     (($# != 0)) && { extensions="$(tr ' ' '|' <<<($@))"; ag_args=('-G' "'.*?$extensions'") }
+#     sk -m --ansi -i -c 'ag '"$ag_args"' --color "{}"'
+# }
 
 # open skag() result in kak
-skak() {
-    while getopts ":h" opt; do
-        case "$opt" in
-            h)
-                echo "usage: skak [-h]"
-                return 0
-                ;;
-            \?)
-                echo "unknown option: -$OPTARG" >&2
-                return 1
-                ;;
-        esac
-    done
-    shift $((OPTIND-1))
+# skak() {
+#     while getopts ":h" opt; do
+#         case "$opt" in
+#             h)
+#                 echo "usage: skak [-h]"
+#                 return 0
+#                 ;;
+#             \?)
+#                 echo "unknown option: -$OPTARG" >&2
+#                 return 1
+#                 ;;
+#         esac
+#     done
+#     shift $((OPTIND-1))
 
-    local target=$(skag $@ | perl -pe 's/^(.*?):(\d+):\s*.*?$/\1 +\2/')
-    [[ -z "$target" ]] && return 1
-    eval $EDITOR $target
-}
+#     local target=$(skag $@ | perl -pe 's/^(.*?):(\d+):\s*.*?$/\1 +\2/')
+#     [[ -z "$target" ]] && return 1
+#     eval $EDITOR $target
+# }
 # alias skaf='skak -f'
 
-skaf() {
-    while getopts ":h:" opt; do
-        case "$opt" in
-            h)
-                echo "usage: skaf [-h] "
-                return 0
-                ;;
-            \?)
-                echo "unknown option: -$OPTARG" >&2
-                return 1
-                ;;
-        esac
-    done
-    shift $((OPTIND-1))
+# skaf() {
+#     while getopts ":h:" opt; do
+#         case "$opt" in
+#             h)
+#                 echo "usage: skaf [-h] "
+#                 return 0
+#                 ;;
+#             \?)
+#                 echo "unknown option: -$OPTARG" >&2
+#                 return 1
+#                 ;;
+#         esac
+#     done
+#     shift $((OPTIND-1))
 
-    local target=$(sk)
-    [[ -z "$target" ]] && return 1
-    if [[ -f $target ]]; then
-        $EDITOR $target
-    else [[ -d $target ]]
-        cd $target
-    fi
-}
+#     local target=$(sk)
+#     [[ -z "$target" ]] && return 1
+#     if [[ -f $target ]]; then
+#         $EDITOR $target
+#     else [[ -d $target ]]
+#         cd $target
+#     fi
+# }
 
 # ncmpcpp
 # =======
@@ -424,15 +253,3 @@ skaf() {
     # [[ ! -f "$DOTFILES/mpd/pid" ]] && mpd
     # /bin/ncmpcpp
 # }
-
-# Wifi
-# ====
-
-alias wifi="$HOME/bin/wifi"
-
-# Source additional aliases
-# =========================
-[[ -n "$DISPLAY" ]] && source_alias 'x' > /dev/null
-source_alias 'wenv' > /dev/null
-source_alias 'python' > /dev/null
-# source_alias 'ipfs' > /dev/null

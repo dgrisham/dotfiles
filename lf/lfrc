@@ -1,0 +1,23 @@
+set promptfmt "\033[36m%u@%h\033[0m:\033[93m%d\033[0m\033[1m%f\033[0m"
+cmd open ${{
+    test -L $f && f=$(readlink -f $f)
+    case $(file --mime-type $f -b) in
+        'application/octet-stream')
+            zathura $fx &
+            ;;
+        *)
+            $EDITOR $fx
+            ;;
+    esac
+}}
+map o open
+
+cmd skak ${{
+    skak || exit 0
+}}
+map g skak
+
+cmd skaf ${{
+    skaf || exit 0
+}}
+map f skaf

@@ -1,3 +1,37 @@
+# Terminal
+[[ $TMUX = "" ]] && export TERM='xterm-256color'
+
+# Bin
+export BIN="$HOME/bin"
+export PATH="$BIN:$HOME/.local/bin:$PATH"
+
+# Directories
+export DOTFILES="$HOME/dotfiles"
+export DOWNLOADS="$HOME/downloads"
+export SRC="$HOME/src"
+export PERSONAL="$HOME/personal"
+export MEDIA="$HOME/media"
+export MUSIC="$MEDIA/music"
+export SCRATCH="$HOME/scratch"
+
+## XDG
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_CONFIG_HOME="$DOTFILES"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_DOWNLOAD_DIR="$DOWNLOADS"
+export XDG_DESKTOP_DIR="/dev/null"
+#export XDG_RUNTIME_DIR="/tmp"
+
+export MAGIC="$HOME/.magic"
+
+# Alias files
+export LOCAL_ALIAS="$DOTFILES/zsh/aliases"
+
+# Defaults
+export EDITOR=kak_session
+export VISUAL="$EDITOR"
+export BROWSER="brave"
+
 # command completion
 
 autoload bashcompinit
@@ -12,7 +46,7 @@ export GPG_TTY=$TTY
 source $DOTFILES/zsh/completion/ipfs.bash
 
 ## kjv
-source $DOTFILES/zsh/completion/kjv.bash
+# source $DOTFILES/zsh/completion/kjv.bash
 
 ## wenv
 source $DOTFILES/zsh/completion/wenv.bash
@@ -27,20 +61,29 @@ source $DOTFILES/zsh/completion/wenv.bash
 
 # path
 
+# mysql
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+
 ## cabal
-export PATH="$PATH:$HOME/.cabal/bin"
+export PATH="$HOME/.cabal/bin:$PATH"
 
 ## Go path
 export GOPATH="$HOME/.go"
 # add GOPATH/bin to PATH
-export PATH="$PATH:$GOPATH/bin"
+export PATH="$GOPATH/bin:$PATH"
+
+# yarn global bin
+export PATH="$HOME/.yarn/bin:$PATH"
 
 ## Rust Cargo path
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
-export PATH="$PATH:$CARGO_HOME/bin"
+export PATH="$CARGO_HOME/bin:$PATH"
 
 ## yarn
-export PATH="$PATH:$HOME/.config/yarn/global/node_modules/.bin"
+export PATH="$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+## solana
+export PATH="$HOME/.local/share/solana/install/active_release/bin:$PATH"
 
 # config
 
@@ -66,3 +109,5 @@ export TWITCH_STREAM_KEY='live_57133341_CBD8E5rVoI8McTefzMBxXwTkuHQXI5'
 
 # display variable gets unset all of the time somehow
 export DISPLAY=:0
+
+export LF_COLORS="di=37:su=37:"
