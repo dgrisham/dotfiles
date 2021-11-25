@@ -36,6 +36,8 @@ zstyle ':completion:*' menu select
 zmodload zsh/complist
 compinit
 _comp_options+=(globdots)		# Include hidden files.
+# tab-completion in the middle of file + directory names (e.g. 'ownlo' can tab-complete to 'downloads')
+zstyle ':completion:*' matcher-list '' 'm:{[:lower:][:upper:]}={[:upper:][:lower:]}' '+l:|=* r:|=*'
 
 # vi mode
 bindkey -v
