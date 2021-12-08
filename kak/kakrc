@@ -152,20 +152,20 @@ def -hidden tmux %{ enter-user-mode tmux }
 
 declare-user-mode tmux-fzf
 map global tmux f ':enter-user-mode tmux-fzf<ret>' -docstring 'fzf'
-map global tmux-fzf '\' ':tmux-terminal-horizontal sk-kak -c %val{session}<ret>' \
+map global tmux-fzf '\' ':tmux-terminal-horizontal alias_call skaf<ret>' \
     -docstring 'horizontal fzf split'
-map global tmux-fzf '<minus>' ':tmux-terminal-vertical sk-kak -c %val{session}<ret>' \
+map global tmux-fzf '<minus>' ':tmux-terminal-vertical alias_call skaf<ret>' \
     -docstring 'vertical fzf split'
-map global tmux-fzf c ':tmux-terminal-window sk-kak -c %val{session}<ret>' \
+map global tmux-fzf c ':tmux-terminal-window alias_call skaf<ret>' \
     -docstring 'new fzf window'
 
 declare-user-mode tmux-grep
 map global tmux g ':enter-user-mode tmux-grep<ret>' -docstring 'grep'
-map global tmux-grep '\' ':tmux-terminal-horizontal skag-kak -c %val{session}<ret>' \
+map global tmux-grep '\' ':tmux-terminal-horizontal alias_call skak<ret>' \
     -docstring 'horizontal grep split'
-map global tmux-grep '<minus>' ':tmux-terminal-vertical skag-kak -c %val{session}<ret>' \
+map global tmux-grep '<minus>' ':tmux-terminal-vertical alias_call skak<ret>' \
     -docstring 'vertical grep split'
-map global tmux-grep c ':tmux-terminal-window skag-kak -c %val{session}<ret>' \
+map global tmux-grep c ':tmux-terminal-window alias_call skak<ret>' \
     -docstring 'new grep window'
 
 # declare-user-mode tmux-repl
