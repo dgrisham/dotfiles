@@ -1,8 +1,12 @@
 set promptfmt "\033[36m%u@%h\033[0m:\033[93m%d\033[0m\033[1m%f\033[0m"
 cmd open ${{
     test -L $f && f=$(readlink -f "$f")
-    case $(file --mime-type "$f" -b) in
-        'application/octet-stream')
+    fname=$(basename -- "$f")
+
+    ext=${fname##*.}
+    # try matching file extension first
+    case "$ext" in
+        'pdf')
             zathura "$fx" &
             ;;
         *)
