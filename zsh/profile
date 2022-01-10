@@ -14,6 +14,9 @@ export MEDIA="$HOME/media"
 export MUSIC="$MEDIA/music"
 export SCRATCH="$HOME/scratch"
 
+# wifi
+export WIFI_CARD=wlp3s0
+
 ## XDG
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CONFIG_HOME="$DOTFILES"
