@@ -117,8 +117,13 @@ source $DOTFILES/zsh/completion/ipfs.bash
 ## kjv
 # source $DOTFILES/zsh/completion/kjv.bash
 
+# docker
+source $HOME/dotfiles/zsh/completion/_docker-compose
+compdef _docker-compose docker-compose
+
 ## wenv
 source $DOTFILES/zsh/completion/wenv.bash
+
 ## aws-cli
 #source aws_zsh_completer.sh
 
