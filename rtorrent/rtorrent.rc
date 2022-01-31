@@ -37,10 +37,12 @@ directory.default.set = ~/downloads/torrents
 # relative path?
 session.path.set = ~/.rtorrent_session
 
-# Watch a directory for new torrents, and stop those that have been
-# deleted.
-schedule = watch_directory,5,5,load.start=~/downloads/torrents/watch/*.torrent
+# Watch a directory for new torrents, and stop those that have been deleted.
+schedule = watch_directory,5,1,load.start=~/downloads/torrents/watch/*.torrent
 #schedule = untied_directory,5,5,stop_untied=
+
+method.insert.simple = d.data_path, "if=(d.is_multi_file), (cat,(d.directory),/), (cat,(d.directory),/,(d.name))"
+method.set_key = event.download.finished,move_completed_tv_show,"execute.throw.bg=/home/grish/scratch/pirate/move.sh,$d.hash=,$d.data_path= ; d.erase="
 
 # Close torrents when diskspace is low.
 #schedule = low_diskspace,5,60,close_low_diskspace=100M

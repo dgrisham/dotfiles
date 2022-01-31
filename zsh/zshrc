@@ -102,6 +102,7 @@ bindkey -M vicmd j history-substring-search-down
 
 [[ -f "$HOME/dotfiles/zsh/profile" ]] && source "$HOME/dotfiles/zsh/profile"
 [[ -f "$HOME/dotfiles/zsh/aliases" ]] && source "$HOME/dotfiles/zsh/aliases"
+[[ -f "$HOME/dotfiles/zsh/profile-secrets" ]] && source "$HOME/dotfiles/zsh/profile-secrets"
 
 # Load zsh-syntax-highlighting; should be last.
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
