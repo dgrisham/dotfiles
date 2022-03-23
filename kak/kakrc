@@ -1,6 +1,8 @@
 ## clippy -> dilbert
 set-option global ui_options ncurses_assistant=dilbert
 
+set-option global ui_options terminal_set_title=false
+
 ## Hooks
 
 # (case-insensitive) search
@@ -212,6 +214,15 @@ hook global BufSetOption filetype=python %!
 
 # Go
 # ==
+
+# test #
+# test #
+
+hook global BufSetOption filetype=yaml %!
+    declare-user-mode write-code-template
+    map global write-code-template c 'I# <esc>A #<esc>xypxI<esc><a-l>r#xykP' -docstring 'header comment block'
+    map global user w ':enter-user-mode write-code-template<ret>' -docstring 'write code template'
+!
 
 hook global BufSetOption filetype=javascript %!
     declare-user-mode write-code-template

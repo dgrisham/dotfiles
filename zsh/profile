@@ -1,5 +1,8 @@
 # Terminal
-[[ $TMUX = "" ]] && export TERM='xterm-256color'
+if [[ $TMUX = "" ]]; then
+    export TERM='xterm-256color'
+fi
+export DISABLE_AUTO_TITLE=true
 
 # Bin
 export BIN="$HOME/bin"
@@ -25,7 +28,7 @@ export XDG_DOWNLOAD_DIR="$DOWNLOADS"
 export XDG_DESKTOP_DIR="/dev/null"
 #export XDG_RUNTIME_DIR="/tmp"
 
-export MAGIC="$HOME/.magic"
+# export MAGIC="$HOME/.magic"
 
 # Alias files
 export LOCAL_ALIAS="$DOTFILES/zsh/aliases"

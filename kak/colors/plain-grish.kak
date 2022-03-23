@@ -20,7 +20,7 @@ face global title default
 face global header default
 face global mono default
 face global block default
-face global link blue
+face global link defautl
 face global bullet default
 face global list default
 
