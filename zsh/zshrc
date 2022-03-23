@@ -19,7 +19,7 @@ git_branch_prompt() {
 autoload -U colors && colors
 setopt prompt_subst
 PS1="\$(wenv_prompt)
-%{$fg[gray]%}%n@%M:%{$fg[yellow]%}%~%{$reset_color%}\$(git_branch_prompt)
+%F{89}%n%F{252}@%F{245}%M:%F{227}%~%f\$(git_branch_prompt)
 $%b "
 
 # History in cache directory:
@@ -95,8 +95,6 @@ bindkey '^e' edit-command-line
 [ -f "$HOME/.config/shortcutrc" ] && source "$HOME/.config/shortcutrc"
 [ -f "$HOME/.config/aliasrc" ] && source "$HOME/.config/aliasrc"
 
-# Load zsh-syntax-highlighting; should be last.
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 # completion stuff (has to be called after syntax highlighting) (NOTE: requires installing this plugin)
 source /usr/share/zsh/plugins/zsh-history-substring-search/zsh-history-substring-search.zsh
 bindkey -M vicmd k history-substring-search-up
@@ -104,6 +102,16 @@ bindkey -M vicmd j history-substring-search-down
 
 [[ -f "$HOME/dotfiles/zsh/profile" ]] && source "$HOME/dotfiles/zsh/profile"
 [[ -f "$HOME/dotfiles/zsh/aliases" ]] && source "$HOME/dotfiles/zsh/aliases"
+[[ -f "$HOME/dotfiles/zsh/profile-secrets" ]] && source "$HOME/dotfiles/zsh/profile-secrets"
+
+# Load zsh-syntax-highlighting; should be last.
+source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+
+ZSH_HIGHLIGHT_STYLES[alias]=fg=cyan
+ZSH_HIGHLIGHT_STYLES[builtin]=fg=cyan
+ZSH_HIGHLIGHT_STYLES[function]=fg=cyan
+ZSH_HIGHLIGHT_STYLES[command]=fg=cyan
+ZSH_HIGHLIGHT_STYLES[unknown-token]=fg=red
 
 # enable bash completion
 autoload bashcompinit
@@ -135,8 +143,6 @@ source $DOTFILES/zsh/completion/wenv.bash
 
 source $SRC/wenv/wenv
 [[ -n "$WENV" ]] && wenv_exec "$WENV"
-
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 export NVM_DIR="$HOME/dotfiles/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

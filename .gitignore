@@ -38,6 +38,7 @@ mpd/log
 mpd/pid
 mpd/playlists/
 mpd/state
+mpd/mpd-icecast.conf
 mpd/sticker.sql
 mps-youtube/
 ncmpcpp/error.log
@@ -68,3 +69,16 @@ zoomus.conf
 zsh/README.md
 zsh/completion/
 zsh/histfile
+zsh/profile-secrets
+whatscli/
+wenv/wenvs
+wenv/extensions
+mutt/
+msmtp/
+lazygit/state.yml
+BraveSoftware/
+Insomnia/
+Slippi\ Launcher/
+SlippiOnline/
+SlippiPlayback/
+dolphinrc

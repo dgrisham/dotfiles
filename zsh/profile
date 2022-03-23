@@ -56,8 +56,8 @@ export GOPATH="$HOME/.go"
 # add GOPATH/bin to PATH
 export PATH="$GOPATH/bin:$PATH"
 
-# yarn global bin
-export PATH="$HOME/.yarn/bin:$PATH"
+# yarn bin(s?)
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
 
 ## Rust Cargo path
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
@@ -91,5 +91,8 @@ export SKIM_DEFAULT_COMMAND='fd . --type f'
 export TASKRC="$DOTFILES/task/taskrc"
 
 export TWITCH_STREAM_KEY='live_57133341_CBD8E5rVoI8McTefzMBxXwTkuHQXI5'
+
+# display variable gets unset all of the time somehow
+export DISPLAY=:0
 
 export LF_COLORS="di=37:su=37:"
