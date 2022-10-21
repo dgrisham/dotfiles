@@ -3,11 +3,11 @@
 #define t_background   #000000
 #define t_bg_bump      #2B2A27
 #define t_fg_comment   #68696C
-#define t_foreground   #8E8F93
+#define t_foreground   #dddddd
 #define t_fg_highlight #9D9EA2
 #define t_fg_ceiling   #FEFFFF
 
-URxvt*.transparent: true
+URxvt*.transparent: false
 URxvt*.shading: 5
 URxvt.font:xft:Inconsolata Nerd Font:style=Regular:antialias=true:size=12
 URxvt.boldFont:xft:Inconsolata Nerd Font:style=Regular:bold:antialias=true:size=12
@@ -28,8 +28,13 @@ URxvt.cursorColor: #B47CAD
 URxvt.scrollBar: false
 
 ! disable searchable scrollback, enable resizing font
-URxvt.perl-lib: /home/grish/dotfiles/urxvt/ext
+URxvt.perl-lib: /home/grish/.urxvt/ext
 URxvt.perl-ext-common: default,-searchable-scrollback,resize-font
+
+URxvt.keysym.C-minus:     resize-font:smaller
+URxvt.keysym.C-plus:      resize-font:bigger
+URxvt.keysym.C-equal:     resize-font:reset
+URxvt.keysym.C-question:  resize-font:show
 
 URxvt.iso14755: true
 URxvt.iso14755_52: false
